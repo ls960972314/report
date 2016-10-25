@@ -48,10 +48,6 @@
 	        <artifactId>jedis</artifactId>
         </dependency>
         <!-- redis end  -->
-		<dependency>
-			<groupId>com.sfpay.otherparty.jdbc</groupId>
-			<artifactId>ojdbc14</artifactId>
-		</dependency>
 		<!-- mybaits -->
 		<dependency>
 			<groupId>org.mybatis</groupId>

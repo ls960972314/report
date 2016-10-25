@@ -54,7 +54,6 @@
 		<quartz.version>1.6.3</quartz.version>
 		<commons-codec.version>1.6</commons-codec.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
-		<ojdbc.version>10.2.0.3.0</ojdbc.version>
 		<fastjson.version>1.1.41</fastjson.version>
 		<slf4j-api.version>1.7.0</slf4j-api.version>
 		<jcl-over-slf4j.version>1.6.2</jcl-over-slf4j.version>
@@ -112,13 +111,7 @@
 				<version>${redis-client.version}</version>
 			</dependency>
 			<!-- redis end -->
-			<!-- ojdbc begin -->
-			<dependency>
-				<groupId>com.sfpay.otherparty.jdbc</groupId>
-				<artifactId>ojdbc14</artifactId>
-				<version>${ojdbc.version}</version>
-			</dependency>
-			<!-- ojdbc end -->
+			<!-- mybaits -->
 			<dependency>
 				<groupId>org.mybatis</groupId>
 				<artifactId>mybatis</artifactId>
@@ -371,9 +364,78 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
 				<configuration>
 					<skip>true</skip>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<!-- <executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classesDirectory>${project.outputDirectory}</classesDirectory>
+							<finalName>jeesite</finalName>
+							<outputDirectory>${project.build.directory}/${project.artifactId}/WEB-INF/lib</outputDirectory>
+							<includes>
+					        	<include>com/thinkgem/jeesite/**</include>
+					       	</includes>
+						</configuration>
+					</execution>
+				</executions> -->
+			</plugin>
+			<!-- war 打包插件, 设定war包名称不带版本号 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<!-- <configuration>
+					<packagingExcludes>
+						WEB-INF/classes/com/thinkgem/jeesite/**
+						WEB-INF/classes/org/apache/ibatis/**,
+						WEB-INF/classes/org/mybatis/spring/**
+					</packagingExcludes>
+					<warSourceExcludes>
+						static/bootstrap/2.3.1/docs/**,
+						static/ckeditor/_samples/**,
+						static/ckeditor/_source/**,
+						static/ckfinder/_samples/**,
+						static/ckfinder/help/**,
+						static/compressor*/**,
+						static/jquery-jbox/2.3/docs/**,
+						static/jquery-jbox/2.3/Skins2/**,
+						static/jquery-validation/1.11.0/demo/**,
+						static/jquery-ztree/3.5.12/demo/**,
+						static/My97DatePicker/docs/**,
+						static/supcan/doc/**,
+						static/SuperSlide/demo/**,
+						static/treeTable/demo/**,
+						userfiles/**,/**/*.jsp,
+						test/**
+					</warSourceExcludes>
+					<webappDirectory>${project.build.directory}/${project.artifactId}</webappDirectory>
+					<webXml>${project.basedir}/target/jspweb.xml</webXml>
+					<warName>${project.artifactId}</warName>
+				</configuration> -->
 			</plugin>
 		</plugins>
 	</build>
