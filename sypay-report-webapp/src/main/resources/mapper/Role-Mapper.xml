@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="role" >
+
+  <resultMap type="com.sypay.omp.per.domain.Role" id="roleResultMap">
+  	<id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="SYS_CODE" property="sysCode" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap type="com.sypay.omp.per.model.RoleModel" id="roleModelResultMap">
+  	<result column="ID" property="id" jdbcType="INTEGER" />
+  	<result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+  	<result column="NAME" property="name" jdbcType="VARCHAR" />
+  	<result column="SYS_CODE" property="sysCode" jdbcType="VARCHAR" />
+  	<result column="STATUS" property="status" jdbcType="INTEGER" />
+  	<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  	<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  	<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+  	<result column="CREATER_ACC_NO" property="createrAccNo" jdbcType="VARCHAR" />
+  	<result column="MODIFIER_ACC_NO" property="modifierAccNo" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <!-- 组别管理中使用到的角色列表【显示给系统管理员】 -->
+  <select id="findRoleList4SysAdmin" parameterType="list" resultType="map">
+  	select 
+  		ur.role_code "roleCode",
+  		ur.name "name", 
+  		ur.sys_code "sysCode", 
+  		(select rs.name from uc_register_service rs where rs.sys_code = ur.sys_code and rownum=1) "sysName"
+  	from 
+  		uc_role ur 
+  	where 
+  		ur.status = 1
+  		and ur.sys_code in
+  		<foreach item="sysCode" collection="list" open="(" separator="," close=")">#{sysCode}</foreach>
+  </select>
+  
+  <!-- 组别管理中使用到的角色列表【显示给权限管理员】 -->
+  <select id="findRoleList4PerAdmin" resultType="map">
+  	select 
+  		ur.role_code "roleCode", 
+  		ur.name "name", 
+  		ur.sys_code "sysCode"
+  	from 
+  		uc_role ur 
+  	where 
+  		ur.status = 1
+  </select>
+  
+  <!-- 角色管理页面中要显示给系统管理员的数据 -->
+  <select id="findRoleListByCriteria4SysAdmin" parameterType="map" resultMap="roleModelResultMap">
+  	select
+  		ur.id,
+  		ur.role_code,
+  		ur.name, 
+  		ur.sys_code, 
+  		ur.status,
+  		ur.create_time,
+  		ur.update_time,
+  		ur.description,
+  		(select t.acc_no from uc_member t where t.id = ur.creater_id) creater_acc_no,
+  		(select t.acc_no from uc_member t where t.id = ur.modifier_id) modifier_acc_no
+  	from 
+  		uc_role ur 
+  	where
+  		ur.sys_code in
+  		<foreach item="sysCode" collection="sysCodes" open="(" separator="," close=")">#{sysCode}</foreach>
+  		<if test="roleCriteriaModel.roleCode != null || roleCriteriaModel.roleName != null">and (</if>
+  		<if test="roleCriteriaModel.roleCode != null">
+  			ur.role_code like #{roleCriteriaModel.roleCode,jdbcType=VARCHAR}
+  		</if>
+  		<if test="roleCriteriaModel.roleName != null">
+  			<if test="roleCriteriaModel.roleCode != null">AND</if> ur.name like #{roleCriteriaModel.roleName,jdbcType=VARCHAR}
+  		</if>
+  		<if test="roleCriteriaModel.roleCode != null || roleCriteriaModel.roleName != null">)</if>
+  	order by
+  		<choose>
+  			<when test="pageHelper.sort == null">ur.status desc, ur.id desc</when>
+  			<otherwise>ur.${pageHelper.sort} ${pageHelper.order}</otherwise>
+  		</choose>
+  </select>
+  
+  <!-- 角色管理页面中要显示给权限管理员的数据 -->
+  <select id="findRoleListByCriteria4PerAdmin" parameterType="map" resultMap="roleModelResultMap">
+	select 
+  		ur.id,
+  		ur.role_code,
+  		ur.name, 
+  		ur.sys_code, 
+  		ur.status,
+  		ur.create_time,
+  		ur.update_time,
+  		ur.description,
+  		(select t.acc_no from uc_member t where t.id = ur.creater_id) creater_acc_no,
+  		(select t.acc_no from uc_member t where t.id = ur.modifier_id) modifier_acc_no
+  	from 
+  		uc_role ur 
+  	<where>
+  		<if test="roleCriteriaModel.roleCode != null">
+  			ur.role_code like #{roleCriteriaModel.roleCode,jdbcType=VARCHAR}
+  		</if>
+  		<if test="roleCriteriaModel.roleName != null">
+  			<if test="roleCriteriaModel.roleCode != null">AND</if> ur.name like #{roleCriteriaModel.roleName,jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  	order by
+  		<choose>
+  			<when test="pageHelper.sort == null"> ur.status desc, ur.id desc</when>
+  			<otherwise>ur.${pageHelper.sort} ${pageHelper.order}</otherwise>
+  		</choose>
+  </select>
+  
+  <!-- 角色管理页面中要显示给非系统管理员非权限管理员的数据 -->
+  <select id="findRoleListByRoleCodes" parameterType="map" resultMap="roleModelResultMap">
+	select 
+  		ur.id,
+  		ur.role_code,
+  		ur.name, 
+  		ur.sys_code, 
+  		ur.status,
+  		ur.create_time,
+  		ur.update_time,
+  		ur.description,
+  		(select t.acc_no from uc_member t where t.id = ur.creater_id) creater_acc_no,
+  		(select t.acc_no from uc_member t where t.id = ur.modifier_id) modifier_acc_no
+  	from 
+  		uc_role ur 
+  	<where>
+  		ur.role_code in
+  		<foreach item="roleCode" collection="roleCodes" open="(" separator="," close=")">#{roleCode}</foreach>
+  	</where>
+  	order by
+  		<choose>
+  			<when test="pageHelper.sort == null"> ur.status desc, ur.id desc</when>
+  			<otherwise>ur.${pageHelper.sort} ${pageHelper.order}</otherwise>
+  		</choose>
+  </select>
+  
+  <!-- 角色管理页面中要显示给系统管理员或权限管理员的总记录数 -->
+  <select id="countRoleByCriteria" resultType="long" parameterType="map">
+  	select count(*) 
+  	from uc_role
+  	<where>
+  		<if test="sysCodes != null &#038;&#038; sysCodes.size() > 0">
+	  		sys_code in
+	  		<foreach item="sysCode" collection="sysCodes" open="(" separator="," close=")">#{sysCode}</foreach>
+  		</if>
+  		<if test="roleCriteriaModel.roleCode != null || roleCriteriaModel.roleName != null">and (</if>
+		<if test="roleCriteriaModel.roleCode != null">
+			role_code like #{roleCriteriaModel.roleCode,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCriteriaModel.roleName != null">
+			<if test="roleCriteriaModel.roleCode != null">AND</if> name like #{roleCriteriaModel.roleName,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCriteriaModel.roleCode != null || roleCriteriaModel.roleName != null">)</if>
+  	</where>
+  </select>
+  <!-- 角色管理页面中要显示给[非]系统管理员或权限管理员的总记录数 -->
+  <select id="countRoleByRoleCodes" resultType="long" parameterType="map">
+  	select count(*) 
+  	from uc_role
+  	<where>
+  		<if test="roleCodes != null &#038;&#038; roleCodes.size() > 0">
+	  		role_code in
+	  		<foreach item="roleCode" collection="roleCodes" open="(" separator="," close=")">#{roleCode}</foreach>
+  		</if>
+  		<if test="roleCriteriaModel.roleCode != null || roleCriteriaModel.roleName != null">and (</if>
+		<if test="roleCriteriaModel.roleCode != null">
+			role_code like #{roleCriteriaModel.roleCode,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCriteriaModel.roleName != null">
+			<if test="roleCriteriaModel.roleCode != null">AND</if> name like #{roleCriteriaModel.roleName,jdbcType=VARCHAR}
+		</if>
+		<if test="roleCriteriaModel.roleCode != null || roleCriteriaModel.roleName != null">)</if>
+  	</where>
+  </select>
+  
+  <update id="deleteRoleLogically" parameterType="long">
+  	update uc_role r set r.status = 0 where r.id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deleteRolePhysically" parameterType="map">
+  	delete from uc_role where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <select id="getRoleCodeByRoleId" resultType="string">
+  	select r.role_code from uc_role r where r.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteMappingRole2Resource" parameterType="map">
+  	delete from uc_role_res where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  
+  <select id="countRoleByRoleCodeAndSysCode" resultType="int" parameterType="map">
+  	select count(*) from uc_role 
+  	where 
+  		role_code = #{roleCode,jdbcType=VARCHAR} and sys_code = #{sysCode,jdbcType=VARCHAR}
+  		<if test="targetId != null">
+  			and id != #{targetId}
+  		</if>
+  	
+  </select>
+  
+  <select id="countResourceByRoleCode" parameterType="string" resultType="int">
+  	select count(*) from uc_role_res rr where rr.role_code = #{roleCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="countGroupByRoleCode" resultType="int" parameterType="string">
+  	select count(*) from uc_group_role gr where gr.role_code = #{roleCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findRoleNamesByGroupCode" parameterType="map" resultType="map">
+  	select
+  		r.role_code "roleCode", 
+  		r.name "roleName"
+  	from 
+  		uc_group_role gr, 
+  		uc_role r 
+  	where 
+  		gr.group_code = :groupCode 
+  		and gr.role_code = r.role_code
+  </select>
+  
+  <select id="getRoleListByGroupCode" resultType="string" parameterType="string">
+	  select gr.role_code "roleCode"
+		from uc_group_role gr
+		where gr.group_code =#{groupCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getRoleCodeAndNameList" parameterType="string" resultType="map">
+	select
+    	r.role_code "roleCode",
+    	r.name "roleName"
+	from
+    	uc_group_role gr,
+    	uc_role r
+	where 
+    	gr.group_code = #{groupCode,jdbcType=VARCHAR}
+    	and gr.role_code = r.role_code
+  </select>
+  
+  <select id="isSameRoleCode" parameterType="map" resultType="int">
+	select count(*) 
+	from uc_role r
+	where r.id = #{id,jdbcType=INTEGER} and r.role_code = #{roleCode,jdbcType=VARCHAR}  	
+  </select>
+  
+  <select id="findAllRoles" parameterType="long" resultMap="roleResultMap">
+	select distinct r.*
+	 from uc_role r, 
+	  		  uc_member_group mg, 
+	  		  uc_group_role gr
+	where r.role_code = gr.role_code
+	   and gr.group_code = mg.group_code
+	   and mg.member_id = #{memberId, jdbcType = NUMERIC}
+  </select>
+  
+  <select id="findRoleCodeByMemberId" parameterType="long" resultType="string">
+	select r.role_code
+	 from uc_role r, 
+	  		  uc_member_group mg, 
+	  		  uc_group_role gr
+	where r.role_code = gr.role_code
+	   and gr.group_code = mg.group_code
+	   and mg.member_id = #{memberId}
+  </select>
+  
+</mapper>

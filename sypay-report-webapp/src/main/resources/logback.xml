@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <substitutionProperty name="log.base" value="../applog/reportLog" />
+    <substitutionProperty name="log.app" value="${log.base}/otherLog" />
+    <substitutionProperty name="log.queryLog" value="${log.base}/queryLog" />
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <!-- To enable JMX Management -->
+    <jmxConfigurator/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss} %-5level [%logger{80} ] %X{transactionId} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="reportOther"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.app}/report-other.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>
+                ${log.app}/report-other.log.%d{yyyy-MM-dd-HH}.%i
+            </FileNamePattern>
+            <TimeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>5MB</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} %-5level [%logger{80} ] %X{transactionId} - %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    
+    <appender name="reportQuery"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.queryLog}/report-queryLog.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>
+                ${log.queryLog}/report-queryLog.log.%d{yyyy-MM-dd-HH}.%i
+            </FileNamePattern>
+            <TimeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>5MB</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%date{yyyy-MM-dd HH:mm:ss} %-5level [%logger{80} ] %X{transactionId} - %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="org.hibernate" level="info"/>
+    <logger name="org.springframework" level="info"/>
+    <logger name="com.sypay" level="info"/>
+    <logger name="reportQuery" level="info"  additivity="false">
+    	<appender-ref ref="reportQuery"/>
+    </logger>
+    
+         
+    <root level="debug">
+        <appender-ref ref="reportOther"/>
+        <appender-ref ref="console"/>
+    </root>
+</configuration>

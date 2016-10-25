@@ -1,0 +1,3 @@
+113行   去除.panel-header的filter属性	（引起IE8下关闭图标不显示）
+231行   去除.window-shadow的filter属性
+237行   去除.window的filter属性  	（引起IE8下关闭图标不显示）

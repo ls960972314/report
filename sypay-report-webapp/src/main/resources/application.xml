@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"  xmlns:sfpay-mvc="http://www.sf-pay.com/schema/sfpay-mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+	http://www.sf-pay.com/schema/sfpay-mvc http://www.sf-pay.com/schema/framework2-mvc.xsd">
+
+    <!-- <import resource="beans/beans-spring-sentinel.xml"/>  -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+				<!-- <value>classpath*:profiles/report/properties/*.properties</value>  -->
+				<value>classpath:properties/*.properties</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="config" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="properties" ref="propertyConfigurer" />
+    </bean>
+    
+	<!-- dataSource begin -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>com.sypay.omp.**.domain</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+    <bean id="baseDao" class="com.sypay.omp.report.dao.impl.BaseDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    
+    <bean id="dataSource" class="com.sypay.omp.report.dataBase.MultiDataSource">    
+        <property name="dataSource">
+            <ref bean="ods" />
+    	</property>
+    </bean>
+	    <!-- 多数据源配置开始 
+	    ODS POS TMS COD BSM 理财 小贷通 保价 保价理赔-->
+	    <bean id="ods" class="org.apache.commons.dbcp.BasicDataSource"
+	        destroy-method="close">
+	        <property name="driverClassName" value="${jdbc_driverClassName}" />
+	        <property name="url" value="${jdbc_url}" />
+	        <property name="username" value="${jdbc_username}" />
+	        <property name="password" value="${jdbc_password}" />
+	        <property name="maxActive" value="50" />
+	        <property name="maxIdle" value="8" />
+	        <property name="initialSize" value="5" />
+	        <property name="maxWait" value="600000" />
+	        <property name="validationQuery" value="select sysdate() from dual" />
+	    </bean>
+	    
+	    <bean id="pos" class="org.apache.commons.dbcp.BasicDataSource"
+	        destroy-method="close">
+	        <property name="driverClassName" value="${jdbc_driverClassName}" />
+	        <property name="url" value="${pos_url}" />
+	        <property name="username" value="${pos_username}" />
+	        <property name="password" value="${pos_password}" />
+	        <property name="maxActive" value="50" />
+	        <property name="maxIdle" value="8" />
+	        <property name="initialSize" value="5" />
+	        <property name="maxWait" value="600000" />
+	        <property name="validationQuery" value="select sysdate() from dual" />
+	    </bean>
+	    <bean id="tms" class="org.apache.commons.dbcp.BasicDataSource"
+	        destroy-method="close">
+	        <property name="driverClassName" value="${jdbc_driverClassName}" />
+	        <property name="url" value="${tms_url}" />
+	        <property name="username" value="${tms_username}" />
+	        <property name="password" value="${tms_password}" />
+	        <property name="maxActive" value="50" />
+	        <property name="maxIdle" value="8" />
+	        <property name="initialSize" value="5" />
+	        <property name="maxWait" value="600000" />
+	        <property name="validationQuery" value="select sysdate() from dual" />
+	    </bean>
+	    <bean id="cod" class="org.apache.commons.dbcp.BasicDataSource"
+	        destroy-method="close">
+	        <property name="driverClassName" value="${jdbc_driverClassName}" />
+	        <property name="url" value="${cod_url}" />
+	        <property name="username" value="${cod_username}" />
+	        <property name="password" value="${tms_password}" />
+	        <property name="maxActive" value="50" />
+	        <property name="maxIdle" value="8" />
+	        <property name="initialSize" value="5" />
+	        <property name="maxWait" value="600000" />
+	        <property name="validationQuery" value="select sysdate() from dual" />
+	    </bean>
+	    
+	     <bean id="tmshis" class="org.apache.commons.dbcp.BasicDataSource"
+	        destroy-method="close">
+	        <property name="driverClassName" value="${jdbc_driverClassName}" />
+	        <property name="url" value="${tmshis_url}" />
+	        <property name="username" value="${tmshis_username}" />
+	        <property name="password" value="${tmshis_password}" />
+	        <property name="maxActive" value="50" />
+	        <property name="maxIdle" value="8" />
+	        <property name="initialSize" value="5" />
+	        <property name="maxWait" value="600000" />
+	        <property name="validationQuery" value="select sysdate() from dual" />
+	    </bean>
+	    <bean id="lc" class="org.apache.commons.dbcp.BasicDataSource"
+	        destroy-method="close">
+	        <property name="driverClassName" value="${jdbc_driverClassName}" />
+	        <property name="url" value="${lc_url}" />
+	        <property name="username" value="${lc_username}" />
+	        <property name="password" value="${lc_password}" />
+	        <property name="maxActive" value="50" />
+	        <property name="maxIdle" value="8" />
+	        <property name="initialSize" value="5" />
+	        <property name="maxWait" value="600000" />
+	        <property name="validationQuery" value="select sysdate() from dual" />
+	    </bean>
+	    <bean id="bj" class="org.apache.commons.dbcp.BasicDataSource"
+	        destroy-method="close">
+	        <property name="driverClassName" value="${jdbc_driverClassName}" />
+	        <property name="url" value="${bj_url}" />
+	        <property name="username" value="${bj_username}" />
+	        <property name="password" value="${bj_password}" />
+	        <property name="maxActive" value="50" />
+	        <property name="maxIdle" value="8" />
+	        <property name="initialSize" value="5" />
+	        <property name="maxWait" value="600000" />
+	        <property name="validationQuery" value="select sysdate() from dual" />
+	    </bean>
+	    <bean id="sjck" class="org.apache.commons.dbcp.BasicDataSource"
+	        destroy-method="close">
+	        <property name="driverClassName" value="${jdbc_driverClassName}" />
+	        <property name="url" value="${sjck_url}" />
+	        <property name="username" value="${sjck_username}" />
+	        <property name="password" value="${sjck_password}" />
+	        <property name="maxActive" value="50" />
+	        <property name="maxIdle" value="8" />
+	        <property name="initialSize" value="5" />
+	        <property name="maxWait" value="600000" />
+	        <property name="validationQuery" value="select sysdate() from dual" />
+	    </bean>
+	    <!-- 多数据源配置结束  -->
+    <!-- dataSource end -->
+    <context:component-scan base-package="com.sypay.**.dao.impl,com.sfpay.**.dao.impl,com.sypay.**.service.impl,com.sfpay.**.service.impl" />
+    <import resource="beans/spring-mybatis-config.xml"/>
+    
+    <bean class="com.sypay.omp.per.util.PermissionUtil">
+        <property name="resourceService" ref="resourceService"></property>
+    </bean>
+    
+    <!-- kpidata 
+    <bean id="mysqlDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close">
+        <property name="driverClassName" value="${mysql_jdbc_driverClassName}" />
+        <property name="url" value="${mysql_jdbc_url}" />
+        <property name="username" value="${mysql_jdbc_username}" />
+        <property name="password" value="${mysql_jdbc_password}" />
+        
+        <property name="maxActive" value="50" />
+		<property name="maxIdle" value="8" />
+		<property name="initialSize" value="5" />
+		<property name="maxWait" value="600000" />
+    </bean>
+
+	<bean id="appUserSet" class="com.sfpay.kpidata.server.base.dto.AppUserSettingModel">
+		<property name="kpiList" value="${kpiList}" />
+		<property name="kpiWhiteList" value="${kpiWhiteList}" />
+		<property name="kpiManualList" value="${kpiManualList}" />
+		<property name="ldappath" value="${ldappath}" />
+	</bean>
+	
+    <task:scheduled-tasks> 
+        <task:scheduled ref="indexKPIServiceTask" method="execTaskPeriod" cron="${queryFrequent}"/> 
+	</task:scheduled-tasks>-->
+</beans>
