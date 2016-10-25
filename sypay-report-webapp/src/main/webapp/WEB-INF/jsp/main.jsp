@@ -162,32 +162,6 @@ var resourceList = [];
 $.jgrid.no_legacy_api = true;
 $.jgrid.useJSON = true;
 var menuList = [];
-var myChartMain = null;
-   
-function mainImgInit() {
-	require.config({
-		paths : {
-			'echarts' : '${pageContext.request.contextPath}/js/echarts', //echarts.js的路径
-			'echarts/chart/line' : '${pageContext.request.contextPath}/js/echarts', //echarts.js的路径
-			'echarts/chart/bar' : '${pageContext.request.contextPath}/js/echarts',
-			'echarts/chart/tree' : '${pageContext.request.contextPath}/js/echarts'
-		}
-	});
-	require([ 'echarts', 'echarts/chart/line', 'echarts/chart/bar' , 'echarts/chart/tree'],
-		DrawEChartMain);
-}
-
-function DrawEChartMain(ec){
-	
-    //图表渲染的容器对象
-	$("#menuChart").css("width", $(window).width() * 0.75);
-	$("#menuChart").css("height", $(window).height() * 0.75);
-    var chartContainerMain = document.getElementById("menuChart");
-    //加载图表
-    myChartMain = ec.init(chartContainerMain);
-    myChartMain.setOption(mainOption, true);
-}
-
 
 /* 菜单栏点击后改变css样式 */
 function navgChange () {
@@ -346,8 +320,9 @@ $(".js-selected").click(function(e){
   }
   
   function searchInit(data) {
+	  debugger;
      for (var i=0;i<data.length;i++) {
-         if (data[i].url == null) {
+         if (data[i].url == null || data[i].url == "") {
              searchInit(data[i].children);
          } else {
              /* 添加子类 */
@@ -396,7 +371,6 @@ $(".js-selected").click(function(e){
 	 $('#search-highlight').hideseek({
          highlight: true
      });
-	mainImgInit();
     $.ajax({
             url: "menu/loadMenuByPriv.htm",
             dataType: "json",
@@ -417,63 +391,11 @@ $(".js-selected").click(function(e){
                 //查找框初始化
                 searchInit(data);
                 menuList = eval('(' + JSON.stringify(menuData).replace(/text/g,'name') + ')');
-        	    mainOption.series[0].data[0] = menuList;
             }
     });
 
 });
  
-var mainOption = {
-		    title : {
-		        text: '报表构造图'
-		    },
-		    toolbox: {
-		        show : true,
-		        feature : {
-		            saveAsImage : {show: true}
-		        }
-		    },
-		    series : [
-		        {
-		            name:'树图',
-		            type:'tree',
-		            orient: 'horizontal',  
-		            rootLocation: {x: $(window).width() * 0.1,y: $(window).height() * 0.4}, 
-		            nodePadding: 8,
-		            layerPadding: 100,
-		            hoverable: false,
-		            roam: true,
-		            symbolSize: 6,
-		            itemStyle: {
-		                normal: {
-		                    color: '#4883b4',
-		                    label: {
-		                        show: true,
-		                        position: 'right',
-		                        formatter: "{b}",
-		                        textStyle: {
-		                            color: '#000',
-		                            fontSize: 5
-		                        }
-		                    },
-		                    lineStyle: {
-		                        color: '#ccc',
-		                        type: 'curve'
-
-		                    }
-		                },
-		                emphasis: {
-		                    color: '#4883b4',
-		                    label: {
-		                        show: false
-		                    },
-		                    borderWidth: 0
-		                }
-		            },
-		            data: []
-		        }
-		    ]
-		};
 /* 时间维度没有对应数据源时的样式 */
 function topNavANotHave (nav,arg1) {
 	$('#'+ nav +'Nav a').replaceWith("<p> <span class= \"icon icons1 \"></span> <span>" + arg1 + "</span> <span class=\"bot\"></span></p>");
