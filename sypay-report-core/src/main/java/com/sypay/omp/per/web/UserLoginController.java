@@ -34,8 +34,8 @@ import com.sypay.omp.report.util.MD5;
 
 /**
  * 登录成功入口
- * @author dumengchao
- *
+ * @author 887961 
+ * @Date 2016年10月26日 下午2:42:04
  */
 @Controller
 public class UserLoginController {
@@ -90,44 +90,18 @@ public class UserLoginController {
         }
         Member member = memberService.getMemberByLoginName(loginName);
         
-        /* 此处接入域账号系统 
-        String ldappath = "ldap://10.116.56.96:389/";
-        String	ldapdomain="sf";
-        String	ldapadminSuffix=".asura";
-        if (StringUtil.isNotEmpty(LDAPPATH)) {
-        	ldappath = LDAPPATH;
-        }*/
-		
 		/* 验证超级管理员 */
         if (member!= null && loginName.equals("perAdmin") && !MD5.getMD5String(password).equals(member.getPassword())) {
         	request.setAttribute("erroMsg", "用户名或密码有误");
             request.setAttribute("loginName", loginName);
             return "login";
-        } else if (!loginName.equals("perAdmin")) {
-        	/* 验证域用户 
-        	ILdapAuthentication ldapAuthentication =  new LdapAuthentication(ldappath,ldapdomain,ldapadminSuffix);
-    		boolean isLogin = ldapAuthentication.authenticate(loginName, password);
-    		if (!isLogin) {
-    			request.setAttribute("erroMsg", "用户名或密码有误");
-                request.setAttribute("loginName", loginName);
-                return "login";
-    		}
-    		
-    		if (member == null) {
-    			member = new Member();
-    			member.setName(loginName);
-    			member.setAccNo(loginName);
-    			member.setStatus(1);
-    			memberService.saveMember(member, null, null, null);
-    		}*/
         }
 		
-		
-        /*if (member == null || !MD5.getMD5String(password).equals(member.getPassword())) {
+        if (member == null || !MD5.getMD5String(password).equals(member.getPassword())) {
             request.setAttribute("erroMsg", "用户名或密码有误");
             request.setAttribute("loginName", loginName);
             return "login";
-        }*/
+        }
 
         /* 将登录信息存入session中 */
         String groupCode = groupService.getGroupCodeByMemberId(member.getId());
