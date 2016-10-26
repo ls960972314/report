@@ -24,26 +24,4 @@
 	<bean id="mybatisBaseService" class="com.sypay.omp.report.service.impl.MybatisBaseServiceImpl">
 		<property name="sqlSession" ref="sqlSession"></property>
 	</bean>
-	
-	<!-- 以下是kpidata       
-	<bean id="mysqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="mysqlDataSource" />
-		<property name="configLocation" value="classpath:beans/kpidata_mybaits_config.xml" />
-		<property name="mapperLocations">
-			<array>
-				<value>classpath*:mapper/kpidata/*.xml</value>
-			</array>
-		</property>
-		<property name="typeAliasesPackage" value="com.sfpay.kpidata.server.base.vo,com.sfpay.kpidata.server.base.dto" />
-	</bean>
-
-	<bean id="mysqlSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="mysqlSessionFactory" />
-	</bean>
-
-	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-    	<property name="dataSource" ref="mysqlDataSource" />
-	</bean>
-	<tx:annotation-driven transaction-manager="txManager" />-->
-
 </beans>
