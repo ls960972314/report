@@ -65,7 +65,7 @@ public class ReportSqlServiceImpl implements ReportSqlService{
 	    int lastOrderIndex = countSql.lastIndexOf("order");
 	    int lastFromIndex = countSql.lastIndexOf("from");
 	    if (lastFromIndex < lastOrderIndex && countSql.indexOf("{orderCol") == -1) {
-	        countSql = countSql.substring(0, lastOrderIndex) + ")";
+	        countSql = countSql.substring(0, lastOrderIndex) + ") vvv";
 	    } else {
 	        countSql = countSql + ") vvv";
 	    }
@@ -130,7 +130,7 @@ public class ReportSqlServiceImpl implements ReportSqlService{
 		
 		List<ReportSql> list = (List<ReportSql>)query.list();
 		dataGrid.setRows(list);
-		String countSql = "select count(1) from rp_report_sql where 1=1" + constructSqlWhere(reportSqlVo);
+		String countSql = "select count(1) from rp_report_sql t where 1=1" + constructSqlWhere(reportSqlVo);
 		dataGrid.setTotal((long)baseDao.countBySql(countSql, params));
 		return dataGrid;
 	}

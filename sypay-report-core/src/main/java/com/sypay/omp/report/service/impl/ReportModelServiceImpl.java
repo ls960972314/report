@@ -99,6 +99,9 @@ public class ReportModelServiceImpl implements ReportModelService {
     @Value("#{propertyConfigurer['from']}")
     private Long FROM;
     
+    @Value("#{propertyConfigurer['port']}")
+    private Long PORT;
+    
     //报表图片存放位置
     //private static String imgPath = "D:\\workSpace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\sypay-report-webapp\\";
     
@@ -252,6 +255,7 @@ public class ReportModelServiceImpl implements ReportModelService {
         prop.setProperty("mail.host", getHost());
         prop.setProperty("mail.transport.protocol", "smtp");
         prop.setProperty("mail.smtp.auth", "false");
+        prop.setProperty("mail.smtp.port", getPort());
         
         //创建session
         Session session = Session.getInstance(prop);
@@ -803,6 +807,13 @@ public class ReportModelServiceImpl implements ReportModelService {
 	 */
 	private String getFrom() {
 		return reportSqlService.findReportSqlById(FROM).getBaseSql();
+	}
+	/**
+	 * 得到邮箱端口
+	 * @return
+	 */
+	private String getPort() {
+		return reportSqlService.findReportSqlById(PORT).getBaseSql();
 	}
 	
 	

@@ -85,7 +85,7 @@ public class ReportCommonConServiceImpl implements ReportCommonConService {
         }
 		List<ReportCondition> list = (List<ReportCondition>)query.list();
 		dataGrid.setRows(list);
-		String countSql = "select count(1) from rptcmcon where 1=1" + constructSqlWhere(reportCommonCon);
+		String countSql = "select count(1) from rptcmcon t where 1=1" + constructSqlWhere(reportCommonCon);
 		dataGrid.setTotal((long)baseDao.countBySql(countSql, params));
 		return dataGrid;
 	}

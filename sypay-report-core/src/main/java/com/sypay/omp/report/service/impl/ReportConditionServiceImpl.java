@@ -75,7 +75,7 @@ public class ReportConditionServiceImpl implements ReportConditionService {
         }
 		List<ReportCondition> list = (List<ReportCondition>)query.list();
 		dataGrid.setRows(list);
-		String countSql = "select count(1) from rptcon where 1=1" + constructSqlWhere(condition);
+		String countSql = "select count(1) from rptcon t where 1=1" + constructSqlWhere(condition);
 		dataGrid.setTotal((long)baseDao.countBySql(countSql, params));
 		return dataGrid;
 	}

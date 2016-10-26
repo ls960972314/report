@@ -202,7 +202,7 @@ public class ReportPublicServiceImpl implements ReportPublicService {
 		
 		List<ReportPublic> list = (List<ReportPublic>)query.list();
 		dataGrid.setRows(list);
-		String countSql = "select count(1) from rptpub where 1=1" + constructSqlWhere(publicVo);
+		String countSql = "select count(1) from rptpub t where 1=1" + constructSqlWhere(publicVo);
 		dataGrid.setTotal((long)baseDao.countBySql(countSql, params));
 		return dataGrid;
 	}

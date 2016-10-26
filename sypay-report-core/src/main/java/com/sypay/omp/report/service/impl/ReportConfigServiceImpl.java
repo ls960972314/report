@@ -91,7 +91,7 @@ public class ReportConfigServiceImpl implements ReportConfigService {
 		}
 		List<ReportSql> list = (List<ReportSql>)query.list();
 		dataGrid.setRows(list);
-		String countSql = "select count(1) from dyna_rpt_config where 1=1" + constructSqlWhere(reportConfigVo);
+		String countSql = "select count(1) from dyna_rpt_config t where 1=1" + constructSqlWhere(reportConfigVo);
 		dataGrid.setTotal((long)baseDao.countBySql(countSql, params));
 		return dataGrid;
 	}

@@ -77,7 +77,7 @@ public class ReportChartServiceImpl implements ReportChartService {
         }
 		List<ReportChart> list = (List<ReportChart>)query.list();
 		dataGrid.setRows(list);
-		String countSql = "select count(1) from rptchart where 1=1" + constructSqlWhere(chart);
+		String countSql = "select count(1) from rptchart t where 1=1" + constructSqlWhere(chart);
 		dataGrid.setTotal((long)baseDao.countBySql(countSql, params));
 		return dataGrid;
 	}
