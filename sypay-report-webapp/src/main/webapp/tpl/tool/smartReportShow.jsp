@@ -35,7 +35,7 @@
 	<div id='content'>
 		<div id='head' style='font-size: initial; margin-bottom: 40px;'>
 		</div>
-		<div id="staticDiv" class="mod mod1" style=" width: 95%;">
+		<div id="staticDiv" class="mod mod1" style=" width: 95%;display:none;">
 			<div class="mod-header clearfix">
 				<h2>
 				统计数据栏
@@ -60,10 +60,11 @@
 			</div>
 		</div>
 
-		<div id='middle' style='height: 35%; width: 93%; float: left;'>
+		<div id='middle' style='height: 35%; width: 95%; float: left;margin-top:20px;'>
 			<table id="list"></table>
 			<div id="pager"></div>
 		</div>
+		
 		<form action="exp/smartExpCsv" method="post" id="loadFormId">
 			<input type="hidden" name="title" id="title" /> <input type="hidden"
 				name="fileName" id="fileName" /> <input type="hidden" name="qid"

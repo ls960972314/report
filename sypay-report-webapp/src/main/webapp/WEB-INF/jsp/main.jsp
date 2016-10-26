@@ -320,7 +320,6 @@ $(".js-selected").click(function(e){
   }
   
   function searchInit(data) {
-	  debugger;
      for (var i=0;i<data.length;i++) {
          if (data[i].url == null || data[i].url == "") {
              searchInit(data[i].children);
