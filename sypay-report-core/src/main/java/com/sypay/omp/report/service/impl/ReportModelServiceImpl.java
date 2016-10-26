@@ -254,7 +254,7 @@ public class ReportModelServiceImpl implements ReportModelService {
 		Properties prop = new Properties();
         prop.setProperty("mail.host", getHost());
         prop.setProperty("mail.transport.protocol", "smtp");
-        prop.setProperty("mail.smtp.auth", "false");
+        prop.setProperty("mail.smtp.auth", "true");
         prop.setProperty("mail.smtp.port", getPort());
         
         //创建session

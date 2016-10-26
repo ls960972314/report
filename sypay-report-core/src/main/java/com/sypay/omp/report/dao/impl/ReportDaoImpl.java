@@ -1,6 +1,5 @@
 package com.sypay.omp.report.dao.impl;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -274,14 +273,11 @@ public class ReportDaoImpl implements ReportDao {
     	if (StringUtil.isNotEmpty(str)) {
     		int index = str.indexOf(indexStr);
             int begin = str.lastIndexOf("and", index) == -1?str.lastIndexOf("where", index)+5:str.lastIndexOf("and", index)+3;
+            int tmpBegin = str.lastIndexOf("where", index) == -1?str.lastIndexOf("and", index)+3:str.lastIndexOf("where", index)+5;
+            begin = begin <= tmpBegin ? tmpBegin : begin;
             int end = 0;
             /* 将rp_date >= replace(:{1},'-','') 替换为1=1 */
-            int beginIndex = str.lastIndexOf("and", index);
-            if (beginIndex == -1) {
-            	beginIndex = str.lastIndexOf("where", index) +5;
-            } else {
-            	beginIndex = beginIndex + 3;
-            }
+            int beginIndex = begin;
             /* 看{1} 之前有几个括号 */
             String s = str.substring(beginIndex, index);
             char[] ss = s.toCharArray();
