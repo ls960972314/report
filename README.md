@@ -9,36 +9,5 @@ web自动化配置报表平台(只需配置对应的oracle或者mysql语句,不�
 
 博客地址(操作方式有待更新,文中是太老的版本):http://blog.csdn.net/u011506468/article/details/47682417
 
-pom包里有的包可能是第三方，目前还没完全替换掉，可用如下maven的setting设置
-<profiles> 
-		<profile>
-			<id>home</id>
-			<repositories>
-				<repository>
-					<id>sonatype-forge</id>
-					<url>http://123.207.227.237:8081/nexus/content/groups/public_repository/</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>sonatype-forge</id>
-					<url>http://123.207.227.237:8081/nexus/content/groups/public_repository/</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-	</profiles>
-  <activeProfiles>
-		<activeProfile>home</activeProfile>
-	</activeProfiles>
+pom包里有的包可能是第三方，目前还没完全替换掉，可用这个私服地址:http://123.207.227.237:8081/nexus/content/groups/public_repository/
+
