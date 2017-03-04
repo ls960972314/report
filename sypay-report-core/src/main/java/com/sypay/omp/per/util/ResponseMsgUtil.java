@@ -13,7 +13,7 @@ import com.sypay.omp.per.model.page.AjaxJson;
  */
 public class ResponseMsgUtil {
 	private static Properties properties = null;
-	private static String PROPERTIES_PATH_zhCN = "/messages/messages_zh_CN.properties";
+	private static String PROPERTIES_PATH_zhCN = "/properties/messages_zh_CN.properties";
 	
 	static {
 		if (null == properties) {
