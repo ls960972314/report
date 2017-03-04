@@ -15,13 +15,13 @@
 	
 
 
-	<link href="${pageContext.request.contextPath}/ui/main.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="${pageContext.request.contextPath}/ui/redmond/jquery-ui-1.9.2.custom.min.css"  rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/ui.jqgrid.css" rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/ui.multiselect.css" rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/reveal.css" rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/button-css/gh-buttons.css" rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/button-css/prettify.css" rel="stylesheet"></link>
+	<link href="${pageContext.request.contextPath}/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/css/redmond/jquery-ui-1.9.2.custom.min.css"  rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/ui.jqgrid.css" rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/ui.multiselect.css" rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/reveal.css" rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/button-css/gh-buttons.css" rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/button-css/prettify.css" rel="stylesheet"></link>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery-easyui-1.5/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery-easyui-1.5/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">

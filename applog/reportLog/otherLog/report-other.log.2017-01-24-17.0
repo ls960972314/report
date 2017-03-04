@@ -1,0 +1,10 @@
+2017-01-24 17:00:57 DEBUG [resource.findPermissionCellByMemberId ]  - <==      Total: 67
+2017-01-24 17:00:57 DEBUG [org.mybatis.spring.SqlSessionUtils ]  - Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6a0db457]
+2017-01-24 17:01:00 DEBUG [org.mybatis.spring.SqlSessionUtils ]  - Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6a0db457]
+2017-01-24 17:01:00 DEBUG [org.mybatis.spring.SqlSessionUtils ]  - Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6a0db457]
+2017-01-24 17:01:07 INFO  [com.sypay.omp.report.interceptor.LoginInterceptor ]  - 拦截路径:/menu/loadMenuByPriv.htm
+2017-01-24 17:04:21 INFO  [com.sypay.omp.report.interceptor.LoginInterceptor ]  - 拦截路径:/toPermission.htm
+2017-01-24 17:04:23 INFO  [com.sypay.omp.report.interceptor.LoginInterceptor ]  - 拦截路径:/condition/condition.htm
+2017-01-24 17:04:24 INFO  [com.sypay.omp.report.interceptor.LoginInterceptor ]  - 拦截路径:/file/file.htm
+2017-01-24 17:05:13 INFO  [com.sypay.omp.report.interceptor.LoginInterceptor ]  - 拦截路径:/file/upload.htm
+2017-01-24 17:05:13 INFO  [com.sypay.omp.report.web.FileUpLoad ]  - 上传文件耗时：68

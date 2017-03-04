@@ -8,12 +8,12 @@
     
     <title>report.com</title>
     
-    <link href="${pageContext.request.contextPath}/ui/redmond/jquery-ui-1.9.2.custom.min.css"  rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/ui.jqgrid.css" rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/ui.multiselect.css" rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/zTreeStyle/zTreeStyle.css" rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/button-css/gh-buttons.css" rel="stylesheet"></link>
-    <link href="${pageContext.request.contextPath}/ui/button-css/prettify.css" rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/redmond/jquery-ui-1.9.2.custom.min.css"  rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/ui.jqgrid.css" rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/ui.multiselect.css" rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/zTreeStyle/zTreeStyle.css" rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/button-css/gh-buttons.css" rel="stylesheet"></link>
+    <link href="${pageContext.request.contextPath}/css/button-css/prettify.css" rel="stylesheet"></link>
     
     <script src="${pageContext.request.contextPath}/js/esl.js" type="text/javascript"></script>
     <script src="${pageContext.request.contextPath}/js/report-util.js" type="text/javascript"></script>
@@ -31,9 +31,9 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/search/waypoints-sticky.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/search/jquery.hideseek.min.js"></script>
     
-    <link href="${pageContext.request.contextPath}/ui/jquery.alerts.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/css/jquery.alerts.css" media="screen" rel="stylesheet" type="text/css" />
 	<script src="${pageContext.request.contextPath}/js/jquery.alerts.js" type="text/javascript"></script>
-	<link href="${pageContext.request.contextPath}/ui/main.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="${pageContext.request.contextPath}/css/main.css" media="screen" rel="stylesheet" type="text/css" />
     
   </head>
   
@@ -57,7 +57,7 @@
 				</span>
 			</div>
 			<div class="logo">
-				<%-- <a href="javascript:"><img src="${pageContext.request.contextPath}/ui/images/hezi.jpg" style="width:122px;height:50px;"></a> --%>
+				<%-- <a href="javascript:"><img src="${pageContext.request.contextPath}/css/images/hezi.jpg" style="width:122px;height:50px;"></a> --%>
 			</div>
 		</div>
 		<div class="globalNav">

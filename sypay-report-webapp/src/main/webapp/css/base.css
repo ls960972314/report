@@ -1,12 +1,4 @@
 ﻿@charset "utf-8";
-/* -------------------------------------------------
- * 盒子支付-用户中心
-   data：2014-10
- * copyright: http://www.iboxpay.com
- * -------------------------------------------------
-*/
-
-/* ----[ reset css ]------------------------------*/
 html {height:100%;background:#fff; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; -webkit-font-smoothing:antialiased; overflow-y:scroll;}
 body {margin:0;padding:0;color:#404040;font:12px/20px Microsoft YaHei, verdana;}
 h1, h2, h3, h4, h5, h6, p, figure, fieldset, form, dl, dt, dd {margin:0; padding:0;}

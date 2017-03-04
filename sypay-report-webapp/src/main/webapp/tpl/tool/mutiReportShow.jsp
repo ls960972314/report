@@ -275,12 +275,12 @@ function initModel(col) {
 					publicList.push(modelElement.reportPublic);
 					if (col == 2) {
 						if (n%2==0) {
-							$("#model_reports1").append("<div id='model_report"+n+"' style='margin-top:10px;border: 1px solid #b4b4b4;'><div style='height: 41px;line-height: 43px;padding: 0 23px;background: url(ui/images/backg.png) 0 -297px repeat-x;border-bottom: 1px solid #b4b4b4;'>" + modelElement.reportPublic.toolTitle + "</div></div>");
+							$("#model_reports1").append("<div id='model_report"+n+"' style='margin-top:10px;border: 1px solid #b4b4b4;'><div style='height: 41px;line-height: 43px;padding: 0 23px;background: url(css/images/backg.png) 0 -297px repeat-x;border-bottom: 1px solid #b4b4b4;'>" + modelElement.reportPublic.toolTitle + "</div></div>");
 						} else {
-							$("#model_reports2").append("<div id='model_report"+n+"' style='margin-top:10px;border: 1px solid #b4b4b4;'><div style='height: 41px;line-height: 43px;padding: 0 23px;background: url(ui/images/backg.png) 0 -297px repeat-x;border-bottom: 1px solid #b4b4b4;'>" + modelElement.reportPublic.toolTitle + "</div></div>");
+							$("#model_reports2").append("<div id='model_report"+n+"' style='margin-top:10px;border: 1px solid #b4b4b4;'><div style='height: 41px;line-height: 43px;padding: 0 23px;background: url(css/images/backg.png) 0 -297px repeat-x;border-bottom: 1px solid #b4b4b4;'>" + modelElement.reportPublic.toolTitle + "</div></div>");
 						}
 					} else {
-						$("#model_reports").append("<div id='model_report"+n+"' style='margin-top:20px;border: 1px solid #b4b4b4;'><div style='height: 41px;line-height: 43px;padding: 0 23px;background: url(ui/images/backg.png) 0 -297px repeat-x;border-bottom: 1px solid #b4b4b4;'>" + modelElement.reportPublic.toolTitle + "</div></div>");
+						$("#model_reports").append("<div id='model_report"+n+"' style='margin-top:20px;border: 1px solid #b4b4b4;'><div style='height: 41px;line-height: 43px;padding: 0 23px;background: url(css/images/backg.png) 0 -297px repeat-x;border-bottom: 1px solid #b4b4b4;'>" + modelElement.reportPublic.toolTitle + "</div></div>");
 					}
 					
 					

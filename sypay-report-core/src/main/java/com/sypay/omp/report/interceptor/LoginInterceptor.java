@@ -34,8 +34,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if (request.getServletPath().contains("/js/") || request.getServletPath().contains("/css/") || request.getServletPath().contains("/images/") || request.getServletPath().contains("/tpl/")
-                || request.getServletPath().contains("/ui/")) {
+        if (request.getServletPath().contains("/js/") || request.getServletPath().contains("/css/") || request.getServletPath().contains("/images/") || request.getServletPath().contains("/tpl/")) {
             return true;
         }
 

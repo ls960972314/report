@@ -96,7 +96,7 @@
 		  zoom:1;
 		}
 		.particle li.on{
-		  background:url(${pageContext.request.contextPath}/ui/images/backg.png) repeat-x 0 -256px;
+		  background:url(${pageContext.request.contextPath}/css/images/backg.png) repeat-x 0 -256px;
 		}
 		.particle li.off{
 			color:#999;
