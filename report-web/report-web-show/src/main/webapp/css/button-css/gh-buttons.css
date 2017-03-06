@@ -1,0 +1,388 @@
+/* ------------------------------------------
+CSS3 GITHUB gButtonS (Nicolas Gallagher)
+Licensed under Unlicense 
+http://github.com/necolas/css3-github-gButtons
+------------------------------------------ */
+
+
+/* ------------------------------------------------------------------------------------------------------------- gButton */
+
+.gButton { 
+    position: relative; 
+    overflow: visible; 
+    display: inline-block; 
+    padding: 0.5em 1em; 
+    border: 1px solid #d4d4d4; 
+    margin: 0;
+    text-decoration: none; 
+    text-shadow: 1px 1px 0 #fff; 
+    font:11px/normal sans-serif; 
+    color: #333; 
+    white-space: nowrap; 
+    cursor: pointer; 
+    outline: none; 
+    background-color: #ececec;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f4f4f4), to(#ececec));
+    background-image: -moz-linear-gradient(#f4f4f4, #ececec);
+    background-image: -o-linear-gradient(#f4f4f4, #ececec);
+    background-image: linear-gradient(#f4f4f4, #ececec);
+    -webkit-background-clip: padding;
+    -moz-background-clip: padding;
+    -o-background-clip: padding-box; 
+    /*background-clip: padding-box;*/ /* commented out due to Opera 11.10 bug */
+    -webkit-border-radius: 0.2em; 
+    -moz-border-radius: 0.2em; 
+    border-radius: 0.2em; 
+    /* IE hacks */
+    zoom: 1; 
+    *display: inline; 
+}
+
+.gButton:hover,
+.gButton:focus,
+.gButton:active {
+    border-color: #3072b3;
+    border-bottom-color: #2a65a0;
+    text-decoration: none; 
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3); 
+    color: #fff; 
+    background-color: #3072b3;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#599bdc), to(#3072b3));
+    background-image: -moz-linear-gradient(#599bdc, #3072b3);
+    background-image: -o-linear-gradient(#599bdc, #3072b3);
+    background-image: linear-gradient(#599bdc, #3072b3);
+}
+
+.gButton:active,
+.gButton.active {
+    border-color: #2a65a0;
+    border-bottom-color: #3884CF;
+    color: #fff; 
+    background-color: #3072b3;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#3072b3), to(#599bdc));
+    background-image: -moz-linear-gradient(#3072b3, #599bdc);
+    background-image: -o-linear-gradient(#3072b3, #599bdc);
+    background-image: linear-gradient(#3072b3, #599bdc);
+}
+
+/* overrides extra padding on gButton elements in Firefox */
+.gButton::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+/* ............................................................................................................. Icons */
+
+.gButton.gIcon:before {
+    content: "";
+    position: relative; 
+    top: 1px; 
+    float:left;
+    width: 12px; 
+    height: 12px; 
+    margin: 0 0.75em 0 -0.25em; 
+    background: url(gh-icons.png) 0 99px no-repeat;
+}
+
+.gButton.arrowup.gIcon:before { background-position: 0 0; }
+.gButton.arrowup.gIcon:hover:before,
+.gButton.arrowup.gIcon:focus:before,
+.gButton.arrowup.gIcon:active:before { background-position: -12px 0; }
+
+.gButton.arrowdown.gIcon:before { background-position: 0 -12px; }
+.gButton.arrowdown.gIcon:hover:before,
+.gButton.arrowdown.gIcon:focus:before,
+.gButton.arrowdown.gIcon:active:before { background-position: -12px -12px; }
+
+.gButton.arrowleft.gIcon:before { background-position: 0 -24px; }
+.gButton.arrowleft.gIcon:hover:before,
+.gButton.arrowleft.gIcon:focus:before,
+.gButton.arrowleft.gIcon:active:before { background-position: -12px -24px; }
+
+.gButton.arrowright.gIcon:before { float:right; margin: 0 -0.25em 0 0.5em; background-position: 0 -36px; }
+.gButton.arrowright.gIcon:hover:before,
+.gButton.arrowright.gIcon:focus:before,
+.gButton.arrowright.gIcon:active:before { background-position: -12px -36px; }
+
+.gButton.approve.gIcon:before { background-position: 0 -48px; }
+.gButton.approve.gIcon:hover:before,
+.gButton.approve.gIcon:focus:before,
+.gButton.approve.gIcon:active:before { background-position: -12px -48px; }
+
+.gButton.add.gIcon:before { background-position: 0 -288px; }
+.gButton.add.gIcon:hover:before,
+.gButton.add.gIcon:focus:before,
+.gButton.add.gIcon:active:before { background-position: -12px -288px; }
+
+.gButton.remove.gIcon:before { background-position: 0 -60px; }
+.gButton.remove.gIcon:hover:before,
+.gButton.remove.gIcon:focus:before,
+.gButton.remove.gIcon:active:before { background-position: -12px -60px; }
+
+.gButton.log.gIcon:before { background-position: 0 -72px; }
+.gButton.log.gIcon:hover:before,
+.gButton.log.gIcon:focus:before,
+.gButton.log.gIcon:active:before { background-position: -12px -72px; }
+
+.gButton.calendar.gIcon:before { background-position: 0 -84px; }
+.gButton.calendar.gIcon:hover:before,
+.gButton.calendar.gIcon:focus:before,
+.gButton.calendar.gIcon:active:before { background-position: -12px -84px; }
+
+.gButton.chat.gIcon:before { background-position: 0 -96px; }
+.gButton.chat.gIcon:hover:before,
+.gButton.chat.gIcon:focus:before,
+.gButton.chat.gIcon:active:before { background-position: -12px -96px; }
+
+.gButton.clock.gIcon:before { background-position: 0 -108px; }
+.gButton.clock.gIcon:hover:before,
+.gButton.clock.gIcon:focus:before,
+.gButton.clock.gIcon:active:before { background-position: -12px -108px; }
+
+.gButton.settings.gIcon:before { background-position: 0 -120px; }
+.gButton.settings.gIcon:hover:before,
+.gButton.settings.gIcon:focus:before,
+.gButton.settings.gIcon:active:before { background-position: -12px -120px; }
+
+.gButton.comment.gIcon:before { background-position: 0 -132px; }
+.gButton.comment.gIcon:hover:before,
+.gButton.comment.gIcon:focus:before,
+.gButton.comment.gIcon:active:before { background-position: -12px -132px; }
+
+.gButton.fork.gIcon:before { background-position: 0 -144px; }
+.gButton.fork.gIcon:hover:before,
+.gButton.fork.gIcon:focus:before,
+.gButton.fork.gIcon:active:before { background-position: -12px -144px; }
+
+.gButton.like.gIcon:before { background-position: 0 -156px; }
+.gButton.like.gIcon:hover:before,
+.gButton.like.gIcon:focus:before,
+.gButton.like.gIcon:active:before { background-position: -12px -156px; }
+
+.gButton.favorite.gIcon:before { background-position: 0 -348px; }
+.gButton.favorite.gIcon:hover:before,
+.gButton.favorite.gIcon:focus:before,
+.gButton.favorite.gIcon:active:before { background-position: -12px -348px; }
+
+.gButton.home.gIcon:before { background-position: 0 -168px; }
+.gButton.home.gIcon:hover:before,
+.gButton.home.gIcon:focus:before,
+.gButton.home.gIcon:active:before { background-position: -12px -168px; }
+
+.gButton.key.gIcon:before { background-position: 0 -180px; }
+.gButton.key.gIcon:hover:before,
+.gButton.key.gIcon:focus:before,
+.gButton.key.gIcon:active:before { background-position: -12px -180px; }
+
+.gButton.lock.gIcon:before { background-position: 0 -192px; }
+.gButton.lock.gIcon:hover:before,
+.gButton.lock.gIcon:focus:before,
+.gButton.lock.gIcon:active:before { background-position: -12px -192px; }
+
+.gButton.unlock.gIcon:before { background-position: 0 -204px; }
+.gButton.unlock.gIcon:hover:before,
+.gButton.unlock.gIcon:focus:before,
+.gButton.unlock.gIcon:active:before { background-position: -12px -204px; }
+
+.gButton.loop.gIcon:before { background-position: 0 -216px; }
+.gButton.loop.gIcon:hover:before,
+.gButton.loop.gIcon:focus:before,
+.gButton.loop.gIcon:active:before { background-position: -12px -216px; }
+
+.gButton.search.gIcon:before { background-position: 0 -228px; }
+.gButton.search.gIcon:hover:before,
+.gButton.search.gIcon:focus:before,
+.gButton.search.gIcon:active:before { background-position: -12px -228px; }
+
+.gButton.mail.gIcon:before { background-position: 0 -240px; }
+.gButton.mail.gIcon:hover:before,
+.gButton.mail.gIcon:focus:before,
+.gButton.mail.gIcon:active:before { background-position: -12px -240px; }
+
+.gButton.move.gIcon:before { background-position: 0 -252px; }
+.gButton.move.gIcon:hover:before,
+.gButton.move.gIcon:focus:before,
+.gButton.move.gIcon:active:before { background-position: -12px -252px; }
+
+.gButton.edit.gIcon:before { background-position: 0 -264px; }
+.gButton.edit.gIcon:hover:before,
+.gButton.edit.gIcon:focus:before,
+.gButton.edit.gIcon:active:before { background-position: -12px -264px; }
+
+.gButton.pin.gIcon:before { background-position: 0 -276px; }
+.gButton.pin.gIcon:hover:before,
+.gButton.pin.gIcon:focus:before,
+.gButton.pin.gIcon:active:before { background-position: -12px -276px; }
+
+.gButton.reload.gIcon:before { background-position: 0 -300px; }
+.gButton.reload.gIcon:hover:before,
+.gButton.reload.gIcon:focus:before,
+.gButton.reload.gIcon:active:before { background-position: -12px -300px; }
+
+.gButton.rss.gIcon:before { background-position: 0 -312px; }
+.gButton.rss.gIcon:hover:before,
+.gButton.rss.gIcon:focus:before,
+.gButton.rss.gIcon:active:before { background-position: -12px -312px; }
+
+.gButton.tag.gIcon:before { background-position: 0 -324px; }
+.gButton.tag.gIcon:hover:before,
+.gButton.tag.gIcon:focus:before,
+.gButton.tag.gIcon:active:before { background-position: -12px -324px; }
+
+.gButton.trash.gIcon:before { background-position: 0 -336px; }
+.gButton.trash.gIcon:hover:before,
+.gButton.trash.gIcon:focus:before,
+.gButton.trash.gIcon:active:before { background-position: -12px -336px; }
+
+.gButton.user.gIcon:before { background-position: 0 -360px; }
+.gButton.user.gIcon:hover:before,
+.gButton.user.gIcon:focus:before,
+.gButton.user.gIcon:active:before { background-position: -12px -360px; }
+
+
+/* ------------------------------------------------------------------------------------------------------------- gButton EXTENSIONS */
+
+/* ............................................................................................................. Primary */
+
+.gButton.primary {
+    font-weight: bold;
+}
+
+/* ............................................................................................................. Danger */
+
+.gButton.danger {
+    color: #900;
+}
+
+.gButton.danger:hover,
+.gButton.danger:focus,
+.gButton.danger:active {     
+    border-color: #b53f3a;
+    border-bottom-color: #a0302a;
+    color: #fff; 
+    background-color: #dc5f59;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dc5f59), to(#b33630));
+    background-image: -moz-linear-gradient(#dc5f59, #b33630);
+    background-image: -o-linear-gradient(#dc5f59, #b33630);
+    background-image: linear-gradient(#dc5f59, #b33630);
+}
+
+.gButton.danger:active,
+.gButton.danger.active {   
+    border-color: #a0302a;
+    border-bottom-color: #bf4843;
+    background-color: #b33630;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b33630), to(#dc5f59));
+    background-image: -moz-linear-gradient(#b33630, #dc5f59);
+    background-image: -o-linear-gradient(#b33630, #dc5f59);
+    background-image: linear-gradient(#b33630, #dc5f59);
+}
+
+/* ............................................................................................................. Pill */
+
+.gButton.pill {
+    -webkit-border-radius: 50em; 
+    -moz-border-radius: 50em; 
+    border-radius: 50em; 
+}
+
+/* ............................................................................................................. Big */
+
+.gButton.big {
+    font-size: 14px; 
+}
+
+.gButton.big.gIcon:before { top: 0; }
+
+
+/* ------------------------------------------------------------------------------------------------------------- gButton GROUPS */
+
+/* ............................................................................................................. Standard */
+
+.gButton-group {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    /* IE hacks */
+    zoom: 1; 
+    *display: inline; 
+}
+
+.gButton + .gButton,
+.gButton + .gButton-group,
+.gButton-group + .gButton,
+.gButton-group + .gButton-group {
+    margin-left: 15px;
+}
+
+.gButton-group li {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+.gButton-group .gButton {
+    float: left;
+    margin-left: -1px; 
+}
+
+.gButton-group > .gButton:not(:first-child):not(:last-child),
+.gButton-group li:not(:first-child):not(:last-child) .gButton { 
+    -webkit-border-radius: 0; 
+    -moz-border-radius: 0; 
+    border-radius: 0; 
+}
+
+.gButton-group > .gButton:first-child,
+.gButton-group li:first-child .gButton { 
+    margin-left: 0; 
+    -webkit-border-top-right-radius: 0; 
+    -webkit-border-bottom-right-radius: 0; 
+    -moz-border-radius-topright: 0; 
+    -moz-border-radius-bottomright: 0; 
+    border-top-right-radius: 0; 
+    border-bottom-right-radius: 0; 
+}
+
+.gButton-group > .gButton:last-child,
+.gButton-group li:last-child > .gButton { 
+    -webkit-border-top-left-radius: 0; 
+    -webkit-border-bottom-left-radius: 0; 
+    -moz-border-radius-topleft: 0; 
+    -moz-border-radius-bottomleft: 0; 
+    border-top-left-radius: 0; 
+    border-bottom-left-radius: 0; 
+}
+
+/* ............................................................................................................. Minor */
+
+.gButton-group.minor-group .gButton {
+    border: 1px solid #d4d4d4; 
+    text-shadow: none;
+    background-image: none;
+    background-color: #fff;
+}
+
+.gButton-group.minor-group .gButton:hover,
+.gButton-group.minor-group .gButton:focus,
+.gButton-group.minor-group .gButton:active {
+    background-color: #599bdc;
+}
+
+.gButton-group.minor-group .gButton:active,
+.gButton-group.minor-group .gButton.active {
+    background-color: #3072b3;
+}
+
+.gButton-group.minor-group .gButton.gIcon:before {
+    opacity: 0.8;
+}
+
+/* ------------------------------------------------------------------------------------------------------------- gButton CONTAINER */
+/* For mixing gButtons and gButton groups, e.g., in a navigation bar */
+
+.gButton-container .gButton,
+.gButton-container .gButton-group {
+    vertical-align: top;
+}

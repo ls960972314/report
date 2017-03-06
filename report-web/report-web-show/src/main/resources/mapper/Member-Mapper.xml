@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member" >
+	
+  <resultMap id="memberModelResultMap" type="com.sypay.omp.per.model.MemberModel" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ACC_NO" property="accNo" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+    <result column="GROUP_CODE" property="groupCode" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="CREATER_ACC_NO" property="createrAccNo" jdbcType="VARCHAR" />
+    <result column="MODIFIER_ACC_NO" property="modifierAccNo" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="countMemberByMemberIdAndPassword" parameterType="map" resultType="int">
+  	select count(*)
+  	from uc_member m 
+  	where m.id = #{currentMemberId,jdbcType=INTEGER} and m.password = #{encryptedPassword,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="updatePasswordByMemberId" parameterType="map">
+  	update uc_member m set m.password = #{password,jdbcType=VARCHAR} where m.id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="countMemberByAccNo" parameterType="string" resultType="int">
+  	select count(*) from uc_member m where m.acc_no = #{accNo,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="countByCriteria" parameterType="com.sypay.omp.per.model.MemberCriteriaModel" resultType="long">
+  	select count(*) from uc_member m
+  	<if test="groupCodeList != null">
+  		, uc_member_group mg
+  	</if>
+  	<where>
+  		<if test="groupCodeList != null">
+			mg.member_id = m.id
+		    AND mg.group_code in
+		    <foreach item="groupCode" collection="groupCodeList" open="(" separator="," close=")">#{groupCode}</foreach>
+		</if>
+		<if test="accNo != null ">
+		    AND acc_no like #{accNo,jdbcType=VARCHAR}
+		</if>
+		<if test="name != null">
+		    AND name like #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="memberId != null">
+		    AND id = #{memberId}
+		</if>
+	</where>
+  </select>
+  
+  <select id="findMemberListByCriteria" parameterType="map" resultMap="memberModelResultMap">
+  	select
+  		m.acc_no,
+  		m.name,
+  		m.status, 
+  		g.group_name,
+  		g.group_code,
+  		m.id,
+  		m.create_time,
+  		m.update_time,
+      	(select t.acc_no from uc_member t where t.id = m.creater_id) creater_acc_no,
+      	(select t.acc_no from uc_member t where t.id = m.modifier_id) modifier_acc_no
+  	from 
+  		uc_member m, 
+  		uc_member_group mg, 
+  		uc_group g
+  	where
+  		mg.member_id(+) = m.id 
+  		and mg.group_code = g.group_code(+)
+  		<if test="memberCriteriaModel.memberId != null">
+            AND m.id = #{memberCriteriaModel.memberId}
+        </if>
+  		<if test="memberCriteriaModel.groupCodeList != null || memberCriteriaModel.accNo != null || memberCriteriaModel.name != null">and (</if>
+  		<if test="memberCriteriaModel.groupCodeList != null">
+		    mg.group_code in
+		    <foreach item="groupCode" collection="memberCriteriaModel.groupCodeList" open="(" separator="," close=")">#{groupCode}</foreach>
+		</if>
+		<if test="memberCriteriaModel.accNo != null">
+		    <if test="memberCriteriaModel.groupCodeList != null">AND</if> m.acc_no like #{memberCriteriaModel.accNo,jdbcType=VARCHAR}
+		</if>
+		<if test="memberCriteriaModel.name != null">
+		    <if test="memberCriteriaModel.groupCodeList != null || memberCriteriaModel.accNo != null">AND</if> m.name like #{memberCriteriaModel.name,jdbcType=VARCHAR}
+		</if>
+		<if test="memberCriteriaModel.groupCodeList != null || memberCriteriaModel.accNo != null || memberCriteriaModel.name != null">)</if>
+  	order by
+  		<choose>
+  			<when test="pageHelper.sort == null">m.status desc, m.id asc</when>
+  			<otherwise>m.${pageHelper.sort} ${pageHelper.order}</otherwise>
+  		</choose>
+  </select>
+  
+  <select id="countAssociationWithGroup" parameterType="long" resultType="int">
+  	select count(*)
+	from 
+		uc_member_group mg
+	where 
+		mg.member_id = #{memberId,jdbcType=INTEGER}
+		and mg.status = 1
+  </select>
+  
+</mapper>

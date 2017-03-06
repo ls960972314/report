@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="resource" >
+	<!-- 字段映射  -->
+  <resultMap id="BaseResultMap" type="com.sypay.omp.per.model.PermissionCell" >
+  
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+ 
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="RESOURCE_ACTION" property="resourceAction" jdbcType="VARCHAR" />
+    <result column="RESOURCE_TYPE" property="resourceType" jdbcType="VARCHAR" />
+    <result column="P_ID" property="pId" jdbcType="DECIMAL" />
+    <result column="ICON" property="icon" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+    <result column="ORDER_BY" property="orderBy" jdbcType="DECIMAL" />
+    <result column="SYS_CODE" property="sysCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="RESOURCE_CODE" property="resourceCode" jdbcType="VARCHAR" />
+  
+  </resultMap>
+  
+  <!-- 共用sql -->
+  <sql id="Base_Column_List" >
+     ID,NAME,RESOURCE_ACTION,RESOURCE_TYPE,P_ID,ICON,DESCRIPTION,CREATE_TIME,UPDATE_TIME,ORDER_BY,SYS_CODE,STATUS,RESOURCE_CODE
+  </sql>
+
+	<select id="getResourceIdsByRoleCode" parameterType="string" resultType="long">
+		select
+			t.resource_id
+		from 
+			uc_role_res t
+		where 
+			t.role_code = #{roleCode,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findPermissionCellByMemberId" parameterType="long" resultMap="BaseResultMap">
+		select ttt1.ID,
+		       ttt1.NAME,
+		       ttt1.RESOURCE_ACTION,
+		       ttt1.RESOURCE_TYPE,
+		       ttt1.P_ID,
+		       ttt1.ICON,
+		       ttt1.NAME || if(rp.toolccolumn = null, null, '(') || rp.toolccolumn ||
+		       if(rp.toolccolumn = null, null, ')') DESCRIPTION,
+		       ttt1.CREATE_TIME,
+		       ttt1.UPDATE_TIME,
+		       ttt1.ORDER_BY,
+		       ttt1.SYS_CODE,
+		       ttt1.STATUS,
+		       ttt1.RESOURCE_CODE
+		  from (select if(INSTR(RESOURCE_ACTION, 'reportFlag') = 0,
+		                  null,
+		                  substring(RESOURCE_ACTION,
+		                            INSTR(RESOURCE_ACTION, 'reportFlag') + 11,
+		                            tt2.tempIndex)) toolflag,
+		               tt2.*
+		          from (select if(INSTR(RESOURCE_ACTION, '|') = 0,
+		                          LENGTH(RESOURCE_ACTION),
+		                          INSTR(RESOURCE_ACTION, '|') -
+		                          INSTR(RESOURCE_ACTION, 'reportFlag') - 11) tempIndex,
+		                       tt.*
+		                  from (select ID,
+		                               NAME,
+		                               RESOURCE_ACTION,
+		                               RESOURCE_TYPE,
+		                               P_ID,
+		                               ICON,
+		                               DESCRIPTION,
+		                               CREATE_TIME,
+		                               UPDATE_TIME,
+		                               ORDER_BY,
+		                               SYS_CODE,
+		                               STATUS,
+		                               RESOURCE_CODE
+		                          from UC_RESOURCE t
+		                         where exists (select 1
+		                                  from uc_member_group umg,
+		                                       uc_group_role   ugr,
+		                                       uc_role_res     urr
+		                                 where umg.group_code = ugr.group_code
+		                                   and ugr.role_code = urr.role_code
+		                                   and umg.member_id = #{memberId}
+		                                   and urr.resource_id = t.id)) tt) tt2) ttt1
+		  left join rptpub rp
+		    on ttt1.toolflag = rp.toolflag
+	</select>
+  
+	<select id="findResourceByMemberId" parameterType="long" resultType="map">
+		select 
+		<include refid="Base_Column_List" />
+		  from UC_RESOURCE t
+		 where exists (select 1
+		  from uc_member_group umg, uc_group_role ugr, uc_role_res urr
+		 where umg.group_code = ugr.group_code
+		   and ugr.role_code = urr.role_code
+		   and umg.member_id = #{memberId} and urr.resource_id=t.id)
+	</select>
+  
+</mapper>
