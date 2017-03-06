@@ -1,4 +1,0 @@
-2017-02-10 14:56:02 INFO  [org.springframework.web.context.ContextLoader ]  - Root WebApplicationContext: initialization started
-2017-02-10 14:56:03 INFO  [org.springframework.web.context.support.XmlWebApplicationContext ]  - Refreshing Root WebApplicationContext: startup date [Fri Feb 10 14:56:02 CST 2017]; root of context hierarchy
-2017-02-10 14:56:03 INFO  [org.springframework.beans.factory.xml.XmlBeanDefinitionReader ]  - Loading XML bean definitions from class path resource [application.xml]
-2017-02-10 14:56:05 INFO  [org.springframework.beans.factory.xml.XmlBeanDefinitionReader ]  - Loading XML bean definitions from class path resource [beans/spring-mybatis-config.xml]
