@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.fileupload.ProgressListener;
 
 import com.alibaba.fastjson.JSON;
-import com.sypay.omp.per.common.Constants;
+import com.report.common.dal.admin.constant.Constants;
 import com.sypay.omp.report.domain.Progress;
 
 /**

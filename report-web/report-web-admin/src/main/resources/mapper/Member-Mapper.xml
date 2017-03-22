@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="member" >
+<mapper namespace="com.report.common.dal.admin.dao.MemberDao" >
 	
-  <resultMap id="memberModelResultMap" type="com.sypay.omp.per.model.MemberModel" >
+  <resultMap id="memberModelResultMap" type="com.report.common.dal.admin.entity.vo.MemberModel" >
     <id column="ID" property="id" jdbcType="INTEGER" />
     <result column="ACC_NO" property="accNo" jdbcType="VARCHAR" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
@@ -29,7 +29,7 @@
   	select count(*) from uc_member m where m.acc_no = #{accNo,jdbcType=VARCHAR}
   </select>
   
-  <select id="countByCriteria" parameterType="com.sypay.omp.per.model.MemberCriteriaModel" resultType="long">
+  <select id="countByCriteria" parameterType="com.report.common.dal.admin.entity.vo.MemberCriteriaModel" resultType="long">
   	select count(*) from uc_member m
   	<if test="groupCodeList != null">
   		, uc_member_group mg

@@ -8,8 +8,10 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
-import com.sypay.omp.per.domain.Member;
-import com.sypay.omp.per.util.SessionUtil;
+import com.report.common.dal.admin.entity.dto.Member;
+import com.report.common.dal.admin.util.SessionUtil;
+import com.report.common.dal.report.entity.vo.PagerReq;
+import com.report.common.dal.report.entity.vo.SpObserver;
 import com.sypay.omp.report.VO.ChartVO;
 import com.sypay.omp.report.VO.ConditionVO;
 import com.sypay.omp.report.VO.PublicVO;
@@ -17,10 +19,8 @@ import com.sypay.omp.report.VO.ReportCommonConVO;
 import com.sypay.omp.report.VO.ReportConfigVO;
 import com.sypay.omp.report.VO.ReportModelVO;
 import com.sypay.omp.report.VO.ReportSqlVO;
-import com.sypay.omp.report.dataBase.SpObserver;
 import com.sypay.omp.report.domain.ReportElement;
 import com.sypay.omp.report.domain.ReportLog;
-import com.sypay.omp.report.queryrule.PagerReq;
 import com.sypay.omp.report.service.ReportLogService;
 /**
  * AOP 主要将对报表的查询，导出，报表配置的增删改查记录插入数据库

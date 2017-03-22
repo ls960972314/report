@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.sypay.omp.per.model.RoleCriteriaModel;
-import com.sypay.omp.per.model.RoleListSysModel;
-import com.sypay.omp.per.model.RoleModel;
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.admin.entity.vo.RoleCriteriaModel;
+import com.report.common.dal.admin.entity.vo.RoleListSysModel;
+import com.report.common.dal.admin.entity.vo.RoleModel;
 import com.sypay.omp.per.model.page.AjaxJson;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 
 public interface RoleService {
 	DataGrid findRoleListByCriteria(PageHelper pageHelper, RoleCriteriaModel roleCriteriaModel);

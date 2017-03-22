@@ -2,7 +2,6 @@ package com.sypay.omp.report.service.impl;
 
 import java.io.File;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -21,6 +20,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +30,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.report.common.dal.common.BaseDao;
+import com.report.common.dal.report.entity.vo.Condition;
+import com.report.common.dal.report.entity.vo.PagerReq;
+import com.report.common.dal.report.entity.vo.SpObserver;
 import com.sypay.omp.report.VO.FormatVO;
 import com.sypay.omp.report.VO.ModelElements;
 import com.sypay.omp.report.VO.ReportModelVO;
-import com.sypay.omp.report.dao.BaseDao;
-import com.sypay.omp.report.dataBase.SpObserver;
 import com.sypay.omp.report.domain.ReportChart;
 import com.sypay.omp.report.domain.ReportCondition;
 import com.sypay.omp.report.domain.ReportModel;
 import com.sypay.omp.report.domain.ReportPublic;
 import com.sypay.omp.report.domain.ReportPublishConfig;
 import com.sypay.omp.report.json.JsonResult;
-import com.sypay.omp.report.queryrule.Condition;
-import com.sypay.omp.report.queryrule.PagerReq;
 import com.sypay.omp.report.service.ReportChartService;
 import com.sypay.omp.report.service.ReportConditionService;
 import com.sypay.omp.report.service.ReportModelService;
@@ -50,7 +50,6 @@ import com.sypay.omp.report.service.ReportPublicService;
 import com.sypay.omp.report.service.ReportService;
 import com.sypay.omp.report.service.ReportSqlService;
 import com.sypay.omp.report.util.DateCommonUtils;
-import com.sypay.omp.report.util.StringUtil;
 import com.sypay.omp.report.util.TimeUtil;
 
 
@@ -143,7 +142,7 @@ public class ReportModelServiceImpl implements ReportModelService {
     			// 隐含条件名
     			String defaultValue = reportPublishConfig.getDefaultValue();
     			List<String> defaultValueList = new ArrayList<String>();
-    			if (StringUtil.isNotEmpty(defaultValue)) {
+    			if (StringUtils.isNotBlank(defaultValue)) {
     				defaultValueList = Arrays.asList(defaultValue.split(","));
     			}
     			
@@ -511,7 +510,7 @@ public class ReportModelServiceImpl implements ReportModelService {
 		        //格式化  当日总笔数:正整数,成功总笔数:正整数
 				Map<Integer, String> formatMap = new HashMap<>();
 				String toolFormat = me.getReportPublic().getToolFormat();
-				if (StringUtil.isNotEmpty(toolFormat)) {
+				if (StringUtils.isNotBlank(toolFormat)) {
 					String[] toolFormats = toolFormat.split(",");
 					for (int i = 0; i < toolFormats.length; i++) {
 						String key = toolFormats[i].substring(0, toolFormats[i].indexOf(":"));
@@ -571,7 +570,7 @@ public class ReportModelServiceImpl implements ReportModelService {
 	}
 	
 	private String formatData(String cell, Map<Integer, String> formatMap, Integer index) {
-		if (StringUtil.isNotEmpty(formatMap.get(index))) {
+		if (StringUtils.isNotBlank(formatMap.get(index))) {
 			if (formatMap.get(index).equals("正整数")) {
 				return fmtMicrometer(cell);
 			} else if (formatMap.get(index).equals("百分比")) {

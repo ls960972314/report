@@ -3,9 +3,9 @@ package com.sypay.omp.per.service;
 import java.util.List;
 import java.util.Map;
 
+import com.report.common.dal.admin.entity.vo.PermissionCell;
+import com.report.common.dal.admin.entity.vo.ResourceModel;
 import com.sypay.omp.per.model.PackageResourceModel;
-import com.sypay.omp.per.model.PermissionCell;
-import com.sypay.omp.per.model.ResourceModel;
 
 /**
  * 资源service

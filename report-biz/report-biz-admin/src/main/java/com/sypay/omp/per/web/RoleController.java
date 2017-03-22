@@ -14,19 +14,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sypay.omp.per.common.Constants;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.entity.dto.Role;
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.admin.entity.vo.RoleCriteriaModel;
+import com.report.common.dal.admin.entity.vo.RoleListSysModel;
+import com.report.common.dal.admin.entity.vo.RoleModel;
+import com.report.common.dal.admin.util.SessionUtil;
 import com.sypay.omp.per.common.ResultCodeConstants;
-import com.sypay.omp.per.domain.Role;
-import com.sypay.omp.per.model.RoleCriteriaModel;
-import com.sypay.omp.per.model.RoleListSysModel;
-import com.sypay.omp.per.model.RoleModel;
 import com.sypay.omp.per.model.page.AjaxJson;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
-import com.sypay.omp.per.service.PermissionFactoryService;
 import com.sypay.omp.per.service.RoleService;
-import com.sypay.omp.per.util.SessionUtil;
-import com.sypay.omp.report.util.StringUtil;
 
 /**
  * 角色管理
@@ -42,8 +40,6 @@ public class RoleController {
 
     @Resource
     private RoleService roleService;
-    @Resource
-    private PermissionFactoryService permissionFactoryService;
 
     @RequestMapping(value = "/role.htm")
     public String role(HttpServletRequest request) {
@@ -70,7 +66,7 @@ public class RoleController {
 
         int result = Constants.OpStatus.FAIL;
 
-        if (StringUtil.isNotEmpty(model.getId())) {
+        if (null != model.getId()) {
 
             // 更新操作
 

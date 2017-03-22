@@ -2,11 +2,11 @@ package com.sypay.omp.per.service;
 import java.util.List;
 import java.util.Map;
 
-import com.sypay.omp.per.domain.Group;
-import com.sypay.omp.per.model.GroupModel;
+import com.report.common.dal.admin.entity.dto.Group;
+import com.report.common.dal.admin.entity.vo.GroupModel;
+import com.report.common.dal.admin.entity.vo.PageHelper;
 import com.sypay.omp.per.model.page.AjaxJson;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 
 /**   
  *

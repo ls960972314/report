@@ -1,10 +1,8 @@
 package com.sypay.omp.per.web;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,15 +19,14 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.sypay.omp.per.common.Constants;
-import com.sypay.omp.per.dao.RoleDao;
-import com.sypay.omp.per.domain.Member;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.entity.dto.Member;
+import com.report.common.dal.admin.util.RoleUtil;
+import com.report.common.dal.admin.util.SessionUtil;
+import com.report.common.repository.RoleRepository;
 import com.sypay.omp.per.service.GroupService;
 import com.sypay.omp.per.service.MemberService;
 import com.sypay.omp.per.service.RoleService;
-import com.sypay.omp.per.util.RoleUtil;
-import com.sypay.omp.per.util.SessionUtil;
-import com.sypay.omp.report.util.JDBCUtils;
 import com.sypay.omp.report.util.MD5;
 
 /**
@@ -46,7 +43,7 @@ public class UserLoginController {
     @Resource
     private RoleService roleService;
     @Resource
-    private RoleDao roleDao;
+    private RoleRepository roleRepository;
     @Autowired
     private MemberService memberService;
    
@@ -98,7 +95,7 @@ public class UserLoginController {
 
         /* 将登录信息存入session中 */
         String groupCode = groupService.getGroupCodeByMemberId(member.getId());
-        List<String> roleCodeList = roleDao.findRoleCodeByMemberId(member.getId());
+        List<String> roleCodeList = roleRepository.findRoleCodeByMemberId(member.getId());
         request.getSession().setAttribute(Constants.SESSION_LOGIN_INFO, member);
         request.getSession().setAttribute(Constants.SESSION_LOGIN_MEMBER_NAME, StringUtils.isBlank(member.getName()) ? member.getAccNo() : member.getName());
         request.getSession().setAttribute(Constants.SESSION_LOGIN_MEMBER_ID, member.getId());

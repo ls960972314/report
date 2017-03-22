@@ -1,33 +1,29 @@
 package com.sypay.omp.per.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sypay.omp.per.common.Constants;
-import com.sypay.omp.per.dao.GroupDao;
-import com.sypay.omp.per.dao.MemberDao;
-import com.sypay.omp.per.dao.RoleDao;
-import com.sypay.omp.per.domain.Member;
-import com.sypay.omp.per.domain.MemberGroup;
-import com.sypay.omp.per.domain.Role;
-import com.sypay.omp.per.model.MemberCriteriaModel;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.entity.dto.Member;
+import com.report.common.dal.admin.entity.dto.MemberGroup;
+import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.admin.util.SessionUtil;
+import com.report.common.dal.common.BaseDao;
+import com.report.common.repository.GroupRepository;
+import com.report.common.repository.MemberRepository;
+import com.report.common.repository.RoleRepository;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.per.service.MemberService;
-import com.sypay.omp.per.util.SessionUtil;
-import com.sypay.omp.report.dao.BaseDao;
 import com.sypay.omp.report.util.MD5;
-import com.sypay.omp.report.util.StringUtil;
 
 @Service("memberService")
 @Transactional
@@ -36,11 +32,12 @@ public class MemberServiceImpl implements MemberService {
     @Resource
     private BaseDao baseDao;
     @Resource
-    private MemberDao memberDao;
+    private MemberRepository memberRepository;
     @Resource
-    private GroupDao groupDao;
+    private GroupRepository groupRepository;
+    
     @Resource
-    private RoleDao roleDao;
+    private RoleRepository roleRepository;
 
     @Override
 	public Member getMemberByLoginName(String loginName) {
@@ -61,12 +58,12 @@ public class MemberServiceImpl implements MemberService {
         target.setMemberType(member.getMemberType());
 
         // 判断该会员有没有关联groupCode，如果没有的话，就insert；如果有的话，就update
-        if (groupDao.isAssociatedWithGroup(member.getId())) {
+        if (groupRepository.isAssociatedWithGroup(member.getId())) {
             // 有关联
-            groupDao.updateGroupCodeByMemberId(member.getId(), groupCode, currentMemberIp);
+            groupRepository.updateGroupCodeByMemberId(member.getId(), groupCode, currentMemberIp);
         } else {
             // 没有关联
-            groupDao.associatedWithGroup(member.getId(), groupCode, currentMemberIp);
+            groupRepository.associatedWithGroup(member.getId(), groupCode, currentMemberIp);
         }
 
         baseDao.update(target);
@@ -93,7 +90,7 @@ public class MemberServiceImpl implements MemberService {
 
         Long memberId = (Long) baseDao.save(member);
 
-        if (StringUtil.isNotEmpty(groupCode)) {
+        if (StringUtils.isNotBlank(groupCode)) {
         	MemberGroup memberGroup = new MemberGroup();
             memberGroup.setCreateTime(now);
             memberGroup.setUpdateTime(now);
@@ -142,12 +139,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean isPasswordRight(Long currentMemberId, String password) {
-        return memberDao.isPasswordRight(currentMemberId, (MD5.getMD5String(password)));
+        return memberRepository.isPasswordRight(currentMemberId, (MD5.getMD5String(password)));
     }
 
     @Override
     public boolean resetPassword(Long memberId, String memberIp) {
-        boolean flag = memberDao.resetPassword(memberId, MD5.getMD5String(Constants.DEFAULT_PASSWORD_FOR_MEMBER));
+        boolean flag = memberRepository.resetPassword(memberId, MD5.getMD5String(Constants.DEFAULT_PASSWORD_FOR_MEMBER));
 
         // XXX 添加重置密码的操作日志
         /*OperationLogging logging = new OperationLogging();
@@ -163,12 +160,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean isAccNoExists(String accNo) {
-        return memberDao.isAccNoExists(accNo);
+        return memberRepository.isAccNoExists(accNo);
     }
 
     @Override
     public boolean changePassword(String password, Long currentMemberId, String memberIp) {
-        boolean flag = memberDao.changePassword(MD5.getMD5String(password), currentMemberId);
+        boolean flag = memberRepository.changePassword(MD5.getMD5String(password), currentMemberId);
 
         return flag;
     }
@@ -181,8 +178,8 @@ public class MemberServiceImpl implements MemberService {
             memberCriteria.setMemberId(null);
         }
         
-        dataGrid.setTotal(memberDao.countByCriteria(memberCriteria));
-        dataGrid.setRows(memberDao.findMemberListByCriteria(memberCriteria, pageHelper));
+        dataGrid.setTotal(memberRepository.countByCriteria(memberCriteria));
+        dataGrid.setRows(memberRepository.findMemberListByCriteria(memberCriteria, pageHelper));
         return dataGrid;
     }
 }

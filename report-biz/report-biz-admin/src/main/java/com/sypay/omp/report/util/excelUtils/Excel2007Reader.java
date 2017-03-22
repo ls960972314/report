@@ -1,7 +1,5 @@
 package com.sypay.omp.report.util.excelUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -10,6 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
@@ -21,8 +20,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-import com.sypay.omp.report.util.StringUtil;
 
 /** 
  * 抽象Excel2007读取器，excel2007的底层数据结构是xml文件，采用SAX的事件驱动的方法解析 
@@ -121,7 +118,7 @@ public class Excel2007Reader extends DefaultHandler {
                 nextIsString = false;  
             }
             
-            if (StringUtil.isNotEmpty(attributes.getValue("r")) && StringUtil.isEmpty(cellType)) {
+            if (StringUtils.isNotBlank(attributes.getValue("r")) && StringUtils.isBlank(cellType)) {
             	isBlankElement = true;
             } else {
             	isBlankElement = false;

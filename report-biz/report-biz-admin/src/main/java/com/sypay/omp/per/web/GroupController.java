@@ -13,15 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sypay.omp.per.common.Constants;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.entity.vo.GroupModel;
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.admin.util.SessionUtil;
 import com.sypay.omp.per.common.ResultCodeConstants;
-import com.sypay.omp.per.model.GroupModel;
 import com.sypay.omp.per.model.page.AjaxJson;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.per.service.GroupService;
 import com.sypay.omp.per.service.RoleService;
-import com.sypay.omp.per.util.SessionUtil;
 
 /**
  * @Title: Controller

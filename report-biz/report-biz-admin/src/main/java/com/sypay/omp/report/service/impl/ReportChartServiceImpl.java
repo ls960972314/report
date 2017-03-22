@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -12,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.common.BaseDao;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.report.VO.ChartVO;
-import com.sypay.omp.report.dao.BaseDao;
 import com.sypay.omp.report.domain.ReportChart;
 import com.sypay.omp.report.service.ReportChartService;
-import com.sypay.omp.report.util.StringUtil;
 
 /**
  * 
@@ -63,7 +63,7 @@ public class ReportChartServiceImpl implements ReportChartService {
 				+ " order by 5 desc";
 		Query query = baseDao.getSqlQuery(sql).setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).setFirstResult((pageHelper.getPage() - 1) * pageHelper.getRows()).setMaxResults(pageHelper.getRows());;
 		Map<String, Object> params = new HashMap<String, Object>();
-        if (StringUtil.isNotEmpty(chart.getToolFlag())) {
+        if (StringUtils.isNotBlank(chart.getToolFlag())) {
         	query.setParameter("toolflag", chart.getToolFlag());
         	params.put("toolflag", chart.getToolFlag());
         }
@@ -71,7 +71,7 @@ public class ReportChartServiceImpl implements ReportChartService {
         	query.setParameter("id", chart.getId());
         	params.put("id", chart.getId());
         }
-        if (StringUtil.isNotEmpty(chart.getChartName())) {
+        if (StringUtils.isNotBlank(chart.getChartName())) {
         	query.setParameter("chartname", "%"+chart.getChartName()+"%");
         	params.put("chartname", "%"+chart.getChartName()+"%");
         }
@@ -92,10 +92,10 @@ public class ReportChartServiceImpl implements ReportChartService {
 	
 	public String constructSqlWhere (ChartVO chart) {
 		String str = "";
-		if (StringUtil.isNotEmpty(chart.getToolFlag())) {
+		if (StringUtils.isNotBlank(chart.getToolFlag())) {
 			str = str + " and toolflag = :toolflag";
 		}
-		if (StringUtil.isNotEmpty(chart.getChartName())) {
+		if (StringUtils.isNotBlank(chart.getChartName())) {
 			str = str + " and name like :chartname";
 		}
 		if (chart.getId() != null) {

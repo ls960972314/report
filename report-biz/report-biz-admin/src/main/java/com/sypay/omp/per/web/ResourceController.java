@@ -14,16 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sypay.omp.per.common.Constants;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.entity.vo.ResourceModel;
+import com.report.common.dal.admin.util.SessionUtil;
 import com.sypay.omp.per.common.ResultCodeConstants;
 import com.sypay.omp.per.model.PackageResourceModel;
-import com.sypay.omp.per.model.ResourceModel;
 import com.sypay.omp.per.model.page.AjaxJson;
 import com.sypay.omp.per.service.ResourceService;
-import com.sypay.omp.per.util.PermissionUtil;
-import com.sypay.omp.per.util.SessionUtil;
 import com.sypay.omp.per.util.SysCodeResourcesUtil;
-import com.sypay.omp.report.util.StringUtil;
 
 /**
  * 资源管理
@@ -76,7 +74,7 @@ public class ResourceController {
             return j;
         }
 
-        if (StringUtil.isNotEmpty(resource.getId())) {
+        if (null != resource.getId()) {
             resourceService.updateResource(resource);
         } else {
             resourceService.saveResource(resource);
@@ -90,7 +88,7 @@ public class ResourceController {
     public AjaxJson del(ResourceModel resource, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         boolean isDeleteSucc = false;
-        if (StringUtil.isNotEmpty(resource.getId())) {
+        if (null != resource.getId()) {
             isDeleteSucc = resourceService.deleteResource(resource);
         }
 

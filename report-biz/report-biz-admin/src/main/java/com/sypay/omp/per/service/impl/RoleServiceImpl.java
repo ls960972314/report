@@ -8,43 +8,44 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sypay.omp.per.common.Constants;
-import com.sypay.omp.per.common.Constants.OpStatus;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.constant.Constants.OpStatus;
+import com.report.common.dal.admin.dao.RoleDao;
+import com.report.common.dal.admin.entity.dto.Resource;
+import com.report.common.dal.admin.entity.dto.Role;
+import com.report.common.dal.admin.entity.dto.RoleRes;
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.admin.entity.vo.RoleCriteriaModel;
+import com.report.common.dal.admin.entity.vo.RoleModel;
+import com.report.common.dal.common.BaseDao;
+import com.report.common.repository.RoleRepository;
 import com.sypay.omp.per.common.ResultCodeConstants;
-import com.sypay.omp.per.dao.RoleDao;
-import com.sypay.omp.per.domain.Resource;
-import com.sypay.omp.per.domain.Role;
-import com.sypay.omp.per.domain.RoleRes;
-import com.sypay.omp.per.model.RoleCriteriaModel;
-import com.sypay.omp.per.model.RoleModel;
 import com.sypay.omp.per.model.page.AjaxJson;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.per.service.RoleService;
-import com.sypay.omp.report.dao.BaseDao;
-import com.sypay.omp.report.service.MybatisBaseService;
 
 @Service("roleService")
 @Transactional
 public class RoleServiceImpl implements RoleService {
 
-    @javax.annotation.Resource
-    private RoleDao roleDao;
+    @Autowired
+    private RoleRepository roleRepository;
 
-    @javax.annotation.Resource
+    @Autowired
     private BaseDao baseDao;
 
-    @javax.annotation.Resource
-    private MybatisBaseService mybatisBaseService;
-
+    @Autowired
+    private RoleDao roleDao;
+    
     @Override
     public DataGrid findRoleListByCriteria(PageHelper pageHelper, RoleCriteriaModel roleCriteriaModel) {
         DataGrid dataGrid = new DataGrid();
-        dataGrid.setTotal(roleDao.countRoleByCriteria(roleCriteriaModel));
-        List<RoleModel> roleModelList = roleDao.findRoleListByCriteria(pageHelper, roleCriteriaModel);
+        dataGrid.setTotal(roleRepository.countRoleByCriteria(roleCriteriaModel));
+        List<RoleModel> roleModelList = roleRepository.findRoleListByCriteria(pageHelper, roleCriteriaModel);
         dataGrid.setRows(roleModelList);
         return dataGrid;
     }
@@ -90,7 +91,7 @@ public class RoleServiceImpl implements RoleService {
             Role role = (Role) baseDao.get(Role.class, model.getId());
             // 清空中间表数据
             if (role.getRoleRes() != null && role.getRoleRes().size() > 0) {
-                roleDao.clearMiddleTableData(role.getId());
+                roleRepository.clearMiddleTableData(role.getId());
             }
 
             if (StringUtils.isNotBlank(model.getResourceIds())) {
@@ -126,7 +127,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public AjaxJson removeRole(Long id) {
         AjaxJson ajaxJson = new AjaxJson();
-        String roleCode = (String) mybatisBaseService.selectOne("role.getRoleCodeByRoleId", id);
+        String roleCode = roleDao.getRoleCodeByRoleId(id);
         if (roleCode != null) {
             /*
              * 判断该角色是否有关联资源，如果没有的话，就直接物理删除该角色；
@@ -140,7 +141,7 @@ public class RoleServiceImpl implements RoleService {
                 // 逻辑删除角色
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("id", id);
-                mybatisBaseService.update("role.deleteRoleLogically", params);
+                roleDao.deleteRoleLogically(params);
                 ajaxJson.setErrorNo(ResultCodeConstants.RESULT_ROLE_IS_IN_USE);
                 ajaxJson.setErrorInfo("无法删除，请检查该角色是否正在使用");
             } else {
@@ -149,7 +150,7 @@ public class RoleServiceImpl implements RoleService {
                 // 物理删除角色
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("id", id);
-                mybatisBaseService.update("role.deleteRolePhysically", params);
+                roleDao.deleteRolePhysically(params);
             }
         }
 
@@ -157,42 +158,40 @@ public class RoleServiceImpl implements RoleService {
     }
 
     public boolean isAssociatedWithOthers(String roleCode) {
-        boolean flag = ((Integer) mybatisBaseService.selectOne("role.countResourceByRoleCode", roleCode)) > 0;
-
+        boolean flag = roleDao.countResourceByRoleCode(roleCode) > 0;
         if (!flag) {
-            flag = ((Integer) mybatisBaseService.selectOne("role.countGroupByRoleCode", roleCode)) > 0;
+            flag = roleDao.countGroupByRoleCode(roleCode) > 0;
         }
-
         return flag;
     }
 
     @Override
     public List getRoleListBySysCodes(Set<String> sysCodes) {
-        return roleDao.getRoleListBySysCodes(sysCodes);
+        return roleRepository.getRoleListBySysCodes(sysCodes);
     }
 
     @Override
     public boolean isRoleCodeExists(RoleModel roleModel) {
-        return roleDao.isRoleCodeExists(roleModel);
+        return roleRepository.isRoleCodeExists(roleModel);
     }
 
     @Override
     public List getRoleListByGroupCode(String groupCode) {
-        return roleDao.getRoleListByGroupCode(groupCode);
+        return roleRepository.getRoleListByGroupCode(groupCode);
     }
 
     @Override
     public List<Map<String, Object>> getRoleCodeAndNameList(String groupCode) {
-        return roleDao.getRoleCodeAndNameList(groupCode);
+        return roleRepository.getRoleCodeAndNameList(groupCode);
     }
 
     @Override
     public List<String> findSysCodeByRoleCodes(List<String> roleCodes) {
-        return roleDao.findSysCodeByRoleCodes(roleCodes);
+        return roleRepository.findSysCodeByRoleCodes(roleCodes);
     }
 
     @Override
     public boolean isSameRoleCode(Long roleId, String roleCode) {
-        return roleDao.isSameRoleCode(roleId, roleCode);
+        return roleRepository.isSameRoleCode(roleId, roleCode);
     }
 }

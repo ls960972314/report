@@ -9,6 +9,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.DefaultConversionService;
 
 import com.alibaba.fastjson.JSON;
+import com.report.common.dal.report.entity.vo.PagerReq;
 import com.sypay.omp.report.util.TimeUtil;
 
 /**

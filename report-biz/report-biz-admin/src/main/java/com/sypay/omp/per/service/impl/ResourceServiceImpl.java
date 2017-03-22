@@ -6,51 +6,46 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SQLQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sypay.omp.per.common.Constants;
-import com.sypay.omp.per.dao.ResourceDao;
-import com.sypay.omp.per.domain.Resource;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.dao.ResourceDao;
+import com.report.common.dal.admin.entity.dto.Resource;
+import com.report.common.dal.admin.entity.vo.PermissionCell;
+import com.report.common.dal.admin.entity.vo.ResourceModel;
+import com.report.common.dal.common.BaseDao;
+import com.report.common.repository.ResourceRepository;
 import com.sypay.omp.per.model.PackageResourceModel;
-import com.sypay.omp.per.model.PermissionCell;
-import com.sypay.omp.per.model.ResourceModel;
-import com.sypay.omp.per.service.PermissionFactoryService;
 import com.sypay.omp.per.service.ResourceService;
-import com.sypay.omp.report.dao.BaseDao;
 import com.sypay.omp.report.dao.ReportChartDao;
 import com.sypay.omp.report.dao.ReportConditionDao;
 import com.sypay.omp.report.dao.ReportPublicDao;
-import com.sypay.omp.report.service.MybatisBaseService;
-import com.sypay.omp.report.util.StringUtil;
 
 @Service("resourceService")
 @Transactional
 public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
-    private ResourceDao resourceDao;
+    private ResourceRepository resourceRepository;
     @Autowired
     private BaseDao baseDao;
     @Autowired
-    private PermissionFactoryService permissionFactoryService;
-    @Autowired
-    private MybatisBaseService mybatisBaseService;
-    @Autowired
     private ReportChartDao reportChartDao;
-    
     @Autowired
     private ReportConditionDao reportConditionDao;
-    
     @Autowired
     private ReportPublicDao reportPublicDao;
+    @Autowired
+    private ResourceDao resourceDao;
     /**
      * 获取资源列表
      */
     public List<PackageResourceModel> findResourceList(ResourceModel resource) {
-        List<Resource> resourceList = resourceDao.findResourceList(resource);
+        List<Resource> resourceList = resourceRepository.findResourceList(resource);
         List<PackageResourceModel> tempResourceList = new ArrayList<PackageResourceModel>();
         PackageResourceModel temp = null;
         for (Resource r : resourceList) {
@@ -77,7 +72,7 @@ public class ResourceServiceImpl implements ResourceService {
         resource.setUpdateTime(new Date());
         resource.setResourceCode(model.getResourceCode());
         // 如果存在父目录保存父信息
-        if (StringUtil.isNotEmpty(model.getpId())) {
+        if (null != model.getpId()) {
             resource.setParent((Resource) baseDao.get(Resource.class, model.getpId()));
         }
         baseDao.update(resource);
@@ -101,7 +96,7 @@ public class ResourceServiceImpl implements ResourceService {
         resource.setUpdateTime(now);
         resource.setCreateTime(now);
         // 如果存在父目录保存父信息
-        if (StringUtil.isNotEmpty(model.getpId())) {
+        if (null != model.getpId()) {
             resource.setParent((Resource) baseDao.get(Resource.class, model.getpId()));
         }
         baseDao.save(resource);
@@ -120,10 +115,10 @@ public class ResourceServiceImpl implements ResourceService {
         
         /* 删除报表中对应的rptpub ,rptcon, rptchart */
         String actionUrl = "";
-        if (StringUtil.isNotEmpty(targetResource.getResourceAction())) {
+        if (StringUtils.isNotBlank(targetResource.getResourceAction())) {
         	actionUrl = targetResource.getResourceAction().replaceAll("\\s", "");
         }
-        if (StringUtil.isNotEmpty(actionUrl) && actionUrl.indexOf("reportFlag") != -1) {
+        if (StringUtils.isNotBlank(actionUrl) && actionUrl.indexOf("reportFlag") != -1) {
         	String reportFlag = "";
         	/* 查看有多少个 */
         	if (actionUrl.indexOf("|") != -1) {
@@ -131,7 +126,7 @@ public class ResourceServiceImpl implements ResourceService {
         	} else {
         		reportFlag = actionUrl.substring(actionUrl.indexOf("reportFlag") + 11);
         	}
-        	List<Resource> list = resourceDao.findResourcesByFlag(reportFlag);
+        	List<Resource> list = resourceRepository.findResourcesByFlag(reportFlag);
         	/* 由于时日周月报等公用下面三个表，所以当只有一个可用目录时才将其删除 */
         	if (list.size() == 1) {
     			reportChartDao.deleteByReportFlag(reportFlag);
@@ -149,7 +144,7 @@ public class ResourceServiceImpl implements ResourceService {
      */
 
     public List<PackageResourceModel> findPrivilegeBySysCode() {
-        List<Resource> resourceList = resourceDao.findResourceList(null);
+        List<Resource> resourceList = resourceRepository.findResourceList(null);
         List<PackageResourceModel> tempResourceList = new ArrayList<PackageResourceModel>();
         PackageResourceModel temp = null;
         for (Resource r : resourceList) {
@@ -199,7 +194,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public List<PackageResourceModel> findTreeMenu(ResourceModel model) {
-        List<Resource> resourceList = resourceDao.findTreeMenu(model);
+        List<Resource> resourceList = resourceRepository.findTreeMenu(model);
         List<PackageResourceModel> tempResourceList = new ArrayList<PackageResourceModel>();
         PackageResourceModel temp = null;
         for (Resource r : resourceList) {
@@ -213,30 +208,28 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public boolean isResourceExist(ResourceModel resource) {
-        return resourceDao.isResourceExist(resource);
+        return resourceRepository.isResourceExist(resource);
     }
 
     @Override
     public List<Map<String, Object>> findAllResource() {
-        return resourceDao.findAllResource();
+        return resourceRepository.findAllResource();
     }
 
     @Override
     public List<Long> findResourceIdsByRoleCode(String roleCode) {
-        return resourceDao.findResourceIdsByRoleCode(roleCode);
+        return resourceRepository.findResourceIdsByRoleCode(roleCode);
     }
 
     @Override
     public List<PermissionCell> findPermissionCellByMemberId(Long memberId) {
-        List<PermissionCell> list = mybatisBaseService.selectList("resource.findPermissionCellByMemberId", memberId);
-
+        List<PermissionCell> list = resourceDao.findPermissionCellByMemberId(memberId);
         return (List<PermissionCell>) (list == null || list.isEmpty() ? Collections.emptyList() : list);
     }
 
     @Override
     public List<Map<String, Object>> findResourceByMemberId(Long memberId) {
-        List list = mybatisBaseService.selectList("resource.findResourceByMemberId", memberId);
-
+        List list = resourceDao.findResourceByMemberId(memberId);
         return (List) (list == null || list.isEmpty() ? Collections.emptyList() : list);
 
     }

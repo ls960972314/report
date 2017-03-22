@@ -12,17 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sypay.omp.per.common.Constants;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.report.util.BeanUtil;
 import com.sypay.omp.per.common.ResultCodeConstants;
 import com.sypay.omp.per.model.page.AjaxJson;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.report.VO.ChartVO;
 import com.sypay.omp.report.domain.ReportChart;
 import com.sypay.omp.report.json.JsonResult;
 import com.sypay.omp.report.service.ReportChartService;
 import com.sypay.omp.report.statuscode.GlobalResultStatus;
-import com.sypay.omp.report.util.BeanUtil;
 
 /**
  * 图形管理

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sypay.omp.report.dao.BaseDao;
+import com.report.common.dal.common.BaseDao;
 import com.sypay.omp.report.domain.ReportLog;
 import com.sypay.omp.report.service.ReportLogService;
 

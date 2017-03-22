@@ -2,11 +2,10 @@ package com.sypay.omp.report.service;
 
 import java.util.List;
 
+import com.report.common.dal.admin.entity.vo.PageHelper;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.report.VO.ReportCommonConVO;
 import com.sypay.omp.report.domain.ReportCommonCon;
-import com.sypay.omp.report.domain.ReportCondition;
 
 
 /**

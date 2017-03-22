@@ -1,6 +1,6 @@
 package com.sypay.omp.per.model.page;
 
-import com.sypay.omp.per.common.Constants.OpStatus;
+import com.report.common.dal.admin.constant.Constants.OpStatus;
 import com.sypay.omp.per.util.ResponseMsgUtil;
 
 /**

@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-import com.sypay.omp.report.queryrule.PagerReq;
+import com.report.common.dal.report.entity.vo.PagerReq;
 
 
 
@@ -15,18 +15,6 @@ import com.sypay.omp.report.queryrule.PagerReq;
  *
  */
 public interface ReportDao {
-	/**
-     * 取QID模式的通过base_sql获取返回结果集
-     * @param PagerReq req
-	 * @return List
-     */
-	public List getData(PagerReq req );
-	/**
-     * 取QID模式的通过base_count_sql获取返回结果集
-     * @param PagerReq req
-	 * @return Integer
-     */
-	public Integer getDataCount(PagerReq req);
 	/**
      * 取QID模式的初始化base_sql和base_count_sql
      * @param PagerReq req

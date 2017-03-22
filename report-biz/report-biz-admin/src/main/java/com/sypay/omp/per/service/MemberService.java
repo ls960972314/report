@@ -1,11 +1,9 @@
 package com.sypay.omp.per.service;
 
-import java.util.List;
-
-import com.sypay.omp.per.domain.Member;
-import com.sypay.omp.per.model.MemberCriteriaModel;
+import com.report.common.dal.admin.entity.dto.Member;
+import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
+import com.report.common.dal.admin.entity.vo.PageHelper;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 
 public interface MemberService {
 

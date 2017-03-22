@@ -6,8 +6,7 @@ import java.util.Map;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-import com.sypay.omp.report.queryrule.PagerReq;
-import com.sypay.omp.report.queryrule.PagerRsp;
+import com.report.common.dal.report.entity.vo.PagerReq;
 
 
 /** 
@@ -24,12 +23,6 @@ public interface ReportService {
 	 * @throws Exception
 	 */
 	public Map<String, Object> smartReportExport(PagerReq paras) throws Exception;
-	/**
-     * 根据条件获取数据的入口
-     * @param PagerReq req
-     * @return PagerRsp
-     */
-    public PagerRsp getReportData(PagerReq req );
 	
 	public PagerReq setupSmartReportSql(PagerReq req);
 	    

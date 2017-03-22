@@ -2,7 +2,6 @@ package com.sypay.omp.report.dao;
 
 import java.util.List;
 
-import com.sypay.omp.report.VO.ReportConfigVO;
 import com.sypay.omp.report.domain.ReportConfig;
 
 /**

@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sypay.omp.per.common.Constants;
-import com.sypay.omp.per.domain.Member;
-import com.sypay.omp.per.exception.UserNotFoundException;
-import com.sypay.omp.per.util.SessionUtil;
+import com.report.common.dal.admin.entity.dto.Member;
+import com.report.common.dal.admin.util.SessionUtil;
+import com.report.common.dal.report.entity.vo.PagerReq;
+import com.report.common.dal.report.entity.vo.SpObserver;
+import com.report.common.dal.report.util.BeanUtil;
 import com.sypay.omp.report.VO.ReturnCondition;
-import com.sypay.omp.report.dataBase.SpObserver;
 import com.sypay.omp.report.domain.ReportChart;
 import com.sypay.omp.report.domain.ReportCommonCon;
 import com.sypay.omp.report.domain.ReportCondition;
@@ -34,7 +34,6 @@ import com.sypay.omp.report.domain.ReportElement;
 import com.sypay.omp.report.domain.ReportPublic;
 import com.sypay.omp.report.domain.ReportSql;
 import com.sypay.omp.report.json.JsonResult;
-import com.sypay.omp.report.queryrule.PagerReq;
 import com.sypay.omp.report.queryrule.PagerRsp;
 import com.sypay.omp.report.service.ReportChartService;
 import com.sypay.omp.report.service.ReportCommonConService;
@@ -43,8 +42,6 @@ import com.sypay.omp.report.service.ReportPublicService;
 import com.sypay.omp.report.service.ReportService;
 import com.sypay.omp.report.service.ReportSqlService;
 import com.sypay.omp.report.statuscode.GlobalResultStatus;
-import com.sypay.omp.report.util.BeanUtil;
-import com.sypay.omp.report.util.StringUtil;
 import com.sypay.omp.report.util.TimeUtil;
 
 import sun.misc.BASE64Decoder;
@@ -85,36 +82,10 @@ public class ReportController {
     private Long IMAGE_URL;
     
     /**
-     * 正常报表展示时拉取数据
-     * @param PagerReq paras
-     * @return Object
-     * @throws Exception 
-     */
-    @RequestMapping(value = "report")
-    @ResponseBody
-    @Deprecated
-    public Object report(PagerReq paras) {
-    	Member member = SessionUtil.getLoginInfo();
-    	PagerRsp response = null;
-    	querylog.info("report memberId:{} memberName:{} sqlId:{} condition:{}", member.getId(), member.getName(), paras.getQid(), paras.getFilters());
-    	try {
-    		response = reportService.getReportData(paras);
-		} catch  (Exception e) {
-			response.setPage(1);
-			response.setRecords(0);
-			response.setTotal(0);
-			response.setRows(null);
-			querylog.info("report Object2String memberId:{} memberName:{} sqlId:{} condition:{} exception:{}", member.getId(), member.getName(), paras.getQid(), paras.getFilters(), e.toString());
-		}
-    	return JsonResult.reportSuccess(response, TimeUtil.DATE_FORMAT_2);
-    }
-    
-    /**
      * smartReport展示时拉取数据
      * @param Model
      * @param PagerReq
      * @return Object
-     * @throws UserNotFoundException 
      */
     @RequestMapping(value="reportShowQueryData")
     @ResponseBody
@@ -237,9 +208,9 @@ public class ReportController {
     @RequestMapping(value="saveReport")
     @ResponseBody
     public Object saveReport(ReportElement reportElement) {
-    	if (StringUtils.isEmpty(reportElement.getSaveReportCColumn()) || StringUtil.isEmpty(reportElement.getSaveReportEColumn()) ||
-    			StringUtil.isEmpty(reportElement.getSaveReportCondition()) || StringUtil.isEmpty(reportElement.getSaveReportSqlId()) ||
-    			StringUtil.isEmpty(reportElement.getSaveReportTitle())) {
+    	if (StringUtils.isEmpty(reportElement.getSaveReportCColumn()) || StringUtils.isBlank(reportElement.getSaveReportEColumn()) ||
+    			StringUtils.isBlank(reportElement.getSaveReportCondition()) || StringUtils.isBlank(reportElement.getSaveReportSqlId()) ||
+    			StringUtils.isBlank(reportElement.getSaveReportTitle())) {
     		log.info("saveReport  缺少参数");
     		return JsonResult.fail(GlobalResultStatus.PARAM_MISSING);
     	}
@@ -281,7 +252,7 @@ public class ReportController {
     @ResponseBody
     public Object saveReportSql(@RequestParam String baseSql, @RequestParam String timeSelect, @RequestParam String sqlIds,
     		@RequestParam String sqlName, @RequestParam String dataBaseSource) {
-    	if (StringUtil.isEmpty(baseSql) || StringUtil.isEmpty(timeSelect) || StringUtil.isEmpty(sqlName)) {
+    	if (StringUtils.isBlank(baseSql) || StringUtils.isBlank(timeSelect) || StringUtils.isBlank(sqlName)) {
     		log.info("saveReportSql  缺少参数");
     		return JsonResult.fail(GlobalResultStatus.PARAM_MISSING);
     	}
@@ -327,13 +298,13 @@ public class ReportController {
     @RequestMapping(value="getConValue")
     @ResponseBody
     public Object getConValue(String selectSql, String dataBaseSource) {
-    	if (StringUtil.isEmpty(selectSql)) {
+    	if (StringUtils.isBlank(selectSql)) {
     		log.info("getConValue  缺少参数");
     		return JsonResult.fail(GlobalResultStatus.PARAM_MISSING);
     	}
     	String conValue = "";
     	/* 查询数据时切换数据源*/
-    	if (StringUtil.isEmpty(dataBaseSource)) {
+    	if (StringUtils.isBlank(dataBaseSource)) {
     		SpObserver.putSp(SpObserver.defaultDataBase);
     	} else {
     		SpObserver.putSp(dataBaseSource);
@@ -356,7 +327,7 @@ public class ReportController {
     	/* 得到项目根路径 */
     	//String rootPath = request.getSession().getServletContext().getRealPath("/");
     	String rootPath = getImgUrl();
-    	if (StringUtil.isEmpty(url)) {
+    	if (StringUtils.isBlank(url)) {
     		log.info("saveChartImage  缺少参数");
     		return JsonResult.fail(GlobalResultStatus.PARAM_MISSING);
     	}

@@ -13,12 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sypay.omp.per.common.Constants;
-import com.sypay.omp.per.common.Constants.MenuType;
-import com.sypay.omp.per.domain.Member;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.constant.Constants.MenuType;
+import com.report.common.dal.admin.entity.dto.Member;
+import com.report.common.dal.admin.util.SessionUtil;
 import com.sypay.omp.per.model.MenuCell;
 import com.sypay.omp.per.util.PermissionUtil;
-import com.sypay.omp.per.util.SessionUtil;
 
 public class LoginInterceptor implements HandlerInterceptor {
 

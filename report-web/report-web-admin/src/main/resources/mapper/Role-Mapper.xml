@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="role" >
+<mapper namespace="com.report.common.dal.admin.dao.RoleDao" >
 
-  <resultMap type="com.sypay.omp.per.domain.Role" id="roleResultMap">
+  <resultMap type="com.report.common.dal.admin.entity.dto.Role" id="roleResultMap">
   	<id column="ID" property="id" jdbcType="INTEGER" />
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
     <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
@@ -13,7 +13,7 @@
     <result column="STATUS" property="status" jdbcType="INTEGER" />
   </resultMap>
   
-  <resultMap type="com.sypay.omp.per.model.RoleModel" id="roleModelResultMap">
+  <resultMap type="com.report.common.dal.admin.entity.vo.RoleModel" id="roleModelResultMap">
   	<result column="ID" property="id" jdbcType="INTEGER" />
   	<result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
   	<result column="NAME" property="name" jdbcType="VARCHAR" />
@@ -26,21 +26,6 @@
   	<result column="MODIFIER_ACC_NO" property="modifierAccNo" jdbcType="VARCHAR" />
   </resultMap>
 
-  <!-- 组别管理中使用到的角色列表【显示给系统管理员】 -->
-  <select id="findRoleList4SysAdmin" parameterType="list" resultType="map">
-  	select 
-  		ur.role_code "roleCode",
-  		ur.name "name", 
-  		ur.sys_code "sysCode", 
-  		(select rs.name from uc_register_service rs where rs.sys_code = ur.sys_code and rownum=1) "sysName"
-  	from 
-  		uc_role ur 
-  	where 
-  		ur.status = 1
-  		and ur.sys_code in
-  		<foreach item="sysCode" collection="list" open="(" separator="," close=")">#{sysCode}</foreach>
-  </select>
-  
   <!-- 组别管理中使用到的角色列表【显示给权限管理员】 -->
   <select id="findRoleList4PerAdmin" resultType="map">
   	select 

@@ -1,11 +1,5 @@
 package com.sypay.omp.report.util.excelUtils;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import org.springframework.web.multipart.MultipartFile;
 
 public class ExcelReaderUtil {  

@@ -1,18 +1,14 @@
 package com.sypay.omp.report.util;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.Properties;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sypay.omp.per.util.PropertyReader;
 import com.sypay.omp.report.util.excelUtils.ExcelReaderUtil;
 import com.sypay.omp.report.util.excelUtils.IRowReader;
 import com.sypay.omp.report.util.excelUtils.JDBCRowReader;

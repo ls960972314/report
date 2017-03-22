@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.sypay.omp.per.common.Constants;
 import com.sypay.omp.report.VO.ModelUpdateDetail;
 import com.sypay.omp.report.VO.ReportModelVO;
 import com.sypay.omp.report.VO.ReportPublishVO;
@@ -33,7 +32,6 @@ import com.sypay.omp.report.service.ReportConditionService;
 import com.sypay.omp.report.service.ReportModelService;
 import com.sypay.omp.report.service.ReportPublicService;
 import com.sypay.omp.report.statuscode.GlobalResultStatus;
-import com.sypay.omp.report.util.StringUtil;
 /**
  * 报表模板发送类Controller
  * @author 887961
@@ -233,14 +231,14 @@ public class ReportModelController {
 					reportPublishConfig.setChartName(rptPublish.getChartName());
 				}
 				if (StringUtils.isNotEmpty(selfConNames)) {
-					reportPublishConfig.setModelConName((StringUtil.isEmpty(rptConNameBegin)? "":(rptConNameBegin  + ",")) + rptConNameEnd + "," + selfConNames);
+					reportPublishConfig.setModelConName((StringUtils.isBlank(rptConNameBegin)? "":(rptConNameBegin  + ",")) + rptConNameEnd + "," + selfConNames);
 				} else {
-					reportPublishConfig.setModelConName((StringUtil.isEmpty(rptConNameBegin)? "":(rptConNameBegin  + ",")) + rptConNameEnd);
+					reportPublishConfig.setModelConName((StringUtils.isBlank(rptConNameBegin)? "":(rptConNameBegin  + ",")) + rptConNameEnd);
 				}
 				if (StringUtils.isNotEmpty(selfConIds)) {
-					reportPublishConfig.setRptConId(  (StringUtil.isEmpty(rptConIdBegin)? "":(rptConIdBegin  + ",")) + rptConIdEnd + "," + selfConIds);
+					reportPublishConfig.setRptConId(  (StringUtils.isBlank(rptConIdBegin)? "":(rptConIdBegin  + ",")) + rptConIdEnd + "," + selfConIds);
 				} else {
-					reportPublishConfig.setRptConId((StringUtil.isEmpty(rptConIdBegin)? "":(rptConIdBegin  + ",")) + rptConIdEnd);
+					reportPublishConfig.setRptConId((StringUtils.isBlank(rptConIdBegin)? "":(rptConIdBegin  + ",")) + rptConIdEnd);
 				}
 				reportPublishConfig.setDefaultValue(selfConValues);
 				

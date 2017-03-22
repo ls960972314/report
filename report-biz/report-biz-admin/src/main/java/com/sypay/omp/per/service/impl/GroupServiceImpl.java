@@ -12,20 +12,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sypay.omp.per.common.Constants;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.dao.GroupDao;
+import com.report.common.dal.admin.dao.GroupRoleDao;
+import com.report.common.dal.admin.entity.dto.Group;
+import com.report.common.dal.admin.entity.vo.GroupModel;
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.admin.util.SessionUtil;
+import com.report.common.dal.common.BaseDao;
+import com.report.common.repository.GroupRepository;
+import com.report.common.repository.RoleRepository;
 import com.sypay.omp.per.common.ResultCodeConstants;
-import com.sypay.omp.per.dao.GroupDao;
-import com.sypay.omp.per.dao.GroupRoleDao;
-import com.sypay.omp.per.dao.RoleDao;
-import com.sypay.omp.per.domain.Group;
-import com.sypay.omp.per.model.GroupModel;
 import com.sypay.omp.per.model.page.AjaxJson;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.per.service.GroupService;
-import com.sypay.omp.per.util.SessionUtil;
-import com.sypay.omp.report.dao.BaseDao;
-import com.sypay.omp.report.service.MybatisBaseService;
 
 /**
  * 
@@ -43,14 +43,13 @@ public class GroupServiceImpl implements GroupService {
     @Resource
     private BaseDao baseDao;
     @Resource
-    private GroupDao groupDao;
+    private GroupRepository groupRepository;
     @Resource
-    private RoleDao roleDao;
+    private RoleRepository roleRepository;
     @Resource
     private GroupRoleDao groupRoleDao;
     @Resource
-    private MybatisBaseService mybatisBaseService;
-
+    private GroupDao groupDao;
     /**
      * 分页查询数据列表
      * 
@@ -64,8 +63,8 @@ public class GroupServiceImpl implements GroupService {
         if(SessionUtil.isPerAdmin()) {
             groupModel.setCurrentMemberGroupCode(null);
         }
-        dataGrid.setTotal(groupDao.count(groupModel));
-        dataGrid.setRows(groupDao.fingGroupsByPage(pageHelper, groupModel));
+        dataGrid.setTotal(groupRepository.count(groupModel));
+        dataGrid.setRows(groupRepository.fingGroupsByPage(pageHelper, groupModel));
         return dataGrid;
     }
 
@@ -133,12 +132,12 @@ public class GroupServiceImpl implements GroupService {
 
             if (isAssociatedWithOthers) {
                 // 有关联人员，逻辑删除组
-                mybatisBaseService.update("group.deleteGroupLogically", params);
+            	groupDao.deleteGroupLogically(params);
                 ajaxJson.setErrorNo(ResultCodeConstants.RESULT_CHECK_GROUP_IS_IN_USE);
                 ajaxJson.setErrorInfo("无法删除，请检查该组是否仍被使用");
             } else {
                 // 没有关联人员，物理删除组
-                mybatisBaseService.update("group.deleteGroupPhysically", params);
+            	groupDao.deleteGroupPhysically(params);
             }
 
         }
@@ -147,22 +146,22 @@ public class GroupServiceImpl implements GroupService {
     }
 
     public List<Group> findAllGroups() {
-        return groupDao.findAllGroups();
+        return groupRepository.findAllGroups();
     }
 
     @Override
     public List<Map<String, String>> findGroupNamesByCurrentMemberId(Long currentMemberId) {
-        return groupDao.findGroupNamesByCurrentMemberId(currentMemberId);
+        return groupRepository.findGroupNamesByCurrentMemberId(currentMemberId);
     }
 
     @Override
     public boolean isGroupCodeExists(GroupModel groupModel) {
-        return groupDao.isGroupCodeExists(groupModel);
+        return groupRepository.isGroupCodeExists(groupModel);
     }
 
     @Override
     public String getGroupCodeByMemberId(Long memberId) {
-        return (String) mybatisBaseService.selectOne("group.getGroupCodeByMemberId", memberId);
+        return groupDao.getGroupCodeByMemberId(memberId);
     }
 
     @Override
@@ -170,19 +169,15 @@ public class GroupServiceImpl implements GroupService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupId", id);
         params.put("groupCode", groupCode);
-
-        return ((Integer) mybatisBaseService.selectOne("group.isSameGroupCode", params)).intValue() > 0;
+        return groupDao.isSameGroupCode(params) > 0;
     }
 
     public boolean isAssociatedWithOthers(String groupCode) {
         boolean flag = false;
-
-        flag = ((Integer) mybatisBaseService.selectOne("group.countMemberByGroupCode", groupCode)) > 0;
-
+        flag =  groupDao.countMemberByGroupCode(groupCode) > 0;
         if (!flag) {
-            flag = ((Integer) mybatisBaseService.selectOne("group.countRolebyGroupCode", groupCode)) > 0;
+            flag = groupDao.countRolebyGroupCode(groupCode) > 0;
         }
-
         return flag;
     }
 }

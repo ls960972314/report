@@ -1,7 +1,7 @@
 package com.sypay.omp.report.service;
 
+import com.report.common.dal.admin.entity.vo.PageHelper;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.report.VO.PublicVO;
 import com.sypay.omp.report.domain.ReportElement;
 import com.sypay.omp.report.domain.ReportPublic;

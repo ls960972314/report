@@ -13,16 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.common.BaseDao;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.report.VO.ReportConfigVO;
-import com.sypay.omp.report.VO.ReportSqlVO;
-import com.sypay.omp.report.dao.BaseDao;
 import com.sypay.omp.report.dao.ReportConfigDao;
 import com.sypay.omp.report.domain.ReportConfig;
 import com.sypay.omp.report.domain.ReportSql;
 import com.sypay.omp.report.service.ReportConfigService;
-import com.sypay.omp.report.util.StringUtil;
 
 /**
  * 
@@ -77,15 +75,15 @@ public class ReportConfigServiceImpl implements ReportConfigService {
 		Query query = baseDao.getSqlQuery(sql).setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).setFirstResult((pageHelper.getPage() - 1) * pageHelper.getRows()).setMaxResults(pageHelper.getRows());
 		Map<String, Object> params = new HashMap<String, Object>();
         
-        if (StringUtil.isNotEmpty(reportConfigVo.getRptCode())) {
+        if (StringUtils.isNotBlank(reportConfigVo.getRptCode())) {
         	query.setParameter("rptCode", reportConfigVo.getRptCode());
         	params.put("rptCode", reportConfigVo.getRptCode());
 		}
-		if (StringUtil.isNotEmpty(reportConfigVo.getRptName())) {
+		if (StringUtils.isNotBlank(reportConfigVo.getRptName())) {
 			query.setParameter("rptName", "%" + reportConfigVo.getRptName() + "%");
         	params.put("rptName", "%" + reportConfigVo.getRptName() + "%");
 		}
-		if (StringUtil.isNotEmpty(reportConfigVo.getRptTableName())) {
+		if (StringUtils.isNotBlank(reportConfigVo.getRptTableName())) {
 			query.setParameter("rptTableName", "%" + reportConfigVo.getRptTableName() + "%");
         	params.put("rptTableName", "%" + reportConfigVo.getRptTableName() + "%");
 		}
@@ -103,13 +101,13 @@ public class ReportConfigServiceImpl implements ReportConfigService {
 	 */
 	private String constructSqlWhere(ReportConfigVO reportConfigVo) {
 		String str = "";
-		if (StringUtil.isNotEmpty(reportConfigVo.getRptCode())) {
+		if (StringUtils.isNotBlank(reportConfigVo.getRptCode())) {
 			str = str + " and rpt_code = :rptCode";
 		}
-		if (StringUtil.isNotEmpty(reportConfigVo.getRptName())) {
+		if (StringUtils.isNotBlank(reportConfigVo.getRptName())) {
 			str = str + " and rpt_name like :rptName";
 		}
-		if (StringUtil.isNotEmpty(reportConfigVo.getRptTableName())) {
+		if (StringUtils.isNotBlank(reportConfigVo.getRptTableName())) {
 			str = str + "and rpt_tab_name like :rptTableName";
 		}
 		return str;

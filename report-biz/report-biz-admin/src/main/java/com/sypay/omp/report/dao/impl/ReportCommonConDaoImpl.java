@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Repository;
 
-import com.sypay.omp.report.dao.BaseDao;
+import com.report.common.dal.common.BaseDao;
 import com.sypay.omp.report.dao.ReportCommonConDao;
 
 @Repository

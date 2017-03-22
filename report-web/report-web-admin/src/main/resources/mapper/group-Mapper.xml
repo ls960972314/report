@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="group" >
+<mapper namespace="com.report.common.dal.admin.dao.GroupDao" >
 	
-  <resultMap id="groupResultMap" type="com.sypay.omp.per.domain.Group" >
+  <resultMap id="groupResultMap" type="com.report.common.dal.admin.entity.dto.Group" >
     <id column="ID" property="id" jdbcType="INTEGER" />
     <result column="GROUP_CODE" property="groupCode" jdbcType="VARCHAR" />
     <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
@@ -13,7 +13,7 @@
     <result column="CREATER_ID" property="createrId" jdbcType="INTEGER" />
   </resultMap>
   
-  <resultMap type="com.sypay.omp.per.model.GroupModel" id="groupModelResultMap">
+  <resultMap id="groupModelResultMap" type="com.report.common.dal.admin.entity.vo.GroupModel">
   	<result column="id" property="id" jdbcType="VARCHAR" />
   	<result column="group_code" property="groupCode" jdbcType="VARCHAR" />
   	<result column="group_name" property="groupName" jdbcType="VARCHAR" />
@@ -53,6 +53,7 @@
 		g.id,
 		g.group_code,
 		g.group_name,
+		
 		g.status,
 		date_format(g.create_time, '%Y-%m-%d %T') create_time,
 		date_format(g.update_time, '%Y-%m-%d %T') update_time,
@@ -104,21 +105,6 @@
   		g.status = 1
   </select>
   
-  <select id="getGroupByGroupCode" parameterType="string" resultType="com.sypay.omp.per.domain.Group">
-  	select 
-        g.id "id",
-        g.group_code "groupCode",
-        g.group_name "groupName",
-        g.status "status",
-        g.group_type "groupType",
-        g.create_time "createTime",
-        g.update_time "updateTime"
-	from
-	    uc_group g
-	where
-	    g.group_code = #{groupCode}
-  </select>
-  
   <update id="updateGroupCodeByMemberId" parameterType="map">
   	update
   		uc_member_group 
@@ -157,7 +143,7 @@
   	select count(*) from uc_member_group mg where mg.member_id = #{memberId}
   </select>
   
-  <insert id="addMappingGroup2Member" parameterType="com.sypay.omp.per.domain.MemberGroup">
+  <insert id="addMappingGroup2Member" parameterType="map">
   	insert into uc_member_group(id, member_id, group_code, status, create_time, update_time)
   	values(seq_member_group.nextval, #{memberId,jdbcType=INTEGER}, #{groupCode,jdbcType=VARCHAR}, 1, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -12,14 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.common.BaseDao;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.report.VO.ReportCommonConVO;
-import com.sypay.omp.report.dao.BaseDao;
 import com.sypay.omp.report.domain.ReportCommonCon;
 import com.sypay.omp.report.domain.ReportCondition;
 import com.sypay.omp.report.service.ReportCommonConService;
-import com.sypay.omp.report.util.StringUtil;
 
 /**
  * 
@@ -75,11 +75,11 @@ public class ReportCommonConServiceImpl implements ReportCommonConService {
 		Query query = baseDao.getSqlQuery(sql).setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).setFirstResult((pageHelper.getPage() - 1) * pageHelper.getRows()).setMaxResults(pageHelper.getRows());;
 		Map<String, Object> params = new HashMap<String, Object>();
         
-        if (StringUtil.isNotEmpty(reportCommonCon.getToolFlag())) {
+        if (StringUtils.isNotBlank(reportCommonCon.getToolFlag())) {
         	query.setParameter("toolflag", reportCommonCon.getToolFlag());
         	params.put("toolflag", reportCommonCon.getToolFlag());
         }
-        if (StringUtil.isNotEmpty(reportCommonCon.getConFlag())) {
+        if (StringUtils.isNotBlank(reportCommonCon.getConFlag())) {
         	query.setParameter("conflag", reportCommonCon.getConFlag());
         	params.put("conflag", reportCommonCon.getConFlag());
         }
@@ -97,10 +97,10 @@ public class ReportCommonConServiceImpl implements ReportCommonConService {
 	 */
 	private String constructSqlWhere(ReportCommonConVO reportCommonCon) {
 		String str = "";
-		if (StringUtil.isNotEmpty(reportCommonCon.getToolFlag())) {
+		if (StringUtils.isNotBlank(reportCommonCon.getToolFlag())) {
 			str = str + " and toolflag = :toolflag";
 		}
-		 if (StringUtil.isNotEmpty(reportCommonCon.getConFlag())) {
+		 if (StringUtils.isNotBlank(reportCommonCon.getConFlag())) {
 			 str = str + " and conflag = :conflag";
 		}
 		return str;

@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.common.BaseDao;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.report.VO.ReportSqlVO;
-import com.sypay.omp.report.dao.BaseDao;
 import com.sypay.omp.report.domain.ReportSql;
 import com.sypay.omp.report.service.ReportSqlService;
 

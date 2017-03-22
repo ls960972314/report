@@ -21,9 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
-import com.sypay.omp.per.common.Constants;
-import com.sypay.omp.per.domain.Member;
-import com.sypay.omp.per.util.SessionUtil;
+import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.entity.dto.Member;
+import com.report.common.dal.admin.util.SessionUtil;
 import com.sypay.omp.report.domain.Progress;
 import com.sypay.omp.report.domain.ReportLog;
 import com.sypay.omp.report.json.JsonResult;

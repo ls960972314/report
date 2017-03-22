@@ -16,19 +16,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.common.BaseDao;
+import com.report.common.dal.report.entity.vo.Condition;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.report.VO.ChartVO;
 import com.sypay.omp.report.VO.PublicVO;
-import com.sypay.omp.report.dao.BaseDao;
 import com.sypay.omp.report.domain.ReportChart;
 import com.sypay.omp.report.domain.ReportCondition;
 import com.sypay.omp.report.domain.ReportElement;
 import com.sypay.omp.report.domain.ReportPublic;
-import com.sypay.omp.report.queryrule.Condition;
 import com.sypay.omp.report.service.ReportPublicService;
 import com.sypay.omp.report.service.ReportSqlService;
-import com.sypay.omp.report.util.StringUtil;
 
 /**
  * 
@@ -187,7 +186,7 @@ public class ReportPublicServiceImpl implements ReportPublicService {
 		Query query = baseDao.getSqlQuery(sql).setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).setFirstResult((pageHelper.getPage() - 1) * pageHelper.getRows()).setMaxResults(pageHelper.getRows());;
 		Map<String, Object> params = new HashMap<String, Object>();
         
-        if (StringUtil.isNotEmpty(publicVo.getToolFlag())) {
+        if (StringUtils.isNotBlank(publicVo.getToolFlag())) {
         	query.setParameter("toolflag", publicVo.getToolFlag());
         	params.put("toolflag", publicVo.getToolFlag());
         }
@@ -195,7 +194,7 @@ public class ReportPublicServiceImpl implements ReportPublicService {
         	query.setParameter("id", publicVo.getId());
         	params.put("id", publicVo.getId());
         }
-        if (StringUtil.isNotEmpty(publicVo.getToolTitle())) {
+        if (StringUtils.isNotBlank(publicVo.getToolTitle())) {
         	query.setParameter("tooltitle", "%" + publicVo.getToolTitle() + "%");
         	params.put("tooltitle", "%" + publicVo.getToolTitle() + "%");
         }
@@ -214,13 +213,13 @@ public class ReportPublicServiceImpl implements ReportPublicService {
 	 */
 	private String constructSqlWhere(PublicVO publicVo) {
 		String str = "";
-		if (StringUtil.isNotEmpty(publicVo.getToolFlag())) {
+		if (StringUtils.isNotBlank(publicVo.getToolFlag())) {
 			str = str + " and toolflag = :toolflag";
 		}
 		if (publicVo.getId() != null) {
 			str = str + " and id = :id";
 		}
-		if (StringUtil.isNotEmpty(publicVo.getToolTitle())) {
+		if (StringUtils.isNotBlank(publicVo.getToolTitle())) {
 			str = str + " and tooltitle like :tooltitle";
 		}
 		return str;

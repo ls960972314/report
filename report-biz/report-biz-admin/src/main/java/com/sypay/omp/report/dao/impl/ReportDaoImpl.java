@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -18,13 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.alibaba.fastjson.JSON;
-import com.sypay.omp.report.dao.BaseDao;
+import com.report.common.dal.common.BaseDao;
+import com.report.common.dal.report.entity.vo.Condition;
+import com.report.common.dal.report.entity.vo.PagerReq;
+import com.report.common.dal.report.entity.vo.SpObserver;
 import com.sypay.omp.report.dao.ReportDao;
-import com.sypay.omp.report.dataBase.SpObserver;
 import com.sypay.omp.report.domain.ReportSql;
-import com.sypay.omp.report.queryrule.Condition;
-import com.sypay.omp.report.queryrule.PagerReq;
-import com.sypay.omp.report.util.StringUtil;
 
 @Repository
 public class ReportDaoImpl implements ReportDao {
@@ -48,31 +46,6 @@ public class ReportDaoImpl implements ReportDao {
 		req.setBaseCountSql(rq.getBaseCountSql());
 		return req;
 	}
-	/**
-     * 取QID模式的通过base_sql获取返回结果集
-     * @param PagerReq req
-	 * @return List
-     */
-	@Override
-	public List getData(PagerReq req) {
-		Query query = baseDao.getSqlQuery(req.getSql());
-		Map<String, Object> paraMap = req.getParaMap();
-		for (String name : paraMap.keySet()) {
-			query.setParameter(name, paraMap.get(name));
-		}
-		query.setFirstResult((req.getPage() - 1) * req.getRows());
-		query.setMaxResults(req.getRows());
-		return query.list();
-	}
-	/**
-     * 取QID模式的通过base_count_sql获取返回结果集大小
-     * @param PagerReq req
-	 * @return Integer
-     */
-	@Override
-	public Integer getDataCount(PagerReq req) {
-		return baseDao.countBySql(req.getCountSql(), req.getParaMap());
-	}
     
 	@Override
 	public PagerReq setupSmartReportSql(PagerReq req) {
@@ -83,7 +56,7 @@ public class ReportDaoImpl implements ReportDao {
         req.setBaseSql(rq.getBaseSql());
         req.setBaseCountSql(rq.getBaseCountSql());
         req.setDataBaseSource(rq.getDataBaseSource());
-        if (StringUtil.isNotEmpty(rq.getDataBaseSource())) {
+        if (StringUtils.isNotBlank(rq.getDataBaseSource())) {
         	req.setDataBaseSource(rq.getDataBaseSource());
         } else {
         	req.setDataBaseSource(SpObserver.defaultDataBase);
@@ -148,7 +121,7 @@ public class ReportDaoImpl implements ReportDao {
                 }
                 replaceSql = replaceSql.substring(0, replaceSql.length()-1);
                 baseSql = baseSql.replace(":" + conName, replaceSql);
-                if (StringUtil.isNotEmpty(baseCountSql)) {
+                if (StringUtils.isNotBlank(baseCountSql)) {
                 	baseCountSql = baseCountSql.replace(":" + conName, replaceSql);
                 }
                 req.setBaseSql(baseSql);
@@ -160,7 +133,7 @@ public class ReportDaoImpl implements ReportDao {
         conList.addAll(addList);
         /* 如果条件的值没有传,则删掉该条件,替换对应sql中的条件表达式为 1=1 */
         for (Condition con : conList) {
-            if (StringUtil.isEmpty(con.getValue())) {
+            if (StringUtils.isBlank(con.getValue())) {
                 req.setBaseSql(verifyNullCon(req.getBaseSql(), con.getName()));
                 req.setBaseCountSql(verifyNullCon(req.getBaseCountSql(), con.getName()));
                 removeList.add(con);
@@ -270,7 +243,7 @@ public class ReportDaoImpl implements ReportDao {
     /* 将为空的值置为1=1 */
     private String verifyNullCon (String str, String indexStr) {
     	/* where rp_date >= replace(:{1},'-','') and rp_date <= replace(:{2},'-','') order by 1 desc */
-    	if (StringUtil.isNotEmpty(str)) {
+    	if (StringUtils.isNotBlank(str)) {
     		int index = str.indexOf(indexStr);
             int begin = str.lastIndexOf("and", index) == -1?str.lastIndexOf("where", index)+5:str.lastIndexOf("and", index)+3;
             int tmpBegin = str.lastIndexOf("where", index) == -1?str.lastIndexOf("and", index)+3:str.lastIndexOf("where", index)+5;

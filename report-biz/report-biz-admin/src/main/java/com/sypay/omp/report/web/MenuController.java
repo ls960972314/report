@@ -11,11 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sypay.omp.per.common.Constants.MenuType;
+import com.report.common.dal.admin.constant.Constants.MenuType;
 import com.sypay.omp.per.model.MenuCell;
 import com.sypay.omp.per.util.PermissionUtil;
-import com.sypay.omp.report.queryrule.PagerReq;
-import com.sypay.omp.report.queryrule.PagerRsp;
 import com.sypay.omp.report.service.ReportService;
 
 @Controller
@@ -41,17 +39,4 @@ public class MenuController {
         }
     	return Collections.emptyList();
     }
-    
-    @RequestMapping("/loadMenu.htm") 
-    @ResponseBody
-    public List loadMenu(PagerReq paras) throws Exception { 
-    	log.info(paras.getFilters());
-    	paras.setPage(1);
-    	paras.setRows(1000);
-    	PagerRsp rsp = reportService.getReportData(paras);
-    	
-    	List<Object[]> rows = rsp.getRows();
-    	return rows;
-    }  
-
 }

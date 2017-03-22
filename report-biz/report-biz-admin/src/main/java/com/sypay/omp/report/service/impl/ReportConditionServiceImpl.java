@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -12,14 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.common.dal.common.BaseDao;
 import com.sypay.omp.per.model.page.DataGrid;
-import com.sypay.omp.per.model.page.PageHelper;
 import com.sypay.omp.report.VO.ConditionVO;
-import com.sypay.omp.report.dao.BaseDao;
-import com.sypay.omp.report.domain.ReportChart;
 import com.sypay.omp.report.domain.ReportCondition;
 import com.sypay.omp.report.service.ReportConditionService;
-import com.sypay.omp.report.util.StringUtil;
 
 /**
  * 
@@ -65,7 +64,7 @@ public class ReportConditionServiceImpl implements ReportConditionService {
 		Query query = baseDao.getSqlQuery(sql).setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).setFirstResult((pageHelper.getPage() - 1) * pageHelper.getRows()).setMaxResults(pageHelper.getRows());;
 		Map<String, Object> params = new HashMap<String, Object>();
         
-        if (StringUtil.isNotEmpty(condition.getToolFlag())) {
+        if (StringUtils.isNotBlank(condition.getToolFlag())) {
         	query.setParameter("toolflag", condition.getToolFlag());
         	params.put("toolflag", condition.getToolFlag());
         }
@@ -87,7 +86,7 @@ public class ReportConditionServiceImpl implements ReportConditionService {
 	 */
 	private String constructSqlWhere(ConditionVO condition) {
 		String str = "";
-		if (StringUtil.isNotEmpty(condition.getToolFlag())) {
+		if (StringUtils.isNotBlank(condition.getToolFlag())) {
 			str = str + " and toolflag = :toolflag";
 		}
 		if (condition.getId() != null) {

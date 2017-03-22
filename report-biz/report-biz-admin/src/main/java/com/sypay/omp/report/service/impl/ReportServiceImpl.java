@@ -25,12 +25,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sypay.omp.report.dao.BaseDao;
+import com.report.common.dal.common.BaseDao;
+import com.report.common.dal.report.entity.vo.PagerReq;
 import com.sypay.omp.report.dao.ReportDao;
-import com.sypay.omp.report.queryrule.PagerReq;
-import com.sypay.omp.report.queryrule.PagerRsp;
 import com.sypay.omp.report.service.ReportService;
-import com.sypay.omp.report.util.StringUtil;
 
 /**
  * 
@@ -65,7 +63,7 @@ public class ReportServiceImpl implements ReportService {
 		paras = updatePagerReq(paras);
 		String title = paras.getTitle();
 		String[] excelHeader = {};
-		if (StringUtil.isNotEmpty(title)) {
+		if (StringUtils.isNotBlank(title)) {
 			excelHeader = title.split(",");
 		}
 
@@ -149,7 +147,7 @@ public class ReportServiceImpl implements ReportService {
 				sheet.autoSizeColumn(i);
 			}
 		}
-		paras.setTitle(StringUtil.listToStringSlipStr(fullHeader, ","));
+		paras.setTitle(StringUtils.join(fullHeader, ","));
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("paras", paras);
 		map.put("dataIndex", dataIndex);
@@ -157,34 +155,6 @@ public class ReportServiceImpl implements ReportService {
 		map.put("sheet", sheet);
 		map.put("wb", wb);
 		return map;
-	}
-
-	/**
-	 * 根据条件获取数据的入口
-	 * 
-	 * @param PagerReq
-	 *            req
-	 * @return PagerRsp
-	 */
-	@Transactional(readOnly = true)
-	@Override
-	public PagerRsp getReportData(PagerReq req) {
-		PagerRsp rsp = new PagerRsp();
-		// 取QID模式
-		reportDao.setupReportSql(req);
-		rsp.setRows(reportDao.getData(req));
-		if (StringUtils.isEmpty(req.getBaseCountSql())) {
-			int records = rsp.getRows() == null ? 0 : rsp.getRows().size();
-			rsp.setRecords(records);
-		} else {
-			rsp.setRecords(reportDao.getDataCount(req));
-		}
-		if (req.getRows() > 0) {
-			rsp.setTotal((int) Math.ceil((double) rsp.getRecords() / req.getRows()));
-		} else {
-			rsp.setTotal(0);
-		}
-		return rsp;
 	}
 
 	@Override

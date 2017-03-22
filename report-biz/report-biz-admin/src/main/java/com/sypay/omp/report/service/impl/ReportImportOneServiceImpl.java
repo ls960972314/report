@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sypay.omp.report.dao.BaseDao;
+import com.report.common.dal.common.BaseDao;
 import com.sypay.omp.report.service.ReportImportOneService;
-import com.sypay.omp.report.util.StringUtil;
 
 /**
  * 运营导入表一ServiceImpl
@@ -69,7 +68,7 @@ public class ReportImportOneServiceImpl implements ReportImportOneService {
 	public Integer getRptMaxId() {
 		String sql = "select max(id) from rpt_import_one";
 		BigDecimal result = (BigDecimal ) baseDao.getBySql(sql);
-		if (StringUtil.isEmpty(result)) {
+		if (null != result) {
 			return 0;
 		}
 		return result.intValue();
