@@ -1,4 +1,4 @@
-# sypay-report-main
+# report
 文档有待更新……
 
 使用 spring mvc,mysql,echarts,mybaits,hibernate,jQuery,jqGrid,easyui,redis等
@@ -9,6 +9,4 @@ web自动化配置报表平台(只需配置对应的oracle或者mysql语句,不�
 
 博客地址(操作方式有待更新,文中是太老的版本):http://blog.csdn.net/u011506468/article/details/47682417
 
-pom包里有的包可能是第三方，目前还没完全替换掉，可用这个私服地址:
-http://123.207.227.237:8081/nexus/content/groups/public_repository/
 
