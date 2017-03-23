@@ -12,6 +12,7 @@
 		<module>report-common</module>
 		<module>report-biz</module>
 		<module>report-web</module>
+		<module>report-facade</module>
 	</modules>
 	
 	<properties>
@@ -50,9 +51,45 @@
 		<commons-io.version>2.4</commons-io.version>
 		<mail-version>1.4.1</mail-version>
 		<report.version>0.0.1-SNAPSHOT</report.version>
+		<dubbo.version>2.5.3</dubbo.version>
+		<zookeeper.version>3.4.6</zookeeper.version>
+		<netty.version>3.9.9.Final</netty.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
+			<!-- dubbo -->
+			<dependency>
+	            <groupId>com.alibaba</groupId>
+	            <artifactId>dubbo</artifactId>
+	            <exclusions>
+	            	<exclusion>
+	            		<artifactId>spring</artifactId>
+	            		<groupId>org.springframework</groupId>
+	            	</exclusion>
+	            	<exclusion>
+	            		<artifactId>org.jboss.netty</artifactId>
+	            		<groupId>netty</groupId>
+	            	</exclusion>
+	            </exclusions>
+	            <version>${dubbo.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>io.netty</groupId>
+	            <artifactId>netty</artifactId>
+	            <version>${netty.version}</version>
+	       	</dependency>
+			<!-- zookeeper -->
+			<dependency>
+			    <groupId>com.github.sgroschupf</groupId>
+			    <artifactId>zkclient</artifactId>
+			    <version>0.1</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.report</groupId>
+				<artifactId>report-facade</artifactId>
+				<version>${report.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.report</groupId>
 				<artifactId>report-common</artifactId>

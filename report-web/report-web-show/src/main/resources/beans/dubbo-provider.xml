@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+    <dubbo:application name="report-query" />
+    
+    <dubbo:registry address="${dubbo_report_query_port}"/>
+    
+    <dubbo:protocol name="dubbo" port="20880" />
+    
+    <dubbo:service ref="reportChartService" interface="com.report.facade.service.ReportChartService" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    <dubbo:service ref="reportCommonConService" interface="com.report.facade.service.ReportCommonConService" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    <dubbo:service ref="reportConditionService" interface="com.report.facade.service.ReportConditionService" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    <dubbo:service ref="reportLogService" interface="com.report.facade.service.ReportLogService" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    <dubbo:service ref="reportModelService" interface="com.report.facade.service.ReportModelService" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    <dubbo:service ref="reportPublicService" interface="com.report.facade.service.ReportPublicService" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    <dubbo:service ref="reportService" interface="com.report.facade.service.ReportService" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    <dubbo:service ref="reportSqlService" interface="com.report.facade.service.ReportSqlService" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    <dubbo:service ref="reportConfigService" interface="com.report.facade.service.ReportConfigService" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    
+</beans>

@@ -119,7 +119,7 @@ $(function() {
 		url: "report/queryAll",
 		type: "POST",
 		cache: false,
-		data: {
+		data: { 
 			reportFlag: flagStr[1],
 			conFlag: commonCon
 		},

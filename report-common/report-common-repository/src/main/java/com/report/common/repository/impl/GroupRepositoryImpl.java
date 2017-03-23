@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 import com.report.common.dal.admin.dao.GroupDao;
 import com.report.common.dal.admin.entity.dto.Group;
 import com.report.common.dal.admin.entity.vo.GroupModel;
-import com.report.common.dal.admin.entity.vo.PageHelper;
 import com.report.common.dal.admin.util.MybatisUtil;
 import com.report.common.dal.admin.util.PageUtil;
 import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.repository.GroupRepository;
+import com.report.facade.entity.PageHelper;
 
 @Service
 public class GroupRepositoryImpl implements GroupRepository {

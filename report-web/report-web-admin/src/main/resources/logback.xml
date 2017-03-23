@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
-    <substitutionProperty name="log.base" value="../applog/reportLog" />
+    <substitutionProperty name="log.base" value="../adminLog/reportLog" />
     <substitutionProperty name="log.app" value="${log.base}/otherLog" />
     <substitutionProperty name="log.queryLog" value="${log.base}/queryLog" />
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">

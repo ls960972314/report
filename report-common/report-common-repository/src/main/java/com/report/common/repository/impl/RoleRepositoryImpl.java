@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import com.report.common.dal.admin.constant.Constants.MenuType;
 import com.report.common.dal.admin.dao.RoleDao;
 import com.report.common.dal.admin.entity.dto.Role;
-import com.report.common.dal.admin.entity.vo.PageHelper;
 import com.report.common.dal.admin.entity.vo.RoleCell;
 import com.report.common.dal.admin.entity.vo.RoleCriteriaModel;
 import com.report.common.dal.admin.entity.vo.RoleListSysModel;
@@ -27,8 +26,9 @@ import com.report.common.dal.admin.util.PageUtil;
 import com.report.common.dal.admin.util.RoleUtil;
 import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.dal.common.BaseDao;
-import com.report.common.dal.report.util.ObjectUtil;
+import com.report.common.dal.query.util.ObjectUtil;
 import com.report.common.repository.RoleRepository;
+import com.report.facade.entity.PageHelper;
 
 @Service
 public class RoleRepositoryImpl implements RoleRepository {

@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
 	http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
-	<bean id="dataSource" class="com.report.common.dal.report.entity.vo.MultiDataSource">    
+	<bean id="dataSource" class="com.report.facade.entity.vo.MultiDataSource">    
         <property name="dataSource">
             <ref bean="ods" />
     	</property>
@@ -48,10 +48,4 @@
         <property name="basePackage" value="com.report.common.dal.admin.dao"></property>  
     </bean>
     
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="sqlSessionFactory" />
-	</bean>
-	<bean id="mybatisBaseService" class="com.sypay.omp.report.service.impl.MybatisBaseServiceImpl">
-		<property name="sqlSession" ref="sqlSession"></property>
-	</bean>
 </beans>

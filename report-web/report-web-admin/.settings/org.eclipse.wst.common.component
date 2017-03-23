@@ -22,6 +22,9 @@
         <dependent-module archiveName="report-common-dal-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/report-common-dal/report-common-dal">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="report-facade-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/report-facade/report-facade">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="report-biz-admin-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/report-biz-admin/report-biz-admin">
             <dependency-type>uses</dependency-type>
         </dependent-module>

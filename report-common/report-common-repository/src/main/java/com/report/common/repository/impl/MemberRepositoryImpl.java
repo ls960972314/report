@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import com.report.common.dal.admin.dao.MemberDao;
 import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
 import com.report.common.dal.admin.entity.vo.MemberModel;
-import com.report.common.dal.admin.entity.vo.PageHelper;
 import com.report.common.dal.admin.util.MybatisUtil;
 import com.report.common.dal.admin.util.PageUtil;
 import com.report.common.repository.MemberRepository;
+import com.report.facade.entity.PageHelper;
 
 @Service
 public class MemberRepositoryImpl implements MemberRepository {

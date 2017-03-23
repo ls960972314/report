@@ -80,7 +80,7 @@
            <mvc:exclude-mapping path="/toLogin.htm"/>
            <mvc:exclude-mapping path="/doLogin.htm"/>
            <mvc:exclude-mapping path="/logout"/>
-           <bean class="com.sypay.omp.report.interceptor.LoginInterceptor" >
+           <bean class="com.report.common.dal.common.LoginInterceptor" >
                 <!-- 验证失败跳转地址 -->
                 <property name="failTogo" value="/toLogin.htm"></property>
            </bean>

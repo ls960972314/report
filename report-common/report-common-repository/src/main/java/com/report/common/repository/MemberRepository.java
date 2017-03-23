@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
 import com.report.common.dal.admin.entity.vo.MemberModel;
-import com.report.common.dal.admin.entity.vo.PageHelper;
+import com.report.facade.entity.PageHelper;
 
 public interface MemberRepository {
 

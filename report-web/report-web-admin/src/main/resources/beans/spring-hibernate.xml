@@ -19,7 +19,6 @@
 		</property>
 		<property name="packagesToScan">
 			<list>
-				<value>com.sypay.omp.**.domain</value>
 				<value>com.report.common.dal.**.entity.dto</value>
 			</list>
 		</property>

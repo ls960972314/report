@@ -13,7 +13,6 @@
 		<!-- <plugin interceptor="com.sypay.frmw.Interceptor.MybatisPageCountInterceptor" 
 			/> -->
 		<!-- 分页拦截器 -->
-		<plugin
-			interceptor="com.sypay.omp.report.mybatis.interceptor.MybatisPagedInterceptor" />
+		<plugin interceptor="com.report.common.dal.common.MybatisPagedInterceptor" />
 	</plugins>
 </configuration> 

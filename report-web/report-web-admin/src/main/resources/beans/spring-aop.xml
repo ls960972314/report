@@ -10,12 +10,12 @@
 	<aop:config>  
         <aop:aspect id="logAspect" ref="aspectBean">  
             <!--配置com.spring.service包下所有类或接口的所有方法-->  
-            <aop:pointcut id="businessService" expression="execution(* com.sypay.omp.report.web.*.*(..))" />  
+            <aop:pointcut id="businessService" expression="execution(* com.report.web.admin.controller.*.*(..))" />  
             <aop:around pointcut-ref="businessService" method="doAround"/>  
             <aop:after-throwing pointcut-ref="businessService" method="doThrowing" throwing="ex"/>  
         </aop:aspect>  
     </aop:config>
     
-    <bean id="aspectBean" class="com.sypay.omp.report.aop.OperateAop" />
+    <bean id="aspectBean" class="com.report.common.model.OperateAop" />
     
 </beans>

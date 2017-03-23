@@ -23,22 +23,21 @@
 	</bean>
 
 	<!-- 自动扫描且只扫描@Controller -->
-	<context:component-scan base-package="com.sypay.**.web" />
-	<context:component-scan base-package="com.sypay.**.aop" />
-	<context:component-scan base-package="com.sypay.**.dao.impl,com.sfpay.**.dao.impl,com.sypay.**.service.impl,com.sfpay.**.service.impl" />
+	<context:component-scan base-package="com.report.web.**.controller" />
+	<context:component-scan base-package="com.report.biz.admin.service.impl" />
 	<context:component-scan base-package="com.report.common.repository.impl" />
+	<context:component-scan base-package="com.report.common.dal.common.dao.impl,com.report.common.dal.admin.dao.impl" />
 	
 	<bean id="contextHelper" class="com.report.common.dal.common.ContextHelper"/>
 	
-	<bean class="com.sypay.omp.per.util.PermissionUtil">
-		<property name="resourceService" ref="resourceService"></property>
-	</bean>
 
-	<bean id="multipartResolver" class="com.sypay.omp.report.web.CustomMultipartResolver">
-		<property name="defaultEncoding" value="UTF-8" />
-	</bean>
 	<import resource="beans/spring-mybatis.xml" />
 	<import resource="beans/spring-hibernate.xml" />
 	<import resource="beans/spring-mvc.xml" />
 	<import resource="beans/spring-aop.xml" />
+	<import resource="beans/dubbo-consumer.xml" />
+	
+	<bean class="com.report.common.dal.common.PermissionUtil">
+		<property name="resourceDao" ref="resourceDao"></property>
+	</bean>
 </beans>

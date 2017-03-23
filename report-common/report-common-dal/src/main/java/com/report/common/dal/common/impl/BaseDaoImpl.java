@@ -23,11 +23,11 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import com.alibaba.fastjson.JSON;
 import com.report.common.dal.common.BaseDao;
 import com.report.common.dal.common.ContextHelper;
-import com.report.common.dal.report.entity.vo.Condition;
-import com.report.common.dal.report.entity.vo.MultiDataSource;
-import com.report.common.dal.report.entity.vo.PagerReq;
-import com.report.common.dal.report.entity.vo.SpObserver;
-import com.report.common.dal.report.util.BeanUtil;
+import com.report.common.dal.query.util.BeanUtil;
+import com.report.facade.entity.vo.Condition;
+import com.report.facade.entity.vo.MultiDataSource;
+import com.report.facade.entity.vo.PagerReq;
+import com.report.facade.entity.vo.SpObserver;
 
 public class BaseDaoImpl implements BaseDao {
 

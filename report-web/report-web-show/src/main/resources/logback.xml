@@ -54,14 +54,14 @@
 
     <logger name="org.hibernate" level="info"/>
     <logger name="org.springframework" level="info"/>
-    <logger name="com.sypay" level="info"/>
+    <logger name="com.report" level="info"/>
     <logger name="reportQuery" level="info"  additivity="false">
     	<appender-ref ref="reportQuery"/>
     </logger>
     
          
     <root level="debug">
-        <appender-ref ref="reportOther"/>
         <appender-ref ref="console"/>
+        <appender-ref ref="reportOther"/>
     </root>
 </configuration>

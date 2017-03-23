@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.Set;
 
 import com.report.common.dal.admin.entity.dto.Role;
-import com.report.common.dal.admin.entity.vo.PageHelper;
 import com.report.common.dal.admin.entity.vo.RoleCell;
 import com.report.common.dal.admin.entity.vo.RoleCriteriaModel;
 import com.report.common.dal.admin.entity.vo.RoleListSysModel;
 import com.report.common.dal.admin.entity.vo.RoleModel;
+import com.report.facade.entity.PageHelper;
 
 public interface RoleRepository {
 
