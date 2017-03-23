@@ -1,6 +1,8 @@
 # report
 文档有待更新……
 
+有需要脚本的麻烦star下,留下邮箱
+
 使用 spring mvc,mysql,echarts,mybaits,hibernate,jQuery,jqGrid,easyui,redis等
 
 web自动化配置报表平台(只需配置对应的oracle或者mysql语句,不需要写代码)
