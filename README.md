@@ -10,18 +10,21 @@ web自动化配置报表平台(只需配置对应的oracle或者mysql语句,不�
 
  
 ## 项目结构
-report-common-dal    数据层
-report-common-util   工具类层
+
+<pre>
+report-common-dal    数据层
+report-common-util   工具类层
 report-common-model  数据模型层
 report-common-repository  基础数据查询层
-
 report-biz-share    业务共享层
 report-biz-admin    报表后台管理业务层
 report-biz-query    报表查询业务层
-
 report-facade    各系统接口层
 report-web-admin    报表运行服务
 report-web-query     报表查询后台服务
+</pre>
+report-web-admin中包含大部分操作,报表的查询和下载等处理放到report-web-query中,report-web-admin通过rpc调用report-web-query中的接口
+
 
 ## 正在优化
 
