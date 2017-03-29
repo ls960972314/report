@@ -103,11 +103,6 @@
 			</dependency>
 			<dependency>
 				<groupId>com.report</groupId>
-				<artifactId>report-biz-rptmanager</artifactId>
-				<version>${report.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.report</groupId>
 				<artifactId>report-biz-share</artifactId>
 				<version>${report.version}</version>
 			</dependency>
@@ -123,7 +118,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.report</groupId>
-				<artifactId>report-web-show</artifactId>
+				<artifactId>report-web-query</artifactId>
 				<version>${report.version}</version>
 			</dependency>
 			

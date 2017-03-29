@@ -6,7 +6,7 @@
 		<artifactId>report-web</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>report-web-show</artifactId>
+	<artifactId>report-web-query</artifactId>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -39,6 +39,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>report-web-show</finalName>
+		<finalName>report-web-query</finalName>
 	</build>
 </project>

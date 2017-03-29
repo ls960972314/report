@@ -9,6 +9,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>report-web-admin</module>
-  	<module>report-web-show</module>
+  	<module>report-web-query</module>
   </modules>
 </project>

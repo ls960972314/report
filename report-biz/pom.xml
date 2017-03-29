@@ -10,7 +10,6 @@
   <modules>
   	<module>report-biz-admin</module>
   	<module>report-biz-query</module>
-  	<module>report-biz-rptmanager</module>
   	<module>report-biz-share</module>
   </modules>
 </project>
