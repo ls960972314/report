@@ -4,7 +4,8 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="report-biz-rptmanager-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/report-biz-rptmanager/report-biz-rptmanager">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+        <dependent-module archiveName="report-biz-admin-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/report-biz-admin/report-biz-admin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="report-biz-share-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/report-biz-share/report-biz-share">
@@ -23,9 +24,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="report-facade-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/report-facade/report-facade">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="report-biz-admin-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/report-biz-admin/report-biz-admin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="report-web-admin"/>
