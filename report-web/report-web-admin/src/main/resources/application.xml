@@ -35,9 +35,6 @@
 	<import resource="beans/spring-hibernate.xml" />
 	<import resource="beans/spring-mvc.xml" />
 	<import resource="beans/spring-aop.xml" />
+	<import resource="beans/spring-shiro.xml" />
 	<import resource="beans/dubbo-consumer.xml" />
-	
-	<bean class="com.report.common.dal.common.PermissionUtil">
-		<property name="resourceDao" ref="resourceDao"></property>
-	</bean>
 </beans>

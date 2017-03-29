@@ -3,6 +3,7 @@ package com.report.biz.admin.service.impl;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -18,8 +19,10 @@ import com.report.common.dal.admin.entity.dto.MemberGroup;
 import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
 import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.dal.common.BaseDao;
+import com.report.common.model.UserModel;
 import com.report.common.repository.GroupRepository;
 import com.report.common.repository.MemberRepository;
+import com.report.common.repository.ResourceRepository;
 import com.report.common.repository.RoleRepository;
 import com.report.common.util.MD5;
 import com.report.facade.entity.DataGrid;
@@ -31,14 +34,42 @@ public class MemberServiceImpl implements MemberService {
 
     @Resource
     private BaseDao baseDao;
+    
     @Resource
     private MemberRepository memberRepository;
+    
     @Resource
     private GroupRepository groupRepository;
     
     @Resource
     private RoleRepository roleRepository;
+    
+    @Resource
+    private ResourceRepository resourceRepository;
 
+    @Override
+	public Set<String> findRoles(String accNo) {
+    	return roleRepository.findRoles(accNo);
+	}
+
+	@Override
+	public Set<String> findPermissions(String accNo) {
+		return resourceRepository.findPermissions(accNo);
+	}
+	
+    @Override
+	public UserModel findUserModelByAccNo(String username) {
+		Member member = memberRepository.findMemberByAccNo(username);
+		if (null != member) {
+			UserModel userModel = new UserModel();
+			userModel.setPassword(member.getPassword());
+			userModel.setAccNo(member.getAccNo());
+			userModel.setUsername(member.getName());
+			return userModel;
+		}
+		return null;
+	}
+    
     @Override
 	public Member getMemberByLoginName(String loginName) {
 	    Map<String, Object> params = new HashMap<String, Object>();
@@ -55,7 +86,6 @@ public class MemberServiceImpl implements MemberService {
         target.setAccNo(member.getAccNo());
         target.setName(member.getName());
         target.setStatus(member.getStatus());
-        target.setMemberType(member.getMemberType());
 
         // 判断该会员有没有关联groupCode，如果没有的话，就insert；如果有的话，就update
         if (groupRepository.isAssociatedWithGroup(member.getId())) {
@@ -65,17 +95,7 @@ public class MemberServiceImpl implements MemberService {
             // 没有关联
             groupRepository.associatedWithGroup(member.getId(), groupCode, currentMemberIp);
         }
-
         baseDao.update(target);
-
-        // XXX 添加更新人员信息的操作日志
-        /*OperationLogging logging = new OperationLogging();
-        logging.setMemberId(member.getId());
-        logging.setMemberIp(memberIp);
-        logging.setOperationStatus(Constants.OperationStatus.SUCC);
-        logging.setOperationTime(now);
-        logging.setOperationType(Constants.OperationType.EDIT_MEMBER_INFO);
-        baseDao.save(logging);*/
         return true;
     }
 
@@ -99,16 +119,6 @@ public class MemberServiceImpl implements MemberService {
             memberGroup.setStatus(member.getStatus());
             baseDao.save(memberGroup);
         }
-        
-
-        // XXX 添加新增人员信息的操作日志
-        /*OperationLogging logging = new OperationLogging();
-        logging.setMemberId(memberId);
-        logging.setMemberIp(currentMemberIp);
-        logging.setOperationTime(date);
-        logging.setOperationType(Constants.OperationType.NEW_MEMBER_INFO);
-        logging.setOperationStatus(Constants.OperationStatus.SUCC);
-        baseDao.save(logging);*/
     }
 
     @Override
@@ -124,16 +134,6 @@ public class MemberServiceImpl implements MemberService {
             query.setLong("memberId", id);
             flag = query.executeUpdate() > 0;
         }
-
-        // XXX 添加物理删除人员的操作日志
-        /*OperationLogging logging = new OperationLogging();
-        logging.setMemberId(id);
-        logging.setMemberIp(currentMemberIp);
-        logging.setOperationStatus(flag ? Constants.OperationStatus.SUCC : Constants.OperationStatus.FAIL);
-        logging.setOperationTime(new Date());
-        logging.setOperationType(Constants.OperationType.DELETE_MEMBER_PHYSICALLY);
-        baseDao.save(logging);*/
-
         return flag;
     }
 
@@ -145,16 +145,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean resetPassword(Long memberId, String memberIp) {
         boolean flag = memberRepository.resetPassword(memberId, MD5.getMD5String(Constants.DEFAULT_PASSWORD_FOR_MEMBER));
-
-        // XXX 添加重置密码的操作日志
-        /*OperationLogging logging = new OperationLogging();
-        logging.setMemberId(memberId);
-        logging.setMemberIp(memberIp);
-        logging.setOperationStatus(flag ? Constants.OperationStatus.SUCC : Constants.OperationStatus.FAIL);
-        logging.setOperationTime(new Date());
-        logging.setOperationType(Constants.OperationType.RESET_PASSWORD_FOR_MEMBER);
-        baseDao.save(logging);*/
-
         return flag;
     }
 

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -13,6 +14,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Sets;
 import com.report.common.dal.admin.dao.ResourceDao;
 import com.report.common.dal.admin.entity.dto.Resource;
 import com.report.common.dal.admin.entity.vo.ResourceModel;
@@ -28,6 +30,12 @@ public class ResourceRepositoryImpl implements ResourceRepository {
 
     @Autowired
     private ResourceDao resourceDao;
+    
+    @Override
+	public Set<String> findPermissions(String accNo) {
+    	List<String> list = resourceDao.findPermissions(accNo);
+    	return Sets.newHashSet(list);
+	}
 
     @Override
     public List findAllResource() {
@@ -133,5 +141,4 @@ public class ResourceRepositoryImpl implements ResourceRepository {
 		query.setParameter("reportFlag", "%" +reportFlag + "%");
 		return query.list();
 	}
-
 }

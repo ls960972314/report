@@ -13,6 +13,13 @@ import com.report.facade.entity.PageHelper;
 
 public interface RoleRepository {
 
+	/**
+	 * 根据用户账号查找角色集合
+	 * @param accNo
+	 * @return
+	 */
+	public Set<String> findRoles(String accNo);
+	
 	List<Role> findRoles();
 
 	List<Map<String, String>> findRoleNamesByGroupCode(String groupCode);
@@ -29,7 +36,6 @@ public interface RoleRepository {
 
 	List<String> findSysCodeByRoleCodes(List<String> roleCodes);
 
-	// 角色管理页面中要显示给系统管理员的数据
 	List<RoleModel> findRoleListByCriteria(PageHelper pageHelper, RoleCriteriaModel roleCriteriaModel);
 
 	Long countRoleByCriteria(RoleCriteriaModel roleCriteriaModel);
@@ -38,7 +44,6 @@ public interface RoleRepository {
 
 	boolean isSameRoleCode(Long roleId, String roleCode);
 
-	// 查询会员所有角色
 	List<Role> findAllRoles(Long memberId);
 
     RoleCell getByRoleCode(String roleCode);

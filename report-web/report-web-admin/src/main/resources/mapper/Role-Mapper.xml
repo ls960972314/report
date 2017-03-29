@@ -3,14 +3,14 @@
 <mapper namespace="com.report.common.dal.admin.dao.RoleDao" >
 
   <resultMap type="com.report.common.dal.admin.entity.dto.Role" id="roleResultMap">
-  	<id column="ID" property="id" jdbcType="INTEGER" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
-    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="SYS_CODE" property="sysCode" jdbcType="VARCHAR" />
-    <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
-    <result column="STATUS" property="status" jdbcType="INTEGER" />
+  	<id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="syscode" property="sysCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   
   <resultMap type="com.report.common.dal.admin.entity.vo.RoleModel" id="roleModelResultMap">
@@ -254,6 +254,20 @@
 	where r.role_code = gr.role_code
 	   and gr.group_code = mg.group_code
 	   and mg.member_id = #{memberId}
+  </select>
+  
+  <select id="findRoles" parameterType="string" resultType="string">
+	SELECT
+		r.role_code
+	FROM
+		uc_role r,
+		uc_member_group mg,
+		uc_group_role gr,
+		uc_member m
+	WHERE m.id = mg.member_id
+	AND	r.role_code = gr.role_code
+	AND gr.group_code = mg.group_code
+	AND m.acc_no = #{accNo, jdbcType=VARCHAR}
   </select>
   
 </mapper>

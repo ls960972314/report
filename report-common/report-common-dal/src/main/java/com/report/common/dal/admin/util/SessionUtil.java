@@ -1,18 +1,16 @@
 package com.report.common.dal.admin.util;
 
-import javax.servlet.http.HttpSession;
-
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 
 import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.dto.Member;
 
 public class SessionUtil {
 	
-    public static HttpSession getHttpSession() {
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return attr.getRequest().getSession(false);
+    public static Session getHttpSession() {
+    	Session session = SecurityUtils.getSubject().getSession();
+        return session;
     }
 
     public static boolean isPerAdmin() {

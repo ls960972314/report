@@ -325,7 +325,6 @@ public class ReportController {
     public Object saveChartImage(@RequestParam String url,@RequestParam String index,HttpServletRequest request) {
     	String loginName = (String)request.getSession().getAttribute("mailImgName");
     	/* 得到项目根路径 */
-    	//String rootPath = request.getSession().getServletContext().getRealPath("/");
     	String rootPath = getImgUrl();
     	if (StringUtils.isBlank(url)) {
     		log.info("saveChartImage  缺少参数");
@@ -335,7 +334,6 @@ public class ReportController {
     		String []imgurl = url.split(",");	
     		String u = imgurl[1];
 	    	byte[] b = new BASE64Decoder().decodeBuffer(u);
-//	    	OutputStream out = new FileOutputStream(new File("D:\\workspace\\echarts_images\\"+System.currentTimeMillis()+".png"));
 	    	OutputStream out = new FileOutputStream(rootPath +  new File(loginName+index+".png"));
 	        out.write(b);
 	        out.flush();

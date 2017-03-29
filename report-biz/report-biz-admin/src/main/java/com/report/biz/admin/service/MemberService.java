@@ -1,42 +1,44 @@
 package com.report.biz.admin.service;
 
+import java.util.Set;
+
 import com.report.common.dal.admin.entity.dto.Member;
 import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
+import com.report.common.model.UserModel;
 import com.report.facade.entity.DataGrid;
 import com.report.facade.entity.PageHelper;
 
+/**
+ * 用户service
+ * @author lishun
+ * @since 2017年3月24日 下午4:34:08
+ */
 public interface MemberService {
+	
+	/**
+	 * 根据用户账号查找角色集合
+	 * @param accNo
+	 * @return
+	 */
+	public Set<String> findRoles(String accNo);
+	/**
+	 * 根据用户账号查找权限集合
+	 * @param accNo
+	 * @return
+	 */
+	public Set<String> findPermissions(String accNo);
+	/**
+	 * 根据用户账号查找UserModel
+	 * @param username
+	 * @return
+	 */
+	public UserModel findUserModelByAccNo(String accNo);
 
-    /**
-     * 查找列表
-     * 
-     * @param pageHelper 分页对象
-     */
-    //	DataGrid findMembers(PageHelper pageHelper, Long currentMemberId);
-
-    /**
-     * 更新对象
-     * 
-     * @param member
-     */
     boolean updateMember(Member member, String groupCode, String currentMemberIp, Long currentMemberId);
 
-    /**
-     * 保存对象
-     * 
-     * @param member
-     */
     void saveMember(Member member, String groupCode, String currentMemberIp, Long currentMemberId);
 
-    /**
-     * 删除对象
-     * 
-     * @param id
-     * @return
-     */
     boolean deleteMemberById(Long Id, String memberIp);
-
-    //	DataGrid findMemberListByName(String name, PageHelper pageHelper, Long currentMemberId);
 
     boolean isPasswordRight(Long currentMemberId, String password);
 
@@ -49,4 +51,6 @@ public interface MemberService {
     DataGrid findMemberListByCriteria(MemberCriteriaModel memberCriteria, PageHelper pageHelper);
 
     Member getMemberByLoginName(String loginName);
+
+	
 }

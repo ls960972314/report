@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Sets;
 import com.report.common.dal.admin.constant.Constants.MenuType;
 import com.report.common.dal.admin.dao.RoleDao;
 import com.report.common.dal.admin.entity.dto.Role;
@@ -38,6 +39,12 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Resource
     private RoleDao roleDao;
 
+    @Override
+	public Set<String> findRoles(String accNo) {
+    	List<String> list = roleDao.findRoles(accNo);
+		return Sets.newHashSet(list);
+	}
+    
     @Override
     public List<Role> findRoles() {
         return baseDao.find(Role.class);

@@ -21,18 +21,13 @@ import com.report.common.model.ResultCodeConstants;
 import com.report.facade.entity.DataGrid;
 import com.report.facade.entity.PageHelper;
 
-/**
- * @Title: Controller
- * @Description: 组
- * @date 2014-10-14 14:10:27
- * @version V1.0
- *
- */
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-
-    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     @Autowired
     private MemberService memberService;

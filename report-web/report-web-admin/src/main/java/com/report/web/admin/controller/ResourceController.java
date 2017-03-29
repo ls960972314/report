@@ -7,9 +7,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,12 +23,10 @@ import com.report.common.model.AjaxJson;
 import com.report.common.model.ResultCodeConstants;
 import com.report.common.util.SysCodeResourcesUtil;
 
-/**
- * 资源管理
- * 
- * @author dumengchao
- * 
- */
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 @Controller
 @RequestMapping("/resource")
 public class ResourceController {
@@ -139,7 +137,7 @@ public class ResourceController {
     }
 
     private Map<String, List<PackageResourceModel>> getFormatterSysCodeReourceMap() {
-        HttpSession session = SessionUtil.getHttpSession();
+        Session session = SessionUtil.getHttpSession();
 
         Long memberId = Long.valueOf(String.valueOf(session.getAttribute(Constants.SESSION_LOGIN_MEMBER_ID)));
 

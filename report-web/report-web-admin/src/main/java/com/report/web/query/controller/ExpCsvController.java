@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,19 +19,17 @@ import com.report.facade.entity.vo.PagerReq;
 import com.report.facade.entity.vo.SpObserver;
 import com.report.facade.service.ReportService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 导出数据
  * @author lishun
  *
  */
+@Slf4j
 @Controller
 @RequestMapping("/exp")
 public class ExpCsvController {
-	
-	private final  Logger log = LoggerFactory.getLogger(ExpCsvController.class);
-	
-	/*  querylog中专门存放跟报表访问和导出相关的log，可以从该log中分析出报表使用的频率和异常 */
-	private final  Logger querylog = LoggerFactory.getLogger("reportQuery");
 	
 	@Autowired
 	ReportService reportService;
@@ -48,7 +44,7 @@ public class ExpCsvController {
     public void smartExpCsv(PagerReq paras, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
     	Member member = SessionUtil.getLoginInfo();
-    	querylog.info("smartExpCsv memberId:{} memberName:{} condition:{} title:{} fileName:{}", member.getId(), member.getName(), paras.getCondition(), paras.getTitle(), paras.getFileName());
+    	log.info("smartExpCsv memberId:{} memberName:{} condition:{} title:{} fileName:{}", member.getId(), member.getName(), paras.getCondition(), paras.getTitle(), paras.getFileName());
     	try {
             Map<String, Object> map = reportService.smartReportExport(paras);
             XSSFWorkbook wb = (XSSFWorkbook) map.get("wb");
@@ -72,7 +68,7 @@ public class ExpCsvController {
             ouputStream.flush();
             ouputStream.close();
 		} catch (Exception e) {
-			querylog.info("smartExpCsv exception {}", e.toString());
+			log.error("smartExpCsv exception", e);
 			throw e;
 		}
     }

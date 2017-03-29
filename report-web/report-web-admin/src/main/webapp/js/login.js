@@ -3,14 +3,14 @@ if (this != window.top) {
 }
 
 function login() {
-	var systemName = $('#systemName').val();
-	var systemPW = $('#systemPW').val();
+	var username = $('#username').val();
+	var password = $('#password').val();
 
-	if (systemName == '') {
+	if (username == '') {
 		$.messager.alert('系统提示', '请输入用户名', 'warning');
 		return false;
 	}
-	if (systemPW == '') {
+	if (password == '') {
 		$.messager.alert('系统提示', '请输入密码', 'warning');
 		return false;
 	}
@@ -20,9 +20,9 @@ function login() {
 
 //修改密码
 function editPW() {
-	var oldpass = $('#oldSystemPW').val();
-	var newPass = $('#newSystemPW').val();
-	var rePass = $('#reSystemPW').val();
+	var oldpass = $('#oldpassword').val();
+	var newPass = $('#newpassword').val();
+	var rePass = $('#repassword').val();
 
 	if (oldpass == '') {
 		$.messager.alert('系统提示', '请输入原始密码', 'warning');
@@ -54,30 +54,30 @@ function editPW() {
 	}
 
 	$.post($('#basePath').val() + "systemEditPassword.htm", {
-		systemPW : oldpass,
-		newSystemPW : rePass
+		password : oldpass,
+		newpassword : rePass
 	}, function(data, textStatus) {
 		if (data == 'S') {
 			$.messager.alert('系统提示', '恭喜,密码修改成功', 'info');
-			$('#oldSystemPW').val('');
-			$('#newSystemPW').val('');
-			$('#reSystemPW').val('');
+			$('#oldpassword').val('');
+			$('#newpassword').val('');
+			$('#repassword').val('');
 			closePW();
 		} else if (data == 'D') {
 			$.messager.alert('系统提示', '非常抱歉,原始密码输入错误', 'warning');
-			$('#oldSystemPW').val('');
-			$('#newSystemPW').val('');
-			$('#reSystemPW').val('');
+			$('#oldpassword').val('');
+			$('#newpassword').val('');
+			$('#repassword').val('');
 		} else if (data == 'F') {
 			$.messager.alert('系统提示', '非常抱歉,存在为空的输入栏', 'warning');
-			$('#oldSystemPW').val('');
-			$('#newSystemPW').val('');
-			$('#reSystemPW').val('');
+			$('#oldpassword').val('');
+			$('#newpassword').val('');
+			$('#repassword').val('');
 		} else {
 			$.messager.alert('系统提示', '非常抱歉,后台数据保存异常', 'warning');
-			$('#oldSystemPW').val('');
-			$('#newSystemPW').val('');
-			$('#reSystemPW').val('');
+			$('#oldpassword').val('');
+			$('#newpassword').val('');
+			$('#repassword').val('');
 		}
 	});
 

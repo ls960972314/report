@@ -26,17 +26,13 @@ import com.report.common.model.ResultCodeConstants;
 import com.report.facade.entity.DataGrid;
 import com.report.facade.entity.PageHelper;
 
-/**
- * 角色管理
- * 
- * @author sypay
- * 
- */
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 @Controller
 @RequestMapping("/role")
 public class RoleController {
-
-    private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
 
     @Resource
     private RoleService roleService;

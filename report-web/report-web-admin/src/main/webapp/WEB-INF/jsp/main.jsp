@@ -46,7 +46,9 @@
 			<div class="fr" style="display:block;">
 				<span class="tip">
 				<c:if test="${hasPrevilege == 1}">
-				<a style="font-size: 12px;color: antiquewhite;" href="${pageContext.request.contextPath}/toPermission.htm" target="_blank">权限管理</a>
+					<shiro:hasPermission name="public/public.htm">
+						<a style="font-size: 12px;color: antiquewhite;" href="${pageContext.request.contextPath}/toPermission.htm" target="_blank">权限管理</a>
+					</shiro:hasPermission>
 				</c:if>
 				<c:if test="${hasPrevilege != 1}">
 				</c:if>

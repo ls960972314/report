@@ -16,17 +16,17 @@
 	</modules>
 	
 	<properties>
+		<report.version>0.0.1-SNAPSHOT</report.version>
 		<mysql.version>5.1.21</mysql.version>
 		<spring-version>4.2.5.RELEASE</spring-version>
 		<servlet-version>3.0-alpha-1</servlet-version>
 		<druid-version>1.0.7</druid-version>
 		<mybatis.version>3.2.7</mybatis.version>
 		<mybatis-spring.version>1.2.1</mybatis-spring.version>
-		<aspectj-version>1.6.8</aspectj-version>
+		<aspectj-version>1.8.8</aspectj-version>
 		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
 		<commons-beanutils.version>1.8.3</commons-beanutils.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hibernate.version>4.2.1.Final</hibernate.version>
 		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
 		<jackson-version>2.1.1</jackson-version>
@@ -34,57 +34,28 @@
 		<jsp-api.version>2.0</jsp-api.version>
 		<jstl-api.version>1.2-rev-1</jstl-api.version>
 		<taglibs.version>1.1.2</taglibs.version>
-		<quartz.version>1.6.3</quartz.version>
 		<commons-codec.version>1.6</commons-codec.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<fastjson.version>1.1.41</fastjson.version>
-		<slf4j-api.version>1.7.0</slf4j-api.version>
-		<jcl-over-slf4j.version>1.6.2</jcl-over-slf4j.version>
-		<logback.version>1.1.2</logback.version>
-		<logback-ext.version>0.1.1</logback-ext.version>
+		<jcl-over-slf4j.version>1.7.21</jcl-over-slf4j.version>
+		<logback.version>1.1.7</logback.version>
 		<commons.version>1.4</commons.version>
 		<poi-ooxml.version>3.8</poi-ooxml.version>
 		<redis-data.version>1.5.0.RELEASE</redis-data.version>
 		<redis-client.version>2.6.2</redis-client.version>
-		<sfpay-framework2.version>1.5.0</sfpay-framework2.version>
 		<commons-fileupload.version>1.3.1</commons-fileupload.version>
 		<commons-io.version>2.4</commons-io.version>
 		<mail-version>1.4.1</mail-version>
-		<report.version>0.0.1-SNAPSHOT</report.version>
 		<dubbo.version>2.5.3</dubbo.version>
 		<zookeeper.version>3.4.6</zookeeper.version>
 		<netty.version>3.9.9.Final</netty.version>
+		<lombok.version>1.16.16</lombok.version>
+		<guava.version>20.0</guava.version>
+		<joda-time.version>2.9.6</joda-time.version>
+		<shiro.version>1.3.2</shiro.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
-			<!-- dubbo -->
-			<dependency>
-	            <groupId>com.alibaba</groupId>
-	            <artifactId>dubbo</artifactId>
-	            <exclusions>
-	            	<exclusion>
-	            		<artifactId>spring</artifactId>
-	            		<groupId>org.springframework</groupId>
-	            	</exclusion>
-	            	<exclusion>
-	            		<artifactId>org.jboss.netty</artifactId>
-	            		<groupId>netty</groupId>
-	            	</exclusion>
-	            </exclusions>
-	            <version>${dubbo.version}</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>io.netty</groupId>
-	            <artifactId>netty</artifactId>
-	            <version>${netty.version}</version>
-	       	</dependency>
-			<!-- zookeeper -->
-			<dependency>
-			    <groupId>com.github.sgroschupf</groupId>
-			    <artifactId>zkclient</artifactId>
-			    <version>0.1</version>
-			</dependency>
-			
 			<dependency>
 				<groupId>com.report</groupId>
 				<artifactId>report-facade</artifactId>
@@ -173,18 +144,6 @@
 				<version>${commons-io.version}</version>
 			</dependency>
 			<!-- spring fileUpload end -->
-			<!-- redis begin -->
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-redis</artifactId>
-				<version>${redis-data.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>redis.clients</groupId>
-				<artifactId>jedis</artifactId>
-				<version>${redis-client.version}</version>
-			</dependency>
-			<!-- redis end -->
 			<!-- mybaits -->
 			<dependency>
 				<groupId>org.mybatis</groupId>
@@ -200,11 +159,6 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>opensymphony</groupId>
-				<artifactId>quartz</artifactId>
-				<version>${quartz.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-codec</groupId>
@@ -362,28 +316,21 @@
 			<!--DB -->
 			<!-- log -->
 			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j-api.version}</version>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
 				<version>${jcl-over-slf4j.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>${logback.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.logback-extensions</groupId>
-				<artifactId>logback-ext-spring</artifactId>
-				<version>${logback-ext.version}</version>
-			</dependency>
 			<!-- log -->
-			<!-- json -->
-			<!-- json -->
 
 			<!-- apache commons start -->
 			<dependency>
@@ -421,6 +368,78 @@
 				<artifactId>XmlSchema</artifactId>
 				<version>1.4.7</version>
 			</dependency>
+			
+			<!--guava -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<!-- lombok -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+			<!-- dubbo -->
+			<dependency>
+	            <groupId>com.alibaba</groupId>
+	            <artifactId>dubbo</artifactId>
+	            <exclusions>
+	            	<exclusion>
+	            		<artifactId>spring</artifactId>
+	            		<groupId>org.springframework</groupId>
+	            	</exclusion>
+	            	<exclusion>
+	            		<artifactId>org.jboss.netty</artifactId>
+	            		<groupId>netty</groupId>
+	            	</exclusion>
+	            </exclusions>
+	            <version>${dubbo.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>io.netty</groupId>
+	            <artifactId>netty</artifactId>
+	            <version>${netty.version}</version>
+	       	</dependency>
+			<!-- zookeeper -->
+			<dependency>
+			    <groupId>com.github.sgroschupf</groupId>
+			    <artifactId>zkclient</artifactId>
+			    <version>0.1</version>
+			</dependency>
+			<!-- joda-time -->
+			<dependency>
+			    <groupId>joda-time</groupId>
+			    <artifactId>joda-time</artifactId>
+			    <version>${joda-time.version}</version>
+			</dependency>
+			<!--shiro-->
+	        <dependency>
+	            <groupId>org.apache.shiro</groupId>
+	            <artifactId>shiro-core</artifactId>
+	            <version>${shiro.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.apache.shiro</groupId>
+	            <artifactId>shiro-web</artifactId>
+	            <version>${shiro.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.apache.shiro</groupId>
+	            <artifactId>shiro-quartz</artifactId>
+	            <version>${shiro.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.apache.shiro</groupId>
+	            <artifactId>shiro-spring</artifactId>
+	            <version>${shiro.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.apache.shiro</groupId>
+	            <artifactId>shiro-aspectj</artifactId>
+	            <version>${shiro.version}</version>
+	        </dependency>
 		</dependencies>
 	</dependencyManagement>
 	

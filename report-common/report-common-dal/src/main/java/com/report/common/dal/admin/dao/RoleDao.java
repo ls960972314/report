@@ -8,7 +8,19 @@ import org.apache.ibatis.session.RowBounds;
 import com.report.common.dal.admin.entity.dto.Role;
 import com.report.common.dal.admin.entity.vo.RoleModel;
 
+/**
+ * 
+ * @author lishun
+ * @since 2017年3月24日 下午5:16:20
+ */
 public interface RoleDao {
+	
+	/**
+	 * 根据用户账号查找角色集合
+	 * @param accNo
+	 * @return
+	 */
+	public List<String> findRoles(String accNo);
 	
 	public  List<Map<String, Object>> findRoleList4PerAdmin();
 	

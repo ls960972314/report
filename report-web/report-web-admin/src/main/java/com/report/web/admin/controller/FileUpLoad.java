@@ -16,12 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-/**
- * 文件上传下载(上传JSP文件)
- * 
- * @author lishun
- *
- */
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/file")
 public class FileUpLoad {

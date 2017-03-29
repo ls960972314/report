@@ -6,10 +6,16 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
@@ -26,18 +32,21 @@ import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.dto.Member;
 import com.report.common.dal.admin.util.RoleUtil;
 import com.report.common.dal.admin.util.SessionUtil;
+import com.report.common.dal.common.utils.VerificationUtil;
 import com.report.common.repository.RoleRepository;
-import com.report.common.util.MD5;
+import com.report.web.admin.SessionStatus;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 登录成功入口
- * @author 887961 
- * @Date 2016年10月26日 下午2:42:04
+ * 登陆控制器
+ * @author lishun
+ * @since 2017年3月24日 上午11:04:42
  */
+@Slf4j
 @Controller
 public class UserLoginController {
 
-    private final Log logger = LogFactory.getLog(UserLoginController.class);
     @Resource
     private GroupService groupService;
     @Resource
@@ -46,92 +55,118 @@ public class UserLoginController {
     private RoleRepository roleRepository;
     @Autowired
     private MemberService memberService;
-   
-    
-    @InitBinder
-    public void initBinder(ServletRequestDataBinder binder) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
-
-        binder.registerCustomEditor(Long.class, null, new CustomNumberEditor(Long.class, null, true));
+    /**
+     * 跳转至登陆页面
+     * @return
+     */
+    @RequestMapping(value = "/toLogin.htm")
+    public String toLogin() {
+    	Subject subject = SecurityUtils.getSubject();
+    	if (subject.isAuthenticated()) {
+    		return "redirect:main.htm";
+    	}
+        return "login";
     }
 
-    @RequestMapping(value = "/main.htm", method = RequestMethod.GET)
-    public String main(HttpServletRequest request) {
-        Long memberId = SessionUtil.getCurrentMemberId();
-        
-        if (memberId == null) {
-            request.setAttribute("erroMsg", "当前用户没有权限，需要登录");
-            logger.debug("当前用户没有权限，需要登录");
-            return "login";
-        }
-
-        return "main";
-    }
-
+    /**
+     * 登陆
+     * @param loginName
+     * @param password
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/doLogin.htm")
-    public String doLogin(String loginName, String password, HttpServletRequest request) {
-		
-        if (StringUtils.isBlank(loginName) || StringUtils.isBlank(password)) {
+    public String doLogin(String username, String password, HttpServletRequest request,
+    		HttpServletResponse response) {
+        if (VerificationUtil.paramIsNull(username, password)) {
+        	log.error("用户名或密码为空");
             request.setAttribute("erroMsg", "用户名或密码不能为空");
             return "login";
         }
-        Member member = memberService.getMemberByLoginName(loginName);
         
-		/* 验证超级管理员 */
-        if (member!= null && loginName.equals("perAdmin") && !MD5.getMD5String(password).equals(member.getPassword())) {
-        	request.setAttribute("erroMsg", "用户名或密码有误");
-            request.setAttribute("loginName", loginName);
-            return "login";
-        }
-		
-        if (member == null || !MD5.getMD5String(password).equals(member.getPassword())) {
-            request.setAttribute("erroMsg", "用户名或密码有误");
-            request.setAttribute("loginName", loginName);
-            return "login";
-        }
+        Subject subject = SecurityUtils.getSubject();
+        
+        try {
+        	subject.login(new UsernamePasswordToken(username, password));
+        } catch (AuthenticationException e) {
+        	log.error("doLogin AuthenticationException", e);
+        	if (e instanceof UnknownAccountException) {
+        		request.setAttribute("erroMsg", "未知账号");
+        	} else if (e instanceof IncorrectCredentialsException) {
+        		request.setAttribute("erroMsg", "账号或密码输入错误");
+        	} else {
+        		request.setAttribute("erroMsg", "验证用户失败请重新登陆");
+        	}
+        	return "login";
+        } catch (Exception e) {
+        	log.error("doLogin Exception", e);
+        	request.setAttribute("erroMsg", "验证用户失败请重新登陆");
+        	return "login";
+		}
+        
+        subject = SecurityUtils.getSubject();
+		Session session = subject.getSession();
+		session.setAttribute(Constants.SESSION_STATUS, new SessionStatus());
+        Member member = memberService.getMemberByLoginName(username);
 
         /* 将登录信息存入session中 */
         String groupCode = groupService.getGroupCodeByMemberId(member.getId());
         List<String> roleCodeList = roleRepository.findRoleCodeByMemberId(member.getId());
-        request.getSession().setAttribute(Constants.SESSION_LOGIN_INFO, member);
-        request.getSession().setAttribute(Constants.SESSION_LOGIN_MEMBER_NAME, StringUtils.isBlank(member.getName()) ? member.getAccNo() : member.getName());
-        request.getSession().setAttribute(Constants.SESSION_LOGIN_MEMBER_ID, member.getId());
-        request.getSession().setAttribute(Constants.SESSION_LOGIN_MEMBER_GROUP_CODE, groupCode);
-        request.getSession().setAttribute(Constants.SESSION_LOGIN_MEMBER_ROLE_CODE, roleCodeList);
+        session.setAttribute(Constants.SESSION_LOGIN_INFO, member);
+        session.setAttribute(Constants.SESSION_LOGIN_MEMBER_NAME, StringUtils.isBlank(member.getName()) ? member.getAccNo() : member.getName());
+        session.setAttribute(Constants.SESSION_LOGIN_MEMBER_ID, member.getId());
+        session.setAttribute(Constants.SESSION_LOGIN_MEMBER_GROUP_CODE, groupCode);
+        session.setAttribute(Constants.SESSION_LOGIN_MEMBER_ROLE_CODE, roleCodeList);
         String imgName = member.getAccNo();
         if (StringUtils.isBlank(imgName)) {
         	imgName = String.valueOf(Math.random());
         }
-        request.getSession().setAttribute("mailImgName", imgName);
-        request.getSession().setAttribute(Constants.SESSION_IS_PER_ADMIN, SessionUtil.isPerAdmin());
+        session.setAttribute("mailImgName", imgName);
+        session.setAttribute(Constants.SESSION_IS_PER_ADMIN, SessionUtil.isPerAdmin());
         
-        /* 将登录信息存入redis中 */
         return "redirect:main.htm";
     }
     
-
-    @RequestMapping(value = "/toLogin.htm")
-    public String toLogin() {
-
-        return "login";
+    /**
+     * 跳转至报表页面
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/main.htm", method = RequestMethod.GET)
+    public String main(HttpServletRequest request) {
+        Subject subject = SecurityUtils.getSubject();
+    	if (!subject.isAuthenticated()) {
+    		request.setAttribute("erroMsg", "请重新登陆");
+    		return "login";
+    	}
+        return "main";
     }
 
+    /**
+     * 用户退出
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute(Constants.SESSION_LOGIN_INFO);
         request.getSession().removeAttribute(Constants.SESSION_LOGIN_MEMBER_NAME);
         request.getSession().removeAttribute(Constants.SESSION_LOGIN_MEMBER_ID);
-        request.getSession().removeAttribute(RoleUtil.SESSION_ROLE);
         request.getSession().removeAttribute(Constants.SESSION_LOGIN_MEMBER_GROUP_CODE);
         request.getSession().removeAttribute(Constants.SESSION_IS_PER_ADMIN);
-        request.getSession().removeAttribute(Constants.MENU_LIST);
-        request.getSession().removeAttribute(Constants.REPORT_MENU_LIST);
-        request.getSession().removeAttribute(Constants.HAS_PRIVILEGE);
-
-//        request.getSession().invalidate();
         return "login";
+    }
+    
+    /**
+     * 时间转换
+     * @param binder
+     */
+    @InitBinder
+    public void initBinder(ServletRequestDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
+        binder.registerCustomEditor(Long.class, null, new CustomNumberEditor(Long.class, null, true));
     }
 }

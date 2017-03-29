@@ -25,6 +25,23 @@
   <sql id="Base_Column_List" >
      ID,NAME,RESOURCE_ACTION,RESOURCE_TYPE,P_ID,ICON,DESCRIPTION,CREATE_TIME,UPDATE_TIME,ORDER_BY,SYS_CODE,STATUS,RESOURCE_CODE
   </sql>
+  <select id="findPermissions" parameterType="string" resultType="string">
+  		SELECT
+			IF(ur.resource_action != '', ur.resource_action, '/') resource_action
+		FROM
+			uc_resource ur,
+			uc_role_res urr,
+			uc_role r,
+			uc_member_group mg,
+			uc_group_role gr,
+			uc_member m
+		WHERE ur.id = urr.resource_id
+		AND urr.role_id = r.id
+		AND m.id = mg.member_id
+		AND	r.role_code = gr.role_code
+		AND gr.group_code = mg.group_code
+		AND m.acc_no = #{accNo, jdbcType=VARCHAR}
+  </select>
 
 	<select id="getResourceIdsByRoleCode" parameterType="string" resultType="long">
 		select

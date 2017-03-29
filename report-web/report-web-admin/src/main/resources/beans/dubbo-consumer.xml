@@ -12,6 +12,8 @@
     <dubbo:registry address="${dubbo_report_query_port}"/>
     <!-- 用dubbo协议在20880端口暴露服务 -->
     <dubbo:protocol name="dubbo" port="20880" />
+    <!-- 定义全局consumerp配置 -->
+    <dubbo:consumer check="false"/>
     <!-- 声明需要暴露的服务接口 -->
     <dubbo:reference id="reportChartService" interface="com.report.facade.service.ReportChartService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
     <dubbo:reference id="reportCommonConService" interface="com.report.facade.service.ReportCommonConService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
