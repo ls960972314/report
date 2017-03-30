@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -21,25 +20,6 @@ import com.report.web.admin.shiro.ShiroFilterUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * 
- * 开发公司：SOJSON在线工具 <p>
- * 版权所有：© www.sojson.com<p>
- * 博客地址：http://www.sojson.com/blog/  <p>
- * <p>
- * 
- * 判断是否踢出
- * 
- * <p>
- * 
- * 区分　责任人　日期　　　　说明<br/>
- * 创建　周柏成　2016年6月2日 　<br/>
- *
- * @author zhou-baicheng
- * @email  so@sojson.com
- * @version 1.0,2016年6月2日 <br/>
- * 
- */
 @Slf4j
 public class SimpleAuthFilter extends AccessControlFilter {
 
@@ -47,8 +27,6 @@ public class SimpleAuthFilter extends AccessControlFilter {
 	protected boolean isAccessAllowed(ServletRequest request,
 			ServletResponse response, Object mappedValue) throws Exception {
 		log.info("SimpleAuthFilter isAccessAllowed [{}]", mappedValue);
-		HttpServletRequest httpRequest = ((HttpServletRequest)request);
-		String url = httpRequest.getRequestURI();
 		Subject subject = getSubject(request, response);
 		Session session = subject.getSession();
 		Map<String, String> resultMap = new HashMap<String, String>();

@@ -25,21 +25,22 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.common.collect.Lists;
 import com.report.biz.admin.service.GroupService;
 import com.report.biz.admin.service.MemberService;
 import com.report.biz.admin.service.RoleService;
 import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.dto.Member;
-import com.report.common.dal.admin.util.RoleUtil;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.dal.common.utils.VerificationUtil;
+import com.report.common.model.SessionUtil;
+import com.report.common.model.UserInfo;
 import com.report.common.repository.RoleRepository;
 import com.report.web.admin.SessionStatus;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 登陆控制器
+ * 登陆Controller
  * @author lishun
  * @since 2017年3月24日 上午11:04:42
  */
@@ -64,6 +65,7 @@ public class UserLoginController {
     public String toLogin() {
     	Subject subject = SecurityUtils.getSubject();
     	if (subject.isAuthenticated()) {
+    		log.debug("已登陆,重定向到首页");
     		return "redirect:main.htm";
     	}
         return "login";
@@ -80,17 +82,17 @@ public class UserLoginController {
     public String doLogin(String username, String password, HttpServletRequest request,
     		HttpServletResponse response) {
         if (VerificationUtil.paramIsNull(username, password)) {
-        	log.error("用户名或密码为空");
+        	log.debug("用户名或密码为空");
             request.setAttribute("erroMsg", "用户名或密码不能为空");
             return "login";
         }
-        
         Subject subject = SecurityUtils.getSubject();
-        
         try {
+        	log.debug("username[{}]用户开始登陆");
         	subject.login(new UsernamePasswordToken(username, password));
+        	log.debug("username[{}]用户登陆成功");
         } catch (AuthenticationException e) {
-        	log.error("doLogin AuthenticationException", e);
+        	log.error("username[{}] doLogin AuthenticationException", username, e);
         	if (e instanceof UnknownAccountException) {
         		request.setAttribute("erroMsg", "未知账号");
         	} else if (e instanceof IncorrectCredentialsException) {
@@ -100,31 +102,17 @@ public class UserLoginController {
         	}
         	return "login";
         } catch (Exception e) {
-        	log.error("doLogin Exception", e);
+        	log.error("username[{}] doLogin Exception", username, e);
         	request.setAttribute("erroMsg", "验证用户失败请重新登陆");
         	return "login";
 		}
         
-        subject = SecurityUtils.getSubject();
 		Session session = subject.getSession();
 		session.setAttribute(Constants.SESSION_STATUS, new SessionStatus());
-        Member member = memberService.getMemberByLoginName(username);
-
+		
+		UserInfo userInfo = memberService.getUserInfo(username);
         /* 将登录信息存入session中 */
-        String groupCode = groupService.getGroupCodeByMemberId(member.getId());
-        List<String> roleCodeList = roleRepository.findRoleCodeByMemberId(member.getId());
-        session.setAttribute(Constants.SESSION_LOGIN_INFO, member);
-        session.setAttribute(Constants.SESSION_LOGIN_MEMBER_NAME, StringUtils.isBlank(member.getName()) ? member.getAccNo() : member.getName());
-        session.setAttribute(Constants.SESSION_LOGIN_MEMBER_ID, member.getId());
-        session.setAttribute(Constants.SESSION_LOGIN_MEMBER_GROUP_CODE, groupCode);
-        session.setAttribute(Constants.SESSION_LOGIN_MEMBER_ROLE_CODE, roleCodeList);
-        String imgName = member.getAccNo();
-        if (StringUtils.isBlank(imgName)) {
-        	imgName = String.valueOf(Math.random());
-        }
-        session.setAttribute("mailImgName", imgName);
-        session.setAttribute(Constants.SESSION_IS_PER_ADMIN, SessionUtil.isPerAdmin());
-        
+        session.setAttribute(Constants.SESSION_LOGIN_INFO, userInfo);
         return "redirect:main.htm";
     }
     
@@ -151,10 +139,6 @@ public class UserLoginController {
     @RequestMapping(value = "/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute(Constants.SESSION_LOGIN_INFO);
-        request.getSession().removeAttribute(Constants.SESSION_LOGIN_MEMBER_NAME);
-        request.getSession().removeAttribute(Constants.SESSION_LOGIN_MEMBER_ID);
-        request.getSession().removeAttribute(Constants.SESSION_LOGIN_MEMBER_GROUP_CODE);
-        request.getSession().removeAttribute(Constants.SESSION_IS_PER_ADMIN);
         return "login";
     }
     

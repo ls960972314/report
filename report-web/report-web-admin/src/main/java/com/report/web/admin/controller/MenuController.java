@@ -15,7 +15,7 @@ import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.constant.Constants.MenuType;
 import com.report.common.dal.admin.entity.vo.MenuCell;
 import com.report.common.dal.admin.entity.vo.PermissionCell;
-import com.report.common.dal.admin.util.SessionUtil;
+import com.report.common.model.SessionUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,8 +49,7 @@ public class MenuController {
         if(session.getAttribute(Constants.REPORT_MENU_LIST) != null) {
             return (List<MenuCell>) session.getAttribute(Constants.REPORT_MENU_LIST);
         }
-        Long memberId = Long.valueOf(String.valueOf(session.getAttribute(Constants.SESSION_LOGIN_MEMBER_ID)));
-        List<PermissionCell> permissions = findPermissionCellByMemberId(memberId);
+        List<PermissionCell> permissions = findPermissionCellByMemberId(SessionUtil.getUserInfo().getMember().getId());
 
         return packSortedMenus(permissions);
     }

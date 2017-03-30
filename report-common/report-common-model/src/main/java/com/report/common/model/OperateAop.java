@@ -9,8 +9,6 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import com.alibaba.fastjson.JSON;
-import com.report.common.dal.admin.entity.dto.Member;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.facade.entity.dto.ReportLog;
 import com.report.facade.entity.query.ChartVO;
 import com.report.facade.entity.query.ConditionVO;
@@ -35,7 +33,6 @@ public class OperateAop {
 //	private ReportLogDao reportLogDao;
 	
 	private void operateLog(String operate, Object[] args, long wasteTime, Throwable throwable) {
-		Member member = SessionUtil.getLoginInfo();
 		String operateId;
 		ReportLog rptLog = new ReportLog();
 		rptLog.setCreateTime(new Date());
@@ -49,7 +46,7 @@ public class OperateAop {
 				}
 			}
 		}
-		rptLog.setUserName(member.getName());
+		rptLog.setUserName(SessionUtil.getUserInfo().getMember().getName());
 		rptLog.setWasteTime(String.valueOf(wasteTime));
 		rptLog.setOpeAction(operate);
 		if ((operate.equals("reportShowQueryData") || operate.equals("reportMakeQueryData")

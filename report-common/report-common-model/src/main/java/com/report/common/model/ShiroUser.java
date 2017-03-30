@@ -8,7 +8,7 @@ import lombok.Data;
  * @since 2017年3月24日 下午4:30:58
  */
 @Data
-public class UserModel {
+public class ShiroUser {
 	
 	String username;
 	

@@ -4,7 +4,8 @@ import java.util.Set;
 
 import com.report.common.dal.admin.entity.dto.Member;
 import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
-import com.report.common.model.UserModel;
+import com.report.common.model.ShiroUser;
+import com.report.common.model.UserInfo;
 import com.report.facade.entity.DataGrid;
 import com.report.facade.entity.PageHelper;
 
@@ -16,23 +17,18 @@ import com.report.facade.entity.PageHelper;
 public interface MemberService {
 	
 	/**
-	 * 根据用户账号查找角色集合
-	 * @param accNo
-	 * @return
-	 */
-	public Set<String> findRoles(String accNo);
-	/**
-	 * 根据用户账号查找权限集合
-	 * @param accNo
-	 * @return
-	 */
-	public Set<String> findPermissions(String accNo);
-	/**
 	 * 根据用户账号查找UserModel
 	 * @param username
 	 * @return
 	 */
-	public UserModel findUserModelByAccNo(String accNo);
+	public ShiroUser findUserModelByAccNo(String accNo);
+	
+	/**
+	 * 根据登陆账号查找用户信息
+	 * @param accNo
+	 * @return
+	 */
+	public UserInfo getUserInfo(String accNo);
 
     boolean updateMember(Member member, String groupCode, String currentMemberIp, Long currentMemberId);
 
@@ -50,7 +46,4 @@ public interface MemberService {
 
     DataGrid findMemberListByCriteria(MemberCriteriaModel memberCriteria, PageHelper pageHelper);
 
-    Member getMemberByLoginName(String loginName);
-
-	
 }

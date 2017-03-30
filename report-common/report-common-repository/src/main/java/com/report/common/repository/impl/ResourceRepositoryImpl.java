@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,8 @@ import com.google.common.collect.Sets;
 import com.report.common.dal.admin.dao.ResourceDao;
 import com.report.common.dal.admin.entity.dto.Resource;
 import com.report.common.dal.admin.entity.vo.ResourceModel;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.dal.common.BaseDao;
+import com.report.common.model.SessionUtil;
 import com.report.common.repository.ResourceRepository;
 
 @Service
@@ -39,8 +38,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
 
     @Override
     public List findAllResource() {
-        String sql =
-                "select t.id , t.resource_action ,t.resource_code, t.name, t.resource_type,t.p_id,t.description,t.create_time,t.update_time,t.order_by,t.sys_code  from uc_resource t where t.status=1 ";
+        String sql = "select t.id , t.resource_action ,t.resource_code, t.name, t.resource_type,t.p_id,t.description,t.create_time,t.update_time,t.order_by,t.sys_code  from uc_resource t where t.status=1 ";
         Query query = baseDao.getSqlQuery(sql);
         query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         return query.list();
@@ -73,7 +71,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     }
 
     private boolean isPerAdmin() {
-        return SessionUtil.isPerAdmin();
+        return SessionUtil.getUserInfo().isAdmin();
     }
 
     @Override
@@ -91,24 +89,8 @@ public class ResourceRepositoryImpl implements ResourceRepository {
         return baseDao.countBySql(sql, params) > 0;
     }
 
-    private boolean isAssociatedWithOthers(Long resourceId) {
-        boolean flag = false;
-
-        String sql = "select count(*) from uc_role_res rr where rr.resource_id =:resourceId";
-        SQLQuery query = baseDao.getSqlQuery(sql);
-        query.setLong("resourceId", resourceId);
-        flag = Integer.parseInt(String.valueOf(query.uniqueResult())) > 0;
-        return flag;
-    }
-
-    @SuppressWarnings("unchecked")
     @Override
     public List<Long> findResourceIdsByRoleCode(String roleCode) {
-        /*String sql = "select t.resource_id \"resId\" from uc_role_res t where t.role_code =:roleCode ";
-        Query query = baseDao.getSqlQuery(sql);
-        query.setParameter("roleCode", roleCode);
-        return query.list();*/
-
         return resourceDao.getResourceIdsByRoleCode(roleCode);
     }
 

@@ -13,9 +13,9 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
-import com.alibaba.fastjson.JSON;
 import com.report.biz.admin.service.MemberService;
-import com.report.common.model.UserModel;
+import com.report.common.model.SessionUtil;
+import com.report.common.model.ShiroUser;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,19 +32,16 @@ public class UserRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-    	log.info("doGetAuthorizationInfo principals[{}]", principals);
-        String username = (String)principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.setRoles(memberService.findRoles(username));
-        authorizationInfo.setStringPermissions(memberService.findPermissions(username));
+        authorizationInfo.setRoles(SessionUtil.getUserInfo().getRoleCodeSet());
+        authorizationInfo.setStringPermissions(SessionUtil.getUserInfo().getPermissionCodeSet());
         return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-    	log.info("doGetAuthenticationInfo");
         String username = (String)token.getPrincipal();
-        UserModel user = memberService.findUserModelByAccNo(username);
+        ShiroUser user = memberService.findUserModelByAccNo(username);
         if(user == null) {
             throw new UnknownAccountException();
         }

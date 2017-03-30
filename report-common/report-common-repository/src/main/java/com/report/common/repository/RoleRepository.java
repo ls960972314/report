@@ -48,5 +48,4 @@ public interface RoleRepository {
 
     RoleCell getByRoleCode(String roleCode);
 
-    List<String> findRoleCodeByMemberId(Long memberId);
 }

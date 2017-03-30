@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.report.common.dal.admin.entity.dto.Member;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.facade.entity.vo.PagerReq;
 import com.report.facade.entity.vo.SpObserver;
 import com.report.facade.service.ReportService;
@@ -43,8 +41,7 @@ public class ExpCsvController {
     @RequestMapping(value = "smartExpCsv")
     public void smartExpCsv(PagerReq paras, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-    	Member member = SessionUtil.getLoginInfo();
-    	log.info("smartExpCsv memberId:{} memberName:{} condition:{} title:{} fileName:{}", member.getId(), member.getName(), paras.getCondition(), paras.getTitle(), paras.getFileName());
+    	log.info("smartExpCsv condition:{} title:{} fileName:{}", paras.getCondition(), paras.getTitle(), paras.getFileName());
     	try {
             Map<String, Object> map = reportService.smartReportExport(paras);
             XSSFWorkbook wb = (XSSFWorkbook) map.get("wb");

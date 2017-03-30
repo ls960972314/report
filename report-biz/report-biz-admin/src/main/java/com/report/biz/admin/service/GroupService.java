@@ -54,7 +54,5 @@ public interface GroupService {
 
 	boolean isGroupCodeExists(GroupModel groupModel);
 
-	String getGroupCodeByMemberId(Long memberId);
-
 	boolean isSameGroupCode(Long id, String groupCode);
 }

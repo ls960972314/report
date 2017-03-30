@@ -9,6 +9,8 @@ import com.report.facade.entity.PageHelper;
 
 public interface GroupRepository {
 
+	public String getGroupCodeByMemberId(Long memberId);
+	
 	public List<GroupModel> fingGroupsByPage(PageHelper pageHelper, GroupModel groupModel);
 
 	public Long count(GroupModel groupModel);

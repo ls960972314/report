@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.report.common.dal.admin.entity.dto.Member;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.dal.query.util.BeanUtil;
 import com.report.common.model.GlobalResultStatus;
 import com.report.common.model.JsonResult;
@@ -90,8 +88,7 @@ public class ReportController {
     @RequestMapping(value="reportShowQueryData")
     @ResponseBody
     public Object reportShowQueryData(PagerReq req, HttpServletRequest request) {
-    	Member member = SessionUtil.getLoginInfo();
-    	querylog.info("reportShowQueryData   memberId:{} memberName:{} sqlId:{} condition:{}", member.getId(), member.getName(), req.getQid(), req.getCondition());
+    	querylog.info("reportShowQueryData sqlId:{} condition:{}", req.getQid(), req.getCondition());
     	PagerRsp response = new PagerRsp();
     	try {
         	req = reportService.setupSmartReportSql(req);
@@ -113,9 +110,9 @@ public class ReportController {
             	response.setTotal((int)Math.ceil((double)response.getRecords() / req.getRows()));
 		} catch (Exception e) {
 			if (e.getCause() == null) {
-				querylog.info("reportShowQueryData  memberId:{} memberName:{} sqlId:{} condition:{} exception:{}", member.getId(), member.getName(), req.getQid(), req.getCondition(), e.getMessage());
+				querylog.info("reportShowQueryData sqlId:{} condition:{} exception:{}", req.getQid(), req.getCondition(), e.getMessage());
 			} else {
-				querylog.info("reportShowQueryData  memberId:{} memberName:{} sqlId:{} condition:{} exception:{}", member.getId(), member.getName(), req.getQid(), req.getCondition(), e.getCause().toString());
+				querylog.info("reportShowQueryData sqlId:{} condition:{} exception:{}", req.getQid(), req.getCondition(), e.getCause().toString());
 			}
 			throw e;
 		}
@@ -131,8 +128,7 @@ public class ReportController {
     @RequestMapping(value="reportMakeQueryData")
     @ResponseBody
     public Object reportMakeQueryData(PagerReq req) {
-    	Member member = SessionUtil.getLoginInfo();
-    	log.info("reportMakeQueryData   memberId:{} memberName:{} sqlId:{} condition:{}", member.getId(), member.getName(), req.getQid(), req.getCondition());
+    	log.info("reportMakeQueryData sqlId:{} condition:{}", req.getQid(), req.getCondition());
     	PagerRsp response = new PagerRsp();
     	try {
     		/* 查询数据时切换数据源 */
@@ -146,10 +142,10 @@ public class ReportController {
             response.setTotal(1);
 		} catch (Exception e) {
 			if (e.getCause() != null) {
-				log.info("reportMakeQueryData memberId:{} memberName:{} sqlId:{} condition:{} exception {}", member.getId(), member.getName(), req.getQid(), req.getCondition(), e.getCause().toString());
+				log.info("reportMakeQueryData sqlId:{} condition:{} exception {}", req.getQid(), req.getCondition(), e.getCause().toString());
 				return JsonResult.fail(GlobalResultStatus.PARAM_ERROR, e.getCause().toString());
 			} else {
-				log.info("reportMakeQueryData memberId:{} memberName:{} sqlId:{} condition:{} exception {}", member.getId(), member.getName(), req.getQid(), req.getCondition(), e.getMessage());
+				log.info("reportMakeQueryData sqlId:{} condition:{} exception {}", req.getQid(), req.getCondition(), e.getMessage());
 				return JsonResult.fail(GlobalResultStatus.PARAM_ERROR, e.getMessage());
 			}
 		}

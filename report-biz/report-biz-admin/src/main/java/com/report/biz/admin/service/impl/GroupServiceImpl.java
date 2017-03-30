@@ -18,14 +18,16 @@ import com.report.common.dal.admin.dao.GroupDao;
 import com.report.common.dal.admin.dao.GroupRoleDao;
 import com.report.common.dal.admin.entity.dto.Group;
 import com.report.common.dal.admin.entity.vo.GroupModel;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.dal.common.BaseDao;
 import com.report.common.model.AjaxJson;
 import com.report.common.model.ResultCodeConstants;
+import com.report.common.model.SessionUtil;
 import com.report.common.repository.GroupRepository;
 import com.report.common.repository.RoleRepository;
 import com.report.facade.entity.DataGrid;
 import com.report.facade.entity.PageHelper;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
@@ -34,11 +36,10 @@ import com.report.facade.entity.PageHelper;
  * @version V1.0
  * 
  */
+@Slf4j
 @Service("groupService")
-@Transactional
 public class GroupServiceImpl implements GroupService {
 
-    private final Logger logger = LoggerFactory.getLogger(GroupServiceImpl.class);
 
     @Resource
     private BaseDao baseDao;
@@ -50,17 +51,12 @@ public class GroupServiceImpl implements GroupService {
     private GroupRoleDao groupRoleDao;
     @Resource
     private GroupDao groupDao;
-    /**
-     * 分页查询数据列表
-     * 
-     * @param model
-     * @param pageHelper
-     * @return DataGrid
-     */
+
+    
     @Override
     public DataGrid findGroups(PageHelper pageHelper, GroupModel groupModel) {
         DataGrid dataGrid = new DataGrid();
-        if(SessionUtil.isPerAdmin()) {
+        if(SessionUtil.getUserInfo().isAdmin()) {
             groupModel.setCurrentMemberGroupCode(null);
         }
         dataGrid.setTotal(groupRepository.count(groupModel));
@@ -68,9 +64,7 @@ public class GroupServiceImpl implements GroupService {
         return dataGrid;
     }
 
-    /**
-     * 更新信息
-     */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateGroup(GroupModel groupModel, Long currentMemberId, String memberIp) {
         Date now = new Date();
@@ -90,9 +84,7 @@ public class GroupServiceImpl implements GroupService {
         return Constants.OpStatus.SUCC;
     }
 
-    /**
-     * 新增信息
-     */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int saveGroup(GroupModel groupModel, Long currentMemberId, String memberIp) {
         groupModel.setGroupName(groupModel.getGroupName().trim());
@@ -107,16 +99,14 @@ public class GroupServiceImpl implements GroupService {
         group.setGroupName(groupModel.getGroupName());
         group.setCreaterId(currentMemberId);
         group.setModifierId(currentMemberId);
-        group.setCreaterId(SessionUtil.getCurrentMemberId());
+        group.setCreaterId(SessionUtil.getUserInfo().getMember().getId());
         baseDao.save(group);
 
         groupRoleDao.addMapping4GroupAndRole(groupModel, currentMemberId, memberIp);
         return Constants.OpStatus.SUCC;
     }
 
-    /**
-     * 删除信息
-     */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public AjaxJson deleteGroupById(Long id, Long currentMemberId, String memberIp) {
         AjaxJson ajaxJson = new AjaxJson();
@@ -157,11 +147,6 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public boolean isGroupCodeExists(GroupModel groupModel) {
         return groupRepository.isGroupCodeExists(groupModel);
-    }
-
-    @Override
-    public String getGroupCodeByMemberId(Long memberId) {
-        return groupDao.getGroupCodeByMemberId(memberId);
     }
 
     @Override

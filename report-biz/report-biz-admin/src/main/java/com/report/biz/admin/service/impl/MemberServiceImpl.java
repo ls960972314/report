@@ -1,9 +1,6 @@
 package com.report.biz.admin.service.impl;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -12,14 +9,16 @@ import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
 import com.report.biz.admin.service.MemberService;
 import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.dto.Member;
 import com.report.common.dal.admin.entity.dto.MemberGroup;
 import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.dal.common.BaseDao;
-import com.report.common.model.UserModel;
+import com.report.common.model.SessionUtil;
+import com.report.common.model.ShiroUser;
+import com.report.common.model.UserInfo;
 import com.report.common.repository.GroupRepository;
 import com.report.common.repository.MemberRepository;
 import com.report.common.repository.ResourceRepository;
@@ -28,8 +27,10 @@ import com.report.common.util.MD5;
 import com.report.facade.entity.DataGrid;
 import com.report.facade.entity.PageHelper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service("memberService")
-@Transactional
 public class MemberServiceImpl implements MemberService {
 
     @Resource
@@ -48,20 +49,21 @@ public class MemberServiceImpl implements MemberService {
     private ResourceRepository resourceRepository;
 
     @Override
-	public Set<String> findRoles(String accNo) {
-    	return roleRepository.findRoles(accNo);
+	public UserInfo getUserInfo(String accNo) {
+    	UserInfo userInfo = new UserInfo();
+    	userInfo.setMember(memberRepository.findMemberByAccNo(accNo));
+    	userInfo.setGroupCode(groupRepository.getGroupCodeByMemberId(userInfo.getMember().getId()));
+    	userInfo.setPermissionCodeSet(resourceRepository.findPermissions(accNo));
+    	userInfo.setRoleCodeSet(roleRepository.findRoles(accNo));
+    	userInfo.setRoleCodeList(Lists.newArrayList(userInfo.getRoleCodeSet()));
+		return userInfo;
 	}
-
-	@Override
-	public Set<String> findPermissions(String accNo) {
-		return resourceRepository.findPermissions(accNo);
-	}
-	
+    
     @Override
-	public UserModel findUserModelByAccNo(String username) {
-		Member member = memberRepository.findMemberByAccNo(username);
+	public ShiroUser findUserModelByAccNo(String accNo) {
+		Member member = memberRepository.findMemberByAccNo(accNo);
 		if (null != member) {
-			UserModel userModel = new UserModel();
+			ShiroUser userModel = new ShiroUser();
 			userModel.setPassword(member.getPassword());
 			userModel.setAccNo(member.getAccNo());
 			userModel.setUsername(member.getName());
@@ -70,14 +72,7 @@ public class MemberServiceImpl implements MemberService {
 		return null;
 	}
     
-    @Override
-	public Member getMemberByLoginName(String loginName) {
-	    Map<String, Object> params = new HashMap<String, Object>();
-	    params.put("loginName", loginName);
-        Object result = baseDao.get("from Member t where t.accNo=:loginName and t.status=1", params);
-	    return result == null ? null:(Member)result;
-	}
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateMember(Member member, String groupCode, String currentMemberIp, Long currentMemberId) {
         Member target = (Member) baseDao.get(Member.class, member.getId());
@@ -99,6 +94,7 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveMember(Member member, String groupCode, String currentMemberIp, Long currentMemberId) {
         Date now = new Date();
@@ -121,6 +117,7 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteMemberById(Long id, String currentMemberIp) {
         boolean flag = false;
@@ -142,6 +139,7 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.isPasswordRight(currentMemberId, (MD5.getMD5String(password)));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean resetPassword(Long memberId, String memberIp) {
         boolean flag = memberRepository.resetPassword(memberId, MD5.getMD5String(Constants.DEFAULT_PASSWORD_FOR_MEMBER));
@@ -153,21 +151,19 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.isAccNoExists(accNo);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean changePassword(String password, Long currentMemberId, String memberIp) {
         boolean flag = memberRepository.changePassword(MD5.getMD5String(password), currentMemberId);
-
         return flag;
     }
 
     @Override
     public DataGrid findMemberListByCriteria(MemberCriteriaModel memberCriteria, PageHelper pageHelper) {
-        
         DataGrid dataGrid = new DataGrid();
-        if(SessionUtil.isPerAdmin()) {
+        if(SessionUtil.getUserInfo().isAdmin()) {
             memberCriteria.setMemberId(null);
         }
-        
         dataGrid.setTotal(memberRepository.countByCriteria(memberCriteria));
         dataGrid.setRows(memberRepository.findMemberListByCriteria(memberCriteria, pageHelper));
         return dataGrid;

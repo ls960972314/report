@@ -11,8 +11,8 @@ import org.apache.shiro.web.util.WebUtils;
 
 public class RoleFilter extends AccessControlFilter {
 
-	static final String LOGIN_URL = "http://www.sojson.com/user/open/toLogin.shtml";
-	static final String UNAUTHORIZED_URL = "http://www.sojson.com/unauthorized.html";
+	static final String LOGIN_URL = "/toLogin.htm";
+	static final String UNAUTHORIZED_URL = "/toLogin.htm";
 	
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request,
@@ -21,7 +21,7 @@ public class RoleFilter extends AccessControlFilter {
 		
 		Subject subject = getSubject(request, response);
 		for (String role : arra) {
-			if(subject.hasRole("role:" + role)){
+			if(subject.hasRole(role)){
 				return true;
 			}
 		}

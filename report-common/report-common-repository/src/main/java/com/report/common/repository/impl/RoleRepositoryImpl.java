@@ -24,15 +24,15 @@ import com.report.common.dal.admin.entity.vo.RoleModel;
 import com.report.common.dal.admin.util.MybatisUtil;
 import com.report.common.dal.admin.util.PackRoleCell;
 import com.report.common.dal.admin.util.PageUtil;
-import com.report.common.dal.admin.util.RoleUtil;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.dal.common.BaseDao;
 import com.report.common.dal.query.util.ObjectUtil;
+import com.report.common.model.SessionUtil;
 import com.report.common.repository.RoleRepository;
 import com.report.facade.entity.PageHelper;
 
 @Service
 public class RoleRepositoryImpl implements RoleRepository {
+	
 	@Resource
     private BaseDao baseDao;
 
@@ -145,7 +145,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     private boolean isPerAdmin() {
-        return SessionUtil.isPerAdmin();
+        return SessionUtil.getUserInfo().isAdmin();
     }
 
     @Override
@@ -153,7 +153,6 @@ public class RoleRepositoryImpl implements RoleRepository {
         return roleDao.getRoleListByGroupCode(groupCode);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<Map<String, Object>> getRoleCodeAndNameList(String groupCode) {
         return roleDao.getRoleCodeAndNameList(groupCode);
@@ -166,7 +165,6 @@ public class RoleRepositoryImpl implements RoleRepository {
         return query.list();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<RoleModel> findRoleListByCriteria(PageHelper pageHelper, RoleCriteriaModel roleCriteriaModel) {
         if (isPerAdmin()) {
@@ -178,7 +176,7 @@ public class RoleRepositoryImpl implements RoleRepository {
             return roleDao.findRoleListByCriteria4PerAdmin(params, PageUtil.paged(pageHelper.getPage() - 1, pageHelper.getRows()));
         } else {
             // 如果从角色列表中没有获取到roleCode，那么将当前会员视被赋予临时权限的用户，此时不显示角色列表
-            List<String> roleCodes = RoleUtil.getRoleCodes();
+            List<String> roleCodes = SessionUtil.getUserInfo().getRoleCodeList();
             if (roleCodes == null || roleCodes.isEmpty()) {
                 return Collections.emptyList();
             }
@@ -199,7 +197,7 @@ public class RoleRepositoryImpl implements RoleRepository {
         } else {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("roleCriteriaModel", roleCriteriaModel);
-            params.put("roleCodes", RoleUtil.getRoleCodes());
+            params.put("roleCodes", SessionUtil.getUserInfo().getRoleCodeList());
             return roleDao.countRoleByRoleCodes(params);
         }
     }
@@ -218,12 +216,6 @@ public class RoleRepositoryImpl implements RoleRepository {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("memberId", memberId);
         return roleDao.findAllRoles(memberId);
-    }
-    @Override
-    public List<String> findRoleCodeByMemberId(Long memberId) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("memberId", memberId);
-        return roleDao.findRoleCodeByMemberId(memberId);
     }
     
     private void handleFieldForOrdering(PageHelper pageHelper) {

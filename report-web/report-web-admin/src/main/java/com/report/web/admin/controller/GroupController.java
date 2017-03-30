@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +15,9 @@ import com.report.biz.admin.service.GroupService;
 import com.report.biz.admin.service.RoleService;
 import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.vo.GroupModel;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.model.AjaxJson;
 import com.report.common.model.ResultCodeConstants;
+import com.report.common.model.SessionUtil;
 import com.report.facade.entity.DataGrid;
 import com.report.facade.entity.PageHelper;
 
@@ -43,14 +41,14 @@ public class GroupController {
     @RequestMapping(value = "/findGroupList.htm")
     @ResponseBody
     public DataGrid findGroupList(HttpServletRequest request, PageHelper pageHelper, GroupModel groupModel) {
-        groupModel.setCurrentMemberGroupCode((String) request.getSession().getAttribute(Constants.SESSION_LOGIN_MEMBER_GROUP_CODE));
+        groupModel.setCurrentMemberGroupCode(SessionUtil.getUserInfo().getGroupCode());
         return groupService.findGroups(pageHelper, groupModel);
     }
 
     @RequestMapping(value = "/findAllGroupNames.htm")
     @ResponseBody
     public List<Map<String, String>> findAllGroupNames() {
-        return groupService.findGroupNamesByCurrentMemberId(SessionUtil.getCurrentMemberId());
+        return groupService.findGroupNamesByCurrentMemberId(SessionUtil.getUserInfo().getMember().getId());
     }
 
     @RequestMapping(value = "/addOrUpdateGroup.htm")
@@ -78,22 +76,20 @@ public class GroupController {
                 return json;
             }
 
-            status = groupService.updateGroup(groupModel, SessionUtil.getCurrentMemberId(), request.getRemoteAddr());
+            status = groupService.updateGroup(groupModel, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
             if (status == Constants.OpStatus.FAIL) {
                 json.setStatus(status);
                 json.setErrorInfo("更新失败！");
                 return json;
             }
         } else {
-            // 新增操作
-
             if (groupService.isGroupCodeExists(groupModel)) {
                 json.setErrorNo(ResultCodeConstants.RESULT_GROUP_IS_EXISTS);
                 json.setErrorInfo("组编码已经存在！");
                 return json;
             }
 
-            status = groupService.saveGroup(groupModel, SessionUtil.getCurrentMemberId(), request.getRemoteAddr());
+            status = groupService.saveGroup(groupModel, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
             if (status == Constants.OpStatus.FAIL) {
                 json.setStatus(status);
                 json.setErrorInfo("保存失败！");
@@ -109,13 +105,13 @@ public class GroupController {
         AjaxJson ajaxJson = null;
 
         // 只有权限管理员能够执行
-        if (!SessionUtil.isPerAdmin()) {
+        if (!SessionUtil.getUserInfo().isAdmin()) {
             ajaxJson = new AjaxJson();
             ajaxJson.setErrorNo(ResultCodeConstants.RESULT_PER_ADMIN_HAS_PRIV);
             return ajaxJson;
         }
 
-        return groupService.deleteGroupById(id, SessionUtil.getCurrentMemberId(), request.getRemoteAddr());
+        return groupService.deleteGroupById(id, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
     }
 
 }

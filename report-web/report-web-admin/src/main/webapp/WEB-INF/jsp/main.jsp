@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -41,21 +42,16 @@
 <body class="report">
 <div id="doc">
 	<div class="hd">
-		<!--/messages-->
 		<div class="userHeader clearfix">
 			<div class="fr" style="display:block;">
 				<span class="tip">
-				<c:if test="${hasPrevilege == 1}">
-					<shiro:hasPermission name="public/public.htm">
-						<a style="font-size: 12px;color: antiquewhite;" href="${pageContext.request.contextPath}/toPermission.htm" target="_blank">权限管理</a>
-					</shiro:hasPermission>
-				</c:if>
-				<c:if test="${hasPrevilege != 1}">
-				</c:if>
+					<shiro:hasAnyRoles name='per_admin'>
+							<a style="font-size: 12px;color: antiquewhite;" href="${pageContext.request.contextPath}/toPermission.htm" target="_blank">权限管理</a>
+					</shiro:hasAnyRoles>
 				</span>
 				<span class="tip">${name}</span>
 				<span class="tip">
-				<a href="${pageContext.request.contextPath}/logout">安全退出</a>
+					<a href="${pageContext.request.contextPath}/logout">${hasPrevilege}安全退出</a>
 				</span>
 			</div>
 			<div class="logo">

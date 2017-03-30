@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.report.biz.admin.service.ResourceService;
-import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.vo.PackageResourceModel;
 import com.report.common.dal.admin.entity.vo.ResourceModel;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.model.AjaxJson;
 import com.report.common.model.ResultCodeConstants;
+import com.report.common.model.SessionUtil;
 import com.report.common.util.SysCodeResourcesUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -139,14 +138,13 @@ public class ResourceController {
     private Map<String, List<PackageResourceModel>> getFormatterSysCodeReourceMap() {
         Session session = SessionUtil.getHttpSession();
 
-        Long memberId = Long.valueOf(String.valueOf(session.getAttribute(Constants.SESSION_LOGIN_MEMBER_ID)));
 
         List<Map<String, Object>> resourceList = Collections.emptyList();
-        if (SessionUtil.isPerAdmin()) {
+        if (SessionUtil.getUserInfo().isAdmin()) {
             resourceList = resourceService.findAllResource();
 
         } else {
-            resourceList = resourceService.findResourceByMemberId(memberId);
+            resourceList = resourceService.findResourceByMemberId(SessionUtil.getUserInfo().getMember().getId());
         }
         Map<String, List<PackageResourceModel>> sysCodeResourcesMap = new HashMap<String, List<PackageResourceModel>>();
         for (Map<String, Object> m : resourceList) {

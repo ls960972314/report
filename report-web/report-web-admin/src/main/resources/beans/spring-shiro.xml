@@ -39,6 +39,7 @@
 
 	<bean id="authFilter" class="com.report.web.admin.filter.SimpleAuthFilter"></bean>
 	<bean id="permissionFilter" class="com.report.web.admin.filter.PermissionFilter"></bean>
+	<bean id="roleFilter" class="com.report.web.admin.filter.RoleFilter"></bean>
 	
 	
     <!-- Shiro的Web过滤器 -->
@@ -51,6 +52,7 @@
             <util:map>
             	<entry key="authc" value-ref="authFilter"></entry>
             	<entry key="permissionFilter" value-ref="permissionFilter"></entry>
+            	<entry key="roleFilter" value-ref="roleFilter"></entry>
             </util:map>
         </property>
         <property name="filterChainDefinitions">
@@ -67,6 +69,7 @@
             	/exp/**  = anon
                 /logout = anon
                 /tpl/** = anon
+                /toPermission.htm = authc,roleFilter[per_admin]
                 /** = authc,permissionFilter
             </value>
         </property>

@@ -8,8 +8,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,9 +18,9 @@ import com.report.common.dal.admin.entity.dto.Role;
 import com.report.common.dal.admin.entity.vo.RoleCriteriaModel;
 import com.report.common.dal.admin.entity.vo.RoleListSysModel;
 import com.report.common.dal.admin.entity.vo.RoleModel;
-import com.report.common.dal.admin.util.SessionUtil;
 import com.report.common.model.AjaxJson;
 import com.report.common.model.ResultCodeConstants;
+import com.report.common.model.SessionUtil;
 import com.report.facade.entity.DataGrid;
 import com.report.facade.entity.PageHelper;
 
@@ -73,7 +71,7 @@ public class RoleController {
                 return j;
             }
 
-            result = roleService.updateRole(model, SessionUtil.getCurrentMemberId(), request.getRemoteAddr());
+            result = roleService.updateRole(model, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
             j.setStatus(result);
             if (result == Constants.OpStatus.FAIL) {
                 j.setErrorInfo("更新失败！");
@@ -88,7 +86,7 @@ public class RoleController {
                 return j;
             }
 
-            result = roleService.saveRole(model, SessionUtil.getCurrentMemberId(), request.getRemoteAddr());
+            result = roleService.saveRole(model, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
             j.setStatus(result);
             if (result == Constants.OpStatus.FAIL) {
                 j.setErrorInfo("保存失败！");

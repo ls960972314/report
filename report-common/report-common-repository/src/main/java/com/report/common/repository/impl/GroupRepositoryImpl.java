@@ -15,7 +15,7 @@ import com.report.common.dal.admin.entity.dto.Group;
 import com.report.common.dal.admin.entity.vo.GroupModel;
 import com.report.common.dal.admin.util.MybatisUtil;
 import com.report.common.dal.admin.util.PageUtil;
-import com.report.common.dal.admin.util.SessionUtil;
+import com.report.common.model.SessionUtil;
 import com.report.common.repository.GroupRepository;
 import com.report.facade.entity.PageHelper;
 
@@ -24,6 +24,12 @@ public class GroupRepositoryImpl implements GroupRepository {
 	@Resource
     private GroupDao groupDao;
 
+	
+	@Override
+	public String getGroupCodeByMemberId(Long memberId) {
+		return groupDao.getGroupCodeByMemberId(memberId);
+	}
+	
     @Override
     public Long count(GroupModel groupModel) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -72,10 +78,9 @@ public class GroupRepositoryImpl implements GroupRepository {
     	return groupDao.findAllGroups();
     }
 
-    // TODO 暂时查询所有的组
     @Override
     public List<Map<String, String>> findGroupNamesByCurrentMemberId(Long currentMemberId) {
-        if (SessionUtil.isPerAdmin()) {
+        if (SessionUtil.getUserInfo().isAdmin()) {
         	return groupDao.findGroupNames4SysAdmin();
         }
         return Collections.emptyList();
