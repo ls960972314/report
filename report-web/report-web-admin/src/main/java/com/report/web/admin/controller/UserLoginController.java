@@ -2,19 +2,16 @@ package com.report.web.admin.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -25,17 +22,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.common.collect.Lists;
 import com.report.biz.admin.service.GroupService;
 import com.report.biz.admin.service.MemberService;
 import com.report.biz.admin.service.RoleService;
 import com.report.common.dal.admin.constant.Constants;
-import com.report.common.dal.admin.entity.dto.Member;
 import com.report.common.dal.common.utils.VerificationUtil;
-import com.report.common.model.SessionUtil;
 import com.report.common.model.UserInfo;
 import com.report.common.repository.RoleRepository;
-import com.report.web.admin.SessionStatus;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -106,13 +99,9 @@ public class UserLoginController {
         	request.setAttribute("erroMsg", "验证用户失败请重新登陆");
         	return "login";
 		}
-        
-		Session session = subject.getSession();
-		session.setAttribute(Constants.SESSION_STATUS, new SessionStatus());
-		
 		UserInfo userInfo = memberService.getUserInfo(username);
         /* 将登录信息存入session中 */
-        session.setAttribute(Constants.SESSION_LOGIN_INFO, userInfo);
+		subject.getSession().setAttribute(Constants.SESSION_LOGIN_INFO, userInfo);
         return "redirect:main.htm";
     }
     
@@ -138,7 +127,7 @@ public class UserLoginController {
      */
     @RequestMapping(value = "/logout")
     public String logout(HttpServletRequest request) {
-        request.getSession().removeAttribute(Constants.SESSION_LOGIN_INFO);
+    	SecurityUtils.getSubject().logout();
         return "login";
     }
     

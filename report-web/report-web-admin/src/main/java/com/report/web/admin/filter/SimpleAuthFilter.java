@@ -8,18 +8,21 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.apache.shiro.session.Session;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.report.common.dal.admin.constant.Constants;
-import com.report.web.admin.SessionStatus;
 import com.report.web.admin.shiro.ShiroFilterUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 认证目前用户是否已经登陆
+ * @author lishun
+ * @since 2017年3月30日 上午11:43:30
+ */
 @Slf4j
 public class SimpleAuthFilter extends AccessControlFilter {
 
@@ -27,16 +30,13 @@ public class SimpleAuthFilter extends AccessControlFilter {
 	protected boolean isAccessAllowed(ServletRequest request,
 			ServletResponse response, Object mappedValue) throws Exception {
 		log.info("SimpleAuthFilter isAccessAllowed [{}]", mappedValue);
-		Subject subject = getSubject(request, response);
-		Session session = subject.getSession();
 		Map<String, String> resultMap = new HashMap<String, String>();
-		SessionStatus sessionStatus = (SessionStatus) session.getAttribute(Constants.SESSION_STATUS);
-		if (null != sessionStatus && !sessionStatus.isOnlineStatus()) {
+		if (!SecurityUtils.getSubject().isAuthenticated()) {
 			//判断是不是Ajax请求
 			if (ShiroFilterUtils.isAjax(request) ) {
 				log.debug("当前用户已经被踢出，并且是Ajax请求！");
 				resultMap.put("user_status", "300");
-				resultMap.put("message", "您已经被踢出，请重新登录！");
+				resultMap.put("message", "请重新登录！");
 				out(response, resultMap);
 			}
 			return  Boolean.FALSE;
@@ -49,7 +49,7 @@ public class SimpleAuthFilter extends AccessControlFilter {
 			ServletResponse response) throws Exception {
 		
 		//先退出
-		Subject subject = getSubject(request, response);
+		Subject subject = SecurityUtils.getSubject();
 		subject.logout();
 		/**
 		 * 保存Request，用来保存当前Request，然后登录后可以跳转到当前浏览的页面。
