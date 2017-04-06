@@ -20,15 +20,17 @@ import com.report.facade.entity.query.ReportSqlVO;
 import com.report.facade.entity.vo.PagerReq;
 import com.report.facade.entity.vo.ReportElement;
 import com.report.facade.entity.vo.SpObserver;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * AOP 主要将对报表的查询，导出，报表配置的增删改查记录插入数据库
  *     查询导出异常的记录也插入数据库
  * @author lishun
  *
  */
+@Slf4j
 public class OperateAop {
 	
-	private final Log log = LogFactory.getLog(OperateAop.class);
 //	@Autowired
 //	private ReportLogDao reportLogDao;
 	
@@ -110,7 +112,7 @@ public class OperateAop {
 			}
 		}
 		SpObserver.putSp(SpObserver.defaultDataBase);
-		log.info(String.format("先记录日志,{%s}", rptLog));
+		log.info("先记录日志,{}", JSON.toJSONString(rptLog));
 //		reportLogDao.saveReportLog(rptLog);
 	}
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {

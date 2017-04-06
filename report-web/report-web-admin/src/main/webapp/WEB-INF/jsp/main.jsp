@@ -368,7 +368,7 @@ $(".js-selected").click(function(e){
          highlight: true
      });
     $.ajax({
-            url: "menu/loadMenuByPriv.htm",
+            url: "loadMenuByPriv.htm",
             dataType: "json",
             async: false,
             success : function (data) {

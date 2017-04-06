@@ -7,8 +7,6 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     
-    <!--  开启Shiro的注解(如@RequiresRoles,@RequiresPermissions),需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证 -->
-	<aop:config proxy-target-class="true"></aop:config>
 	
 	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -54,7 +52,7 @@
             <value>
             	/ = anon
             	/main.htm = anon
-            	/menu/loadMenuByPriv.htm = anon
+            	/loadMenuByPriv.htm = anon
             	/queryAll = anon
                 /doLogin.htm = anon
             	/toLogin.htm = anon

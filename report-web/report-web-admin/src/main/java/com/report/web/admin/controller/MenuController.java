@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Controller
-@RequestMapping("/menu")
 public class MenuController {
 	
 	/**
@@ -33,7 +32,7 @@ public class MenuController {
 	 */
     @RequestMapping("/loadMenuByPriv.htm")
     @ResponseBody
-    public List<MenuCell> loadMenuByPriv() throws Exception {
+    public List<MenuCell> loadMenuByPriv() {
     	log.debug("username[{}] loadMenuByPriv", SessionUtil.getUserInfo().getMember().getAccNo());
     	return SessionUtil.getUserInfo().getReportMenuList();
     }
