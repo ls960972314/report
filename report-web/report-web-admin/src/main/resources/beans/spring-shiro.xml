@@ -6,20 +6,29 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <description>shiro安全配置</description>
     
-	
-	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+    <!-- rememberMeManager管理器 -->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+    	<property name="cookie" ref="rememberMeCookie"></property>
+    </bean>
+    <!-- rememberMeCookie管理器 -->
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+    	<constructor-arg value="rememberMe"></constructor-arg>
+    	<property name="maxAge" value="-1"></property>
+    	<property name="httpOnly" value="true"></property>
+    </bean>
+    
+	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) 
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
         <property name="arguments" ref="securityManager"/>
     </bean>
-    
-	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
+    -->
     
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="rememberMeManager" ref="rememberMeManager"></property>
         <property name="realm" ref="userRealm"/>
     </bean>
     
@@ -68,4 +77,7 @@
         </property>
     </bean>
 
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
 </beans>
