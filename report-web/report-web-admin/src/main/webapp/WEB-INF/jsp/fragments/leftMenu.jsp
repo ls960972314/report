@@ -22,6 +22,7 @@
 		</ul>
 </div>
 <script>
+	debugger;
     var nullRecord = false;
     if(sessionStorage.getItem('navSelected') == null){
         sessionStorage.setItem('navSelected','[0,0]');

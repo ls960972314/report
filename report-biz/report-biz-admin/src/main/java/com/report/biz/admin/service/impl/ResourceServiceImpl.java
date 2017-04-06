@@ -220,14 +220,14 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public List<PermissionCell> findPermissionCellByMemberId(Long memberId) {
-        List<PermissionCell> list = resourceDao.findPermissionCellByMemberId(memberId);
+        List<PermissionCell> list = resourceRepository.findPermissionCellByMemberId(memberId);
         return (List<PermissionCell>) (list == null || list.isEmpty() ? Collections.emptyList() : list);
     }
-
+    
     @Override
     public List<Map<String, Object>> findResourceByMemberId(Long memberId) {
-        List list = resourceDao.findResourceByMemberId(memberId);
-        return (List) (list == null || list.isEmpty() ? Collections.emptyList() : list);
-
+	    List list = resourceDao.findResourceByMemberId(memberId);
+	    return (List) (list == null || list.isEmpty() ? Collections.emptyList() : list);
     }
+
 }

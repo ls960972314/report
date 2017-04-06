@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.report.common.dal.admin.entity.dto.Resource;
+import com.report.common.dal.admin.entity.vo.PermissionCell;
 import com.report.common.dal.admin.entity.vo.ResourceModel;
 
 /**
@@ -35,4 +36,6 @@ public interface ResourceRepository {
 	public List<Resource> findResourcesByIds(String resourceIds);
 	
 	public List<Resource> findResourcesByFlag(String reportFlag);
+
+	public List<PermissionCell> findPermissionCellByMemberId(Long memberId);
 }

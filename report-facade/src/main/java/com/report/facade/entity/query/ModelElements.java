@@ -1,5 +1,6 @@
 package com.report.facade.entity.query;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.report.facade.entity.dto.ReportChart;
@@ -11,8 +12,9 @@ import com.report.facade.entity.dto.ReportPublic;
  * @author lishun
  *
  */
-public class ModelElements {
+public class ModelElements implements Serializable {
 
+	private static final long serialVersionUID = -654538993376014106L;
 	/**
 	 * 报表公共信息
 	 */

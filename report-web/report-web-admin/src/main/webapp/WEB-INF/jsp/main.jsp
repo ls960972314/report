@@ -45,17 +45,16 @@
 		<div class="userHeader clearfix">
 			<div class="fr" style="display:block;">
 				<span class="tip">
-					<shiro:hasAnyRoles name='per_admin'>
-							<a style="font-size: 12px;color: antiquewhite;" href="${pageContext.request.contextPath}/toPermission.htm" target="_blank">权限管理</a>
-					</shiro:hasAnyRoles>
+					<shiro:hasPermission name='/toPermission.htm'>
+						<a style="font-size: 12px;color: antiquewhite;" href="${pageContext.request.contextPath}/toPermission.htm" target="_blank">权限管理</a>
+					</shiro:hasPermission>
 				</span>
 				<span class="tip">${name}</span>
 				<span class="tip">
-					<a href="${pageContext.request.contextPath}/logout">${hasPrevilege}安全退出</a>
+					<a href="${pageContext.request.contextPath}/logout">安全退出</a>
 				</span>
 			</div>
 			<div class="logo">
-				<%-- <a href="javascript:"><img src="${pageContext.request.contextPath}/css/images/hezi.jpg" style="width:122px;height:50px;"></a> --%>
 			</div>
 		</div>
 		<div class="globalNav">

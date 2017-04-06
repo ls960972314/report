@@ -1,7 +1,11 @@
 package com.report.facade.entity.query;
 
-public class FormatVO {
+import java.io.Serializable;
+
+public class FormatVO implements Serializable {
 	
+	private static final long serialVersionUID = -5721168244760328594L;
+
 	private int index;
 	
 	/**

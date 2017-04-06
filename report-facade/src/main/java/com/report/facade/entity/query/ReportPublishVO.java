@@ -1,11 +1,15 @@
 package com.report.facade.entity.query;
 
+import java.io.Serializable;
+
 /**
  * 新增模板时用来转换页面传来的报表元素
  * @author 887961
  *
  */
-public class ReportPublishVO {
+public class ReportPublishVO implements Serializable {
+
+	private static final long serialVersionUID = 2824717466484013264L;
 
 	/**
 	 * 页面报表id

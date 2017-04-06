@@ -1,12 +1,16 @@
 package com.report.facade.entity;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 
 
-public class PageHelper {
+public class PageHelper implements Serializable {
 	
+	private static final long serialVersionUID = -3918316232692852207L;
+
 	// 存储分页总数
 	private static final ThreadLocal<Long> count = new ThreadLocal<Long>(); 
 	

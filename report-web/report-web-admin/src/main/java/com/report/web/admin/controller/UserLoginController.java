@@ -3,7 +3,6 @@ package com.report.web.admin.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,13 +21,11 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.report.biz.admin.service.GroupService;
 import com.report.biz.admin.service.MemberService;
-import com.report.biz.admin.service.RoleService;
 import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.common.utils.VerificationUtil;
+import com.report.common.model.SessionUtil;
 import com.report.common.model.UserInfo;
-import com.report.common.repository.RoleRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,12 +38,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class UserLoginController {
 
-    @Resource
-    private GroupService groupService;
-    @Resource
-    private RoleService roleService;
-    @Resource
-    private RoleRepository roleRepository;
     @Autowired
     private MemberService memberService;
 
@@ -74,8 +65,9 @@ public class UserLoginController {
     @RequestMapping(value = "/doLogin.htm")
     public String doLogin(String username, String password, HttpServletRequest request,
     		HttpServletResponse response) {
+    	log.debug("username[{}]用户开始登陆", username);
         if (VerificationUtil.paramIsNull(username, password)) {
-        	log.debug("用户名或密码为空");
+        	log.debug("username[{}]用户名或密码为空", username);
             request.setAttribute("erroMsg", "用户名或密码不能为空");
             return "login";
         }
@@ -100,8 +92,10 @@ public class UserLoginController {
         	return "login";
 		}
 		UserInfo userInfo = memberService.getUserInfo(username);
+		log.info("username[{}]登陆成功,查询userInfo结果为[{}]", userInfo);
         /* 将登录信息存入session中 */
 		subject.getSession().setAttribute(Constants.SESSION_LOGIN_INFO, userInfo);
+		request.getSession().setAttribute("menuList", SessionUtil.getUserInfo().getAdminMenuList());
         return "redirect:main.htm";
     }
     
@@ -117,6 +111,7 @@ public class UserLoginController {
     		request.setAttribute("erroMsg", "请重新登陆");
     		return "login";
     	}
+    	request.setAttribute("name", SessionUtil.getUserInfo().getMemberName());
         return "main";
     }
 
@@ -131,10 +126,6 @@ public class UserLoginController {
         return "login";
     }
     
-    /**
-     * 时间转换
-     * @param binder
-     */
     @InitBinder
     public void initBinder(ServletRequestDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

@@ -4,8 +4,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,17 +18,18 @@ import com.report.facade.entity.dto.ReportCondition;
 import com.report.facade.entity.query.ConditionVO;
 import com.report.facade.service.ReportConditionService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 图形管理
  * @author lishun
  *
  */
+@Slf4j
 @Controller
 @RequestMapping("/condition")
 public class ReportConditionController {
 
-	 private final Log logger = LogFactory.getLog(ReportConditionController.class);
-	 
 	 @Resource
 	 private ReportConditionService reportConditionService;
 	 /**

@@ -80,12 +80,8 @@
       	(select t.acc_no from uc_member t where t.id = m.creater_id) creater_acc_no,
       	(select t.acc_no from uc_member t where t.id = m.modifier_id) modifier_acc_no
   	from 
-  		uc_member m, 
-  		uc_member_group mg, 
-  		uc_group g
-  	where
-  		mg.member_id(+) = m.id 
-  		and mg.group_code = g.group_code(+)
+  		uc_member m LEFT JOIN uc_member_group mg on mg.member_id = m.id
+		left JOIN uc_group g on g.group_code = mg.group_code
   		<if test="memberCriteriaModel.memberId != null">
             AND m.id = #{memberCriteriaModel.memberId}
         </if>

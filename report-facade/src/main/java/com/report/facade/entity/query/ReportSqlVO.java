@@ -1,11 +1,16 @@
 package com.report.facade.entity.query;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author lishun
  *
  */
-public class ReportSqlVO {
+public class ReportSqlVO implements Serializable {
+	
+	private static final long serialVersionUID = 2400306242755795781L;
+	
 	private Long sqlId;
 	private String baseSql;
 	private String baseCountSql;

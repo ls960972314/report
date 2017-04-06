@@ -142,7 +142,6 @@ public class ResourceController {
         List<Map<String, Object>> resourceList = Collections.emptyList();
         if (SessionUtil.getUserInfo().isAdmin()) {
             resourceList = resourceService.findAllResource();
-
         } else {
             resourceList = resourceService.findResourceByMemberId(SessionUtil.getUserInfo().getMember().getId());
         }

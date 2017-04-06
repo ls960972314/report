@@ -1,6 +1,9 @@
 package com.report.biz.admin.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -15,6 +18,8 @@ import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.dto.Member;
 import com.report.common.dal.admin.entity.dto.MemberGroup;
 import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
+import com.report.common.dal.admin.entity.vo.MenuCell;
+import com.report.common.dal.admin.entity.vo.PermissionCell;
 import com.report.common.dal.common.BaseDao;
 import com.report.common.model.SessionUtil;
 import com.report.common.model.ShiroUser;
@@ -56,6 +61,7 @@ public class MemberServiceImpl implements MemberService {
     	userInfo.setPermissionCodeSet(resourceRepository.findPermissions(accNo));
     	userInfo.setRoleCodeSet(roleRepository.findRoles(accNo));
     	userInfo.setRoleCodeList(Lists.newArrayList(userInfo.getRoleCodeSet()));
+    	userInfo.setMenuList(getMenuList(userInfo.getMember().getId()));
 		return userInfo;
 	}
     
@@ -167,5 +173,89 @@ public class MemberServiceImpl implements MemberService {
         dataGrid.setTotal(memberRepository.countByCriteria(memberCriteria));
         dataGrid.setRows(memberRepository.findMemberListByCriteria(memberCriteria, pageHelper));
         return dataGrid;
+    }
+    
+    private List<MenuCell> getMenuList(Long memberId) {
+        List<PermissionCell> permissions = findPermissionCellByMemberId(memberId);
+        return packSortedMenus(permissions);
+    }
+    
+    private List<PermissionCell> findPermissionCellByMemberId(Long memberId) {
+        List<PermissionCell> list = resourceRepository.findPermissionCellByMemberId(memberId);
+        return list;
+    }
+
+    private List<MenuCell> packSortedMenus(List<PermissionCell> permissions) {
+        // 菜单结果
+        List<MenuCell> menus = Collections.emptyList();
+        if (!permissions.isEmpty()) {
+            menus = new ArrayList<MenuCell>();
+            for (int i = 0; i < permissions.size(); i++) {
+                PermissionCell permission = permissions.get(i);
+
+                // 第一层级菜单
+                Long rootId = permission.getpId();
+                if (null == rootId || 0 == rootId) {
+                    MenuCell rootMenu = new MenuCell();
+                    Long id = permission.getId();
+                    rootMenu.setId(id);
+                    rootMenu.setCode(permission.getResourceCode());
+                    rootMenu.setText(permission.getName());
+                    rootMenu.setIcon(permission.getIcon());
+                    rootMenu.setUrl(permission.getResourceAction());
+                    rootMenu.setOrderBy(permission.getOrderBy());
+                    rootMenu.setResourceType(permission.getResourceType());
+                    rootMenu.setPId(permission.getpId());
+                    rootMenu.setDescription(permission.getDescription());
+                    rootMenu.setMenuType(permission.getSysCode());
+                    // 获取第二层级菜单
+                    List<MenuCell> grandsons = getChild(id, permissions);
+                    rootMenu.setChildren(grandsons);
+                    menus.add(rootMenu);
+                }
+            }
+            if (!menus.isEmpty()) {
+                Collections.sort(menus);
+            }
+        }
+        return menus;
+    }
+
+    /**
+     * 获取子菜单列表
+     * 
+     * @param parentId
+     * @param permissions
+     * @return
+     */
+    private static List<MenuCell> getChild(Long parentId, List<PermissionCell> permissions) {
+        List<MenuCell> children = Collections.emptyList();
+        if (null == permissions || permissions.isEmpty()) {
+            return children;
+        }
+        children = new ArrayList<MenuCell>();
+        for (PermissionCell permission : permissions) {
+            if (String.valueOf(parentId).equals(String.valueOf(permission.getpId()))) {
+                MenuCell menu = new MenuCell();
+                Long menuId = permission.getId();
+                menu.setId(menuId);
+                menu.setCode(permission.getResourceCode());
+                menu.setText(permission.getName());
+                menu.setIcon(permission.getIcon());
+                menu.setUrl(permission.getResourceAction());
+                menu.setOrderBy(permission.getOrderBy());
+                menu.setResourceType(permission.getResourceType());
+                menu.setPId(permission.getpId());
+                menu.setDescription(permission.getDescription());
+                menu.setMenuType(permission.getSysCode());
+                // 循环查询子菜单列表
+                List<MenuCell> grandsons = getChild(menuId, permissions);
+                menu.setChildren(grandsons);
+                children.add(menu);
+            }
+        }
+        // 根据orderBy字段排序
+        Collections.sort(children);
+        return children;
     }
 }

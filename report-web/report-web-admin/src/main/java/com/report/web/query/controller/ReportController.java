@@ -21,10 +21,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.report.common.dal.common.utils.StringUtil;
+import com.report.common.dal.common.utils.VerificationUtil;
 import com.report.common.dal.query.util.BeanUtil;
 import com.report.common.model.GlobalResultStatus;
 import com.report.common.model.JsonResult;
 import com.report.common.model.PagerRsp;
+import com.report.common.model.SessionUtil;
 import com.report.common.util.TimeUtil;
 import com.report.facade.entity.dto.ReportChart;
 import com.report.facade.entity.dto.ReportCommonCon;
@@ -307,9 +310,9 @@ public class ReportController {
     	}
     	try {
     		conValue = reportService.getConValue(selectSql);
-    		log.info("getConValue    selectSql: {} result: {}", selectSql, conValue);
+    		log.info("getConValue selectSql: {} result: {}", selectSql, conValue);
 		} catch (Exception e) {
-			log.info("getConValue    selectSql: {} exception: {}", selectSql, e.toString());
+			log.info("getConValue selectSql: {} exception: {}", selectSql, e.toString());
 		}
     	/* 查询完后再切换到主数据源*/
         SpObserver.putSp(SpObserver.defaultDataBase); 
@@ -318,23 +321,24 @@ public class ReportController {
     
     @RequestMapping(value="saveChartImage")
     @ResponseBody
-    public Object saveChartImage(@RequestParam String url,@RequestParam String index,HttpServletRequest request) {
-    	String loginName = (String)request.getSession().getAttribute("mailImgName");
+    public Object saveChartImage(@RequestParam String url,@RequestParam String index, HttpServletRequest request) {
+    	String imagePath = SessionUtil.getUserInfo().getImagePath();
     	/* 得到项目根路径 */
     	String rootPath = getImgUrl();
-    	if (StringUtils.isBlank(url)) {
-    		log.info("saveChartImage  缺少参数");
+    	if (VerificationUtil.paramIsNull(url, index)) {
+    		log.info("username[{}] saveChartImage  缺少参数", SessionUtil.getUserInfo().getMember().getAccNo());
     		return JsonResult.fail(GlobalResultStatus.PARAM_MISSING);
     	}
+    	
     	try {
     		String []imgurl = url.split(",");	
     		String u = imgurl[1];
 	    	byte[] b = new BASE64Decoder().decodeBuffer(u);
-	    	OutputStream out = new FileOutputStream(rootPath +  new File(loginName+index+".png"));
+	    	OutputStream out = new FileOutputStream(rootPath +  new File(StringUtil.combinationString(imagePath, index, ".png")));
 	        out.write(b);
 	        out.flush();
 	        out.close();
-	        log.info("保存图表成功，保存路径为："+rootPath);
+	        log.info("保存图表成功，保存路径为:rootPath[{}]", rootPath);
 	        return JsonResult.success(GlobalResultStatus.SUCCESS);
     	}catch (Exception e) {
             e.printStackTrace();

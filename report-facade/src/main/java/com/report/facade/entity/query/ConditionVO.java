@@ -1,13 +1,16 @@
 package com.report.facade.entity.query;
 
+import java.io.Serializable;
 
 /**
  * 
  * @author lishun
  *
  */
-public class ConditionVO {
-    private Integer Id;
+public class ConditionVO implements Serializable {
+	
+	private static final long serialVersionUID = 2052157230424485181L;
+	private Integer Id;
     private String toolFlag;
     private String conWhere;
     private String conType;

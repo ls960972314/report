@@ -33,11 +33,12 @@
         </encoder>
     </appender>
     
-
     <logger name="org.hibernate" level="info"/>
+    <logger name="org.mybatis" level="info"/>
+    <logger name="org.apache.shiro" level="info"/>
     <logger name="org.springframework" level="info"/>
-    <logger name="com.report" level="info"/>
-         
+    <logger name="com.report" level="debug"/>
+    
     <root level="debug">
         <appender-ref ref="report"/>
         <appender-ref ref="console"/>

@@ -61,5 +61,5 @@ public interface ResourceService {
 	
 	List<PermissionCell> findPermissionCellByMemberId(Long memberId);
 
-    List<Map<String, Object>> findResourceByMemberId(Long memberId);
+	List<Map<String, Object>> findResourceByMemberId(Long memberId);
 }

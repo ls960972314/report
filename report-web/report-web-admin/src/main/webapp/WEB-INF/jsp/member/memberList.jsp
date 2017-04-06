@@ -1,16 +1,6 @@
-<%@ page language="java" pageEncoding="UTF-8"
-	contentType="text/html;charset=UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@include file="../fragments/htmlHead.jsp"%>
-<!DOCTYPE html>
-<!--[if IE 7]>         <html class="no-js lt-ie10 lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie10 lt-ie9"> <![endif]-->
-<!--[if IE 9]>         <html class="no-js lt-ie10"> <![endif]-->
-<!--[if gt IE 9]><!-->
-<html class="no-js">
-<!--<![endif]-->
-<head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <title>用户管理</title>
 <jsp:include page="../fragments/script.jsp" />
 </head>
@@ -20,7 +10,7 @@
 		<tbody>
 			<tr>
 				<td width="190" valign="top">
-					<!--左侧导航 Start--> <%@include file="../fragments/leftMenu.jsp"%>
+					<%@include file="../fragments/leftMenu.jsp"%>
 				</td>
 				<!------ 主体内容开始 -------->
 				<td valign="top">
@@ -28,46 +18,22 @@
 						<table width="100%" class="queryFormPanel">
 							<tbody style="vertical-align: top;">
 								<tr>
-									<td><span class="query-item-inline"> <label>登录帐号：</label>
-											<input type="text" class="form-control" style="width: 180px"
-											id="accNoCriteria" autocomplete="off" />
-									</span> <span class="query-item-inline"> <label>用户名：</label> <input
-											type="text" class="form-control" style="width: 180px"
-											id="nameCriteria" autocomplete="off" />
-									</span>
-<!-- 										<div class="query-item-inline"> -->
-<!-- 											<label>组别：</label> -->
-<!-- 											<div class="btn-group inline-box"> -->
-<!-- 												<button type="button" -->
-<!-- 													class="btn btn-default dropdown-toggle" -->
-<!-- 													data-toggle="dropdown"> -->
-<!-- 													所有组别 <span class="caret"></span> -->
-<!-- 												</button> -->
-<!-- 												<ul class="dropdown-menu checklist" -->
-<!-- 													data-model="multi-select" role="menu" id="groupNameList" -->
-<!-- 													style="width: 220px"></ul> -->
-<!-- 											</div> -->
-<!-- 										</div></td> -->
-									<td width="100">
+									<td>
+										<span class="query-item-inline"> 
+											<label>登录帐号：</label>
+											<input type="text" class="form-control" style="width: 180px" id="accNoCriteria" autocomplete="off" />
+										</span> 
+										<span class="query-item-inline">
+											<label>用户名：</label>
+											<input type="text" class="form-control" style="width: 180px" id="nameCriteria" autocomplete="off" />
+										</span>
 										<button id="member-search" class="btn btn-primary btn-w90">查询</button>
 									</td>
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td><span class="query-item-inline"> <label>已选组别：</label> -->
-<!-- 											<span id="queryItemShow" class="select-label"> <span -->
-<!-- 												class="body"></span> -->
-<!-- 										</span> -->
-<!-- 									</span></td> -->
-<!-- 									<td width="100"> -->
-<!-- 										<button class="btn btn-danger btn-w90" style="margin: 10px 0;" -->
-<!-- 											onclick="location.reload()">清空条件</button> -->
-<!-- 									</td> -->
 								</tr>
 							</tbody>
 						</table>
-					</div> <!--左侧导航 End --> <!-- 数据列表 -->
-					<table id="memberList"
-						url="${pageContext.request.contextPath}/member/findMemberListByCriteria.htm"
+					</div>
+					<table id="memberList" url="${pageContext.request.contextPath}/member/findMemberListByCriteria.htm"
 						toolbar="#toolbar" rownumbers="true"
 						data-options="rownumbers:true,cls:'tableSty',singleSelect:true,fit:true,fitColumns:'true',pagination:'true',loadMsg:'数据加载中...'">
 						<thead>
@@ -75,7 +41,6 @@
 								<th field="id" data-options="hidden:'true'"></th>
 								<th field="accNo" width="20" sortable="true">登录帐号</th>
 								<th field="name" width="20" sortable="true">用户名称</th>
-								<!-- <th field="casType" width="50" sortable="true" formatter="formatCasType">类型</th> -->
 								<th field="groupName" width="30" sortable="true"
 									formatter="formatGroup">组别</th>
 								<th field="status" width="10" sortable="true"
@@ -93,27 +58,21 @@
 	</table>
 
 
-	<!-- tool -->
 	<div id="toolbar">
-       <c:if test="${isPerAdmin}"> 
-		<div style="margin-bottom: 5px">
-			<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"
-				onclick="addObject('新建人员','${pageContext.request.contextPath}/member/addOrUpdateMember.htm','memberDialog', 'memberForm')">新建</a>
-			<a href="#" class="easyui-linkbutton" iconCls="icon-edit"
-				plain="true"
-				onclick="updateObject('编辑人员','${pageContext.request.contextPath}/member/addOrUpdateMember.htm','memberList','memberDialog2', 'memberForm2')">编辑</a>
-			<a href="#" class="easyui-linkbutton" plain="true"
-				onclick="showDetail('人员详情', 'memberList','memberDialog2', 'memberForm2')">详情</a>
-			<a href="#" class="easyui-linkbutton" iconCls="icon-remove"
-				plain="true"
-				onclick="deleteObject('memberList', '${pageContext.request.contextPath}/member/deleteMember.htm', false)">删除</a>
-			<a href="#" class="easyui-linkbutton" plain="true"
-				onclick="resetPassword()">重置密码</a> 
-<!-- 				<a href="#" -->
-<!-- 				class="easyui-linkbutton" plain="true" -->
-<%-- 				onclick="distributeTempResource('${pageContext.request.contextPath}/memberTempPriv/distriTempResource.htm')">分配临时权限</a> --%>
-		</div>
-       </c:if>
+        <shiro:hasAnyRoles name='per_admin'>
+			<div style="margin-bottom: 5px">
+				<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"
+					onclick="addObject('新建人员','${pageContext.request.contextPath}/member/addOrUpdateMember.htm','memberDialog', 'memberForm')">新建</a>
+				<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"
+					onclick="updateObject('编辑人员','${pageContext.request.contextPath}/member/addOrUpdateMember.htm','memberList','memberDialog2', 'memberForm2')">编辑</a>
+				<a href="#" class="easyui-linkbutton" plain="true"
+					onclick="showDetail('人员详情', 'memberList','memberDialog2', 'memberForm2')">详情</a>
+				<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"
+					onclick="deleteObject('memberList', '${pageContext.request.contextPath}/member/deleteMember.htm', false)">删除</a>
+				<a href="#" class="easyui-linkbutton" plain="true"
+					onclick="resetPassword()">重置密码</a> 
+			</div>
+        </shiro:hasAnyRoles>
 	</div>
 
 	<!-- 对话框 -->
@@ -208,17 +167,33 @@
 	</div>
 
 	<script type="text/javascript">
-		$('#memberList').datagrid(
-				{
-					onLoadSuccess : function() {
-						$('.datagrid-body:eq(1)').css({
-							'overflow-x' : 'hidden',
-							'overflow-y' : 'auto'
-						});
-						$('.datagrid-btable td:last-child').css(
-								'padding-right', '30px');
-					}
+		$(function() {
+			$("[data-toggle=dropdown]").click(dropdownToggle);
+			$.post("${pageContext.request.contextPath}/group/findAllGroupNames.htm",
+				function(data) {
+				data = eval('(' + data + ')');
+				$.each(data, function(key, val) {
+					var $li = $('<li data-value="'+val.groupCode+'">' + val.groupName + '</li>');
+					$li.click(function() {
+						queryItemShow('#groupNameList', $(this));
+					});
+					$("#groupNameList").append($li);
 				});
+			});
+			$("#member-search").click(function() {
+				search(function(merchantIds) {
+					$('#memberList').datagrid('getPager').pagination('select', 1);
+				});
+			});
+		});
+		
+		$('#memberList').datagrid({onLoadSuccess: function() {
+			$('.datagrid-body:eq(1)').css({
+				'overflow-x' : 'hidden',
+				'overflow-y' : 'auto'
+			});
+			$('.datagrid-btable td:last-child').css('padding-right', '30px');
+		}});
 
 		function resetPassword(that) {
 			var row = $('#memberList').datagrid('getSelected');
@@ -227,21 +202,20 @@
 			}
 			if (confirm('确定要重置密码？')) {
 				var memberId = row.id;
-				$
-						.ajax({
-							type : 'post',
-							url : '${pageContext.request.contextPath}/member/resetPassword.htm',
-							data : {
-								"memberId" : memberId
-							},
-							success : function(data) {
-								if (data.status) {
-									tip('成功将密码重置为:123456');
-								} else {
-									tip(data.errorInfo);
-								}
-							}
-						})
+				$.ajax({
+					type : 'post',
+					url : '${pageContext.request.contextPath}/member/resetPassword.htm',
+					data : {
+						"memberId" : memberId
+					},
+					success : function(data) {
+						if (data.status) {
+							tip('成功将密码重置为:123456');
+						} else {
+							tip(data.errorInfo);
+						}
+					}
+				});
 			} else {
 				return;
 			}
@@ -358,46 +332,6 @@
 				$("#memberSelect").combobox("setValues", memberIds);
 			}
 		}
-
-		$(function() {
-			//绑定下拉筛选
-			$("[data-toggle=dropdown]").click(dropdownToggle);
-
-			//载入筛选店铺名
-			$
-					.post(
-							"${pageContext.request.contextPath}/group/findAllGroupNames.htm",
-							function(data) {
-								data = eval('(' + data + ')');
-								$
-										.each(
-												data,
-												function(key, val) {
-													var $li = $('<li data-value="'+val.groupCode+'">'
-															+ val.groupName
-															+ '</li>');
-													$li
-															.click(function() {
-																queryItemShow(
-																		'#groupNameList',
-																		$(this));
-															});
-													$("#groupNameList").append(
-															$li);
-												});
-							});
-
-			//开始查询
-			$("#member-search").click(
-					function() {
-						search(function(merchantIds) {
-							$('#memberList').datagrid('getPager').pagination(
-									'select', 1);
-						});
-					});
-
-		});
-
 		function distributeTempResource(url) {
 			var row = $('#memberList').datagrid('getSelected');
 			if (!row) {

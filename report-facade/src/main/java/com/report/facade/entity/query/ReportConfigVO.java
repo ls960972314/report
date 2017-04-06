@@ -1,8 +1,12 @@
 package com.report.facade.entity.query;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ReportConfigVO {
+public class ReportConfigVO implements Serializable {
+
+	private static final long serialVersionUID = -3904795097673554237L;
+
 	/**
 	 * 主键
 	 */

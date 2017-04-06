@@ -5,8 +5,12 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.collect.Lists;
 import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.admin.constant.Constants.MenuType;
 import com.report.common.dal.admin.entity.dto.Member;
+import com.report.common.dal.admin.entity.vo.MenuCell;
+import com.report.common.dal.common.utils.VerificationUtil;
 
 import lombok.Data;
 
@@ -33,6 +37,9 @@ public class UserInfo {
 	/** 资源URL Set集合 */
 	private Set<String> permissionCodeSet;
 	
+	/** 权限资源列表 */
+	private List<MenuCell> menuList;
+	
 	/** 用户名 */
 	public String getMemberName() {
 		return StringUtils.isBlank(member.getName()) ? member.getAccNo() : member.getName();
@@ -46,5 +53,29 @@ public class UserInfo {
 	/** 是否为管理员 */
 	public boolean isAdmin() {
 		return roleCodeList.contains(Constants.ADMIN_ACCOUNT);
+	}
+	
+	/** 获得权限管理后台资源集合 */
+	public List<MenuCell> getAdminMenuList() {
+		if(!VerificationUtil.paramIsNull(menuList)) {
+            for(MenuCell m: menuList) {
+                if(MenuType.PERMISSION.equals(m.getMenuType())) {
+                	return m.getChildren();
+                }
+            }
+        }
+		return Lists.newArrayList();
+	}
+	
+	/** 获得报表平台资源集合 */
+	public List<MenuCell> getReportMenuList() {
+		if(!VerificationUtil.paramIsNull(menuList)) {
+            for(MenuCell m: menuList) {
+                if(MenuType.REPORT.equals(m.getMenuType())) {
+                	return Lists.newArrayList(m);
+                }
+            }
+        }
+		return Lists.newArrayList();
 	}
 }

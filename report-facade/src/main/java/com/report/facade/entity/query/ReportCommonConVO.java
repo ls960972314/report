@@ -1,11 +1,15 @@
 package com.report.facade.entity.query;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author lishun
  *
  */
-public class ReportCommonConVO {
+public class ReportCommonConVO implements Serializable {
+
+	private static final long serialVersionUID = -1018169764573946550L;
 	/**
 	 * 主键
 	 */

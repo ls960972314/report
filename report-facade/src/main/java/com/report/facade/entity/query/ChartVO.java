@@ -1,6 +1,10 @@
 package com.report.facade.entity.query;
 
-public class ChartVO {
+import java.io.Serializable;
+
+public class ChartVO implements Serializable {
+
+	private static final long serialVersionUID = -1141034211714835970L;
 
 	private Integer id;
 	

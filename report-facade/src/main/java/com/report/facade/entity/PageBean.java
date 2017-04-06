@@ -1,5 +1,6 @@
 package com.report.facade.entity;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -7,20 +8,17 @@ import java.util.Map;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.ibatis.session.RowBounds;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-@SuppressWarnings("rawtypes")
 @JsonInclude(Include.NON_NULL)
-public class PageBean {
+public class PageBean implements Serializable {
 	
+	private static final long serialVersionUID = 2064492049261957703L;
+
 	private static final Class<List> DEFAULT_RESULT_LIST_TYPE = List.class;
 
-	private static final Logger LOG = LoggerFactory.getLogger(PageBean.class);
-	
 	public static final int DEFAULT_PAGESIZE = 10;
 	/**
 	 * 每页数量
@@ -229,83 +227,6 @@ public class PageBean {
 		int startIndex = getStartIndex();
 		this.setStartIndex(startIndex);
 	}
-	
-//	/**
-//	 * PO转VO
-//	 * @param clazz
-//	 * 			目标VO类
-//	 * 
-//	 */
-//	public void convertPO2VO(Class clazz){
-//		convertPO2VO(clazz, null);
-//	}
-//	
-//	/**
-//	 * PO转VO
-//	 * @param clazz
-//	 * 			目标VO类
-//	 * 
-//	 */
-//	public void convertPO2VO(Class clazz, String[] ignoreProperties){
-//		convertPO2VO(clazz, ignoreProperties, null);
-//	}
-//	
-//	/**
-//	 * 带转换器的PO转VO
-//	 * @param clazz
-//	 * 			目标VO类
-//	 * 
-//	 * @param convertors
-//	 * 			转换器
-//	 * 
-//	 */
-//	public void convertPO2VO(Class clazz, String[] ignoreProperties, Map<Class, Formatter> formatters){
-//		if(null == clazz){
-//			return;
-//		}
-//		if(null != result){
-//			if(null == this.clazz){
-//				this.clazz = DEFAULT_RESULT_LIST_TYPE;
-//			}
-//			if(DEFAULT_RESULT_LIST_TYPE.isAssignableFrom(this.clazz)){
-//				List col = (List) result;
-//				if(!col.isEmpty()){
-//					List voList = new ArrayList(col.size());
-//					for(Object po : col){
-//						
-//						Object vo;
-//						try {
-//							vo = clazz.newInstance();
-//						} catch (Exception e) {
-//							LOG.error("类：" + clazz.getName() + "使用默认构造器实例化对象异常！");
-//							break;
-//						}
-//						BeanUtil.copyProperties(po, vo, ignoreProperties, formatters);
-//						voList.add(vo);
-//					}
-//					this.setResult(voList);
-//				}
-//			}else if(Map.class.isAssignableFrom(this.clazz)){
-//				Map map = (Map) result;
-//				if(!map.isEmpty()){
-//					Map voMap = new HashMap(map.size());
-//					for(Object key : map.keySet()){
-//						Object po = map.get(key);
-//						Object vo;
-//						try {
-//							vo = clazz.newInstance();
-//						} catch (Exception e) {
-//							LOG.error("类：" + clazz.getName() + "使用默认构造器实例化对象异常！");
-//							break;
-//						}
-//						BeanUtil.copyProperties(po, vo, ignoreProperties, formatters);
-//						voMap.put(key, vo);
-//					}
-//					this.setResult(voMap);
-//				}
-//			}
-//		}
-//	}
 	
 	/**
 	 * 转换为Mybatis的分页对象

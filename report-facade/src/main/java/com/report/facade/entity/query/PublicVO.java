@@ -1,12 +1,16 @@
 package com.report.facade.entity.query;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author lishun
  *
  */
-public class PublicVO {
+public class PublicVO implements Serializable {
 
+	private static final long serialVersionUID = 1106029269074628231L;
+	
 	private Integer id;
 	private String toolFlag;
 	private String toolTitle;

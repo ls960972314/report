@@ -1,6 +1,10 @@
 package com.report.facade.entity.query;
 
-public class ReturnCondition {
+import java.io.Serializable;
+
+public class ReturnCondition implements Serializable {
+
+	private static final long serialVersionUID = -6063443521350862149L;
 
 	private Integer Id;
 	

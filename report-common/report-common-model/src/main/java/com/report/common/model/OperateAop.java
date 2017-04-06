@@ -46,7 +46,7 @@ public class OperateAop {
 				}
 			}
 		}
-		rptLog.setUserName(SessionUtil.getUserInfo().getMember().getName());
+		rptLog.setUserName(SessionUtil.getUserInfo() == null ? null : SessionUtil.getUserInfo().getMember().getAccNo());
 		rptLog.setWasteTime(String.valueOf(wasteTime));
 		rptLog.setOpeAction(operate);
 		if ((operate.equals("reportShowQueryData") || operate.equals("reportMakeQueryData")

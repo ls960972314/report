@@ -20,6 +20,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.report.common.model.GlobalResultStatus;
 import com.report.common.model.JsonResult;
+import com.report.common.model.SessionUtil;
 import com.report.facade.entity.dto.ReportCommonCon;
 import com.report.facade.entity.dto.ReportCondition;
 import com.report.facade.entity.dto.ReportModel;
@@ -100,20 +101,11 @@ public class ReportModelController {
 	@RequestMapping(value = "sendMail")
     @ResponseBody
     public Object sendMail(String reportModelVO,String condition,HttpServletRequest request,String titleGS,String contentGS,String mNameGS,String ReceiveAdd, String selfConList){
-		String loginName = "";
-		try{
-			loginName = (String)request.getSession().getAttribute("mailImgName");
-		}catch (Exception e) {
-			log.error(String.format("发送邮件时从请求中取用户登录名异常:[%s]", e));
-		}
-		/* 得到项目根路径 */
-		String rootPath = "";
-		//rootPath.replaceAll("\\\\", "\\\\\\\\");
-		
+		String imagePath = SessionUtil.getUserInfo().getImagePath();
 		ReportModelVO reportModelVO1 = JSON.parseObject(reportModelVO, ReportModelVO.class);
 		boolean result = true;
 		try{
-			result = reportModelService.sendMail(reportModelVO1, condition,rootPath,titleGS,contentGS,mNameGS,ReceiveAdd,selfConList,loginName);
+			result = reportModelService.sendMail(reportModelVO1, condition, "", titleGS, contentGS, mNameGS, ReceiveAdd, selfConList, imagePath);
 		}catch(Exception e){
 			log.error("sendMail error", e);
 			return JsonResult.fail(GlobalResultStatus.UNKNOWN_FAIL, e.getCause().toString());

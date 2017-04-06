@@ -1,10 +1,12 @@
 package com.report.facade.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataGrid {
+public class DataGrid implements Serializable {
 
+	private static final long serialVersionUID = 2472128621580392852L;
 	// 总行数
 	private Long total = 0L;
 	// list数据

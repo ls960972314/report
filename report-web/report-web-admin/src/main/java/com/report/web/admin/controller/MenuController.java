@@ -1,136 +1,54 @@
 package com.report.web.admin.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.shiro.session.Session;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.report.biz.admin.service.ResourceService;
-import com.report.common.dal.admin.constant.Constants;
-import com.report.common.dal.admin.constant.Constants.MenuType;
 import com.report.common.dal.admin.entity.vo.MenuCell;
-import com.report.common.dal.admin.entity.vo.PermissionCell;
 import com.report.common.model.SessionUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
 
+/**
+ * 用户目录controller
+ * @author lishun
+ * @since 2017年4月5日 下午5:55:09
+ */
 @Slf4j
 @Controller
 @RequestMapping("/menu")
 public class MenuController {
 	
-	@Autowired
-	private ResourceService resourceService;
-	
-    @RequestMapping("/loadMenuByPriv.htm") 
+	/**
+	 * 加载报表目录
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping("/loadMenuByPriv.htm")
     @ResponseBody
-    public List<MenuCell> loadMenuByPriv() throws Exception { 
-        List<MenuCell> menuList = getMenuList();
-        if(menuList != null && menuList.size() > 0) {
-            for(MenuCell m: menuList) {
-                if(MenuType.REPORT.equals(m.getMenuType())) {
-                    List<MenuCell> list = new ArrayList<MenuCell>();
-                    list.add(m);
-                    return list;
-                }
-            }
-        }
-    	return Collections.emptyList();
+    public List<MenuCell> loadMenuByPriv() throws Exception {
+    	log.debug("username[{}] loadMenuByPriv", SessionUtil.getUserInfo().getMember().getAccNo());
+    	return SessionUtil.getUserInfo().getReportMenuList();
     }
     
-    private List<MenuCell> getMenuList() {
-        Session session = SessionUtil.getHttpSession();
-        if(session.getAttribute(Constants.REPORT_MENU_LIST) != null) {
-            return (List<MenuCell>) session.getAttribute(Constants.REPORT_MENU_LIST);
-        }
-        List<PermissionCell> permissions = findPermissionCellByMemberId(SessionUtil.getUserInfo().getMember().getId());
-
-        return packSortedMenus(permissions);
-    }
-    
-    private List<PermissionCell> findPermissionCellByMemberId(Long memberId) {
-        List<PermissionCell> list = resourceService.findPermissionCellByMemberId(memberId);
-        return (List<PermissionCell>) (list == null || list.isEmpty() ? Collections.emptyList() : list);
-    }
-
-    private List<MenuCell> packSortedMenus(List<PermissionCell> permissions) {
-        // 菜单结果
-        List<MenuCell> menus = Collections.emptyList();
-        if (!permissions.isEmpty()) {
-            menus = new ArrayList<MenuCell>();
-            for (int i = 0; i < permissions.size(); i++) {
-                PermissionCell permission = permissions.get(i);
-
-                // 第一层级菜单
-                Long rootId = permission.getpId();
-                if (null == rootId || 0 == rootId) {
-                    MenuCell rootMenu = new MenuCell();
-                    Long id = permission.getId();
-                    rootMenu.setId(id);
-                    rootMenu.setCode(permission.getResourceCode());
-                    rootMenu.setText(permission.getName());
-                    rootMenu.setIcon(permission.getIcon());
-                    rootMenu.setUrl(permission.getResourceAction());
-                    rootMenu.setOrderBy(permission.getOrderBy());
-                    rootMenu.setResourceType(permission.getResourceType());
-                    rootMenu.setPId(permission.getpId());
-                    rootMenu.setDescription(permission.getDescription());
-                    rootMenu.setMenuType(permission.getSysCode());
-                    // 获取第二层级菜单
-                    List<MenuCell> grandsons = getChild(id, permissions);
-                    rootMenu.setChildren(grandsons);
-                    menus.add(rootMenu);
-                }
-            }
-            if (!menus.isEmpty()) {
-                Collections.sort(menus);
-            }
-        }
-        return menus;
-    }
-
     /**
-     * 获取子菜单列表
-     * 
-     * @param parentId
-     * @param permissions
-     * @return
-     */
-    private static List<MenuCell> getChild(Long parentId, List<PermissionCell> permissions) {
-        List<MenuCell> children = Collections.emptyList();
-        if (null == permissions || permissions.isEmpty()) {
-            return children;
-        }
-        children = new ArrayList<MenuCell>();
-        for (PermissionCell permission : permissions) {
-            if (String.valueOf(parentId).equals(String.valueOf(permission.getpId()))) {
-                MenuCell menu = new MenuCell();
-                Long menuId = permission.getId();
-                menu.setId(menuId);
-                menu.setCode(permission.getResourceCode());
-                menu.setText(permission.getName());
-                menu.setIcon(permission.getIcon());
-                menu.setUrl(permission.getResourceAction());
-                menu.setOrderBy(permission.getOrderBy());
-                menu.setResourceType(permission.getResourceType());
-                menu.setPId(permission.getpId());
-                menu.setDescription(permission.getDescription());
-                menu.setMenuType(permission.getSysCode());
-                // 循环查询子菜单列表
-                List<MenuCell> grandsons = getChild(menuId, permissions);
-                menu.setChildren(grandsons);
-                children.add(menu);
-            }
-        }
-
-        // 根据orderBy字段排序
-        Collections.sort(children);
-        return children;
+	 * 跳转至报表后台管理页面
+	 * @param request
+	 * @return
+	 */
+	@RequiresPermissions(value = "/toPermission.htm")
+    @RequestMapping(value = "/toPermission.htm")
+    public ModelAndView toPermission(HttpServletRequest request) {
+		log.debug("username[{}] toPermission", SessionUtil.getUserInfo().getMember().getAccNo());
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("permission");
+        return modelAndView;
     }
 }

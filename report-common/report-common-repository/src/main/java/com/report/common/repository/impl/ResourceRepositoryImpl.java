@@ -13,9 +13,11 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.report.common.dal.admin.dao.ResourceDao;
 import com.report.common.dal.admin.entity.dto.Resource;
+import com.report.common.dal.admin.entity.vo.PermissionCell;
 import com.report.common.dal.admin.entity.vo.ResourceModel;
 import com.report.common.dal.common.BaseDao;
 import com.report.common.model.SessionUtil;
@@ -120,7 +122,13 @@ public class ResourceRepositoryImpl implements ResourceRepository {
 	public List<Resource> findResourcesByFlag(String reportFlag) {
 		String sql = "select t.* from uc_resource t where t.status=1 and t.resource_action like :reportFlag";
 		Query query = baseDao.getSqlQuery(sql);
-		query.setParameter("reportFlag", "%" +reportFlag + "%");
+		query.setParameter("reportFlag", "%" + reportFlag + "%");
 		return query.list();
+	}
+
+	@Override
+	public List<PermissionCell> findPermissionCellByMemberId(Long memberId) {
+		List<PermissionCell> list = resourceDao.findPermissionCellByMemberId(memberId);
+        return Lists.newArrayList(list);
 	}
 }

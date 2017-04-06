@@ -10,7 +10,6 @@ public class Constants {
 	private Constants() {}
 	
     public static class OpStatus {
-
         public final static int SUCC = 1;
         public final static int FAIL = 0;
     }
@@ -33,7 +32,6 @@ public class Constants {
     public static final String SESSION_LOGIN_INFO = "loginInfo";
     /** 用户默认密码 */
     public static final String DEFAULT_PASSWORD_FOR_MEMBER = "123456";
-    public static final String MENU_LIST = "menuList";
     public static final String REPORT_MENU_LIST = "reportMenuList";
     
 }

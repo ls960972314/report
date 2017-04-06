@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.report.biz.admin.service.GroupService;
-import com.report.biz.admin.service.RoleService;
 import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.vo.GroupModel;
 import com.report.common.model.AjaxJson;
@@ -30,8 +29,6 @@ public class GroupController {
 
     @Autowired
     private GroupService groupService;
-    @Autowired
-    private RoleService roleService;
 
     @RequestMapping(value = "/group.htm")
     public String findGroupList(HttpServletRequest request) {
@@ -64,18 +61,14 @@ public class GroupController {
         // 判断当前是更新还是新增
         // 更新：判断当前组编码和数据库中的组编码是否一致
         // 新增：判断组编码是否已经存在
-
         int status = Constants.OpStatus.FAIL;
-
         if (groupModel.getId() != null) {
             // 更新操作
-
             if (!groupService.isSameGroupCode(groupModel.getId(), groupModel.getGroupCode())) {
                 json.setErrorNo(ResultCodeConstants.RESULT_GROUP_CODE_CANNOT_BE_MODIFIED);
                 json.setErrorInfo("组编码不能修改！");
                 return json;
             }
-
             status = groupService.updateGroup(groupModel, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
             if (status == Constants.OpStatus.FAIL) {
                 json.setStatus(status);
@@ -88,7 +81,6 @@ public class GroupController {
                 json.setErrorInfo("组编码已经存在！");
                 return json;
             }
-
             status = groupService.saveGroup(groupModel, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
             if (status == Constants.OpStatus.FAIL) {
                 json.setStatus(status);
@@ -101,16 +93,13 @@ public class GroupController {
     @RequestMapping(value = "/deleteGroup.htm")
     @ResponseBody
     public AjaxJson deleteGroup(Long id, HttpServletRequest request) {
-
         AjaxJson ajaxJson = null;
-
         // 只有权限管理员能够执行
         if (!SessionUtil.getUserInfo().isAdmin()) {
             ajaxJson = new AjaxJson();
             ajaxJson.setErrorNo(ResultCodeConstants.RESULT_PER_ADMIN_HAS_PRIV);
             return ajaxJson;
         }
-
         return groupService.deleteGroupById(id, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
     }
 

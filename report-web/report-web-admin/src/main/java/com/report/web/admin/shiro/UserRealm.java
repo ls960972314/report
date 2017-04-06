@@ -32,6 +32,7 @@ public class UserRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+    	log.debug("username[{}]doGetAuthorizationInfo principals[{}]", SessionUtil.getUserInfo().getMember().getAccNo(), principals);
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.setRoles(SessionUtil.getUserInfo().getRoleCodeSet());
         authorizationInfo.setStringPermissions(SessionUtil.getUserInfo().getPermissionCodeSet());
@@ -40,6 +41,7 @@ public class UserRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    	log.debug("username[{}]doGetAuthenticationInfo", token.getPrincipal());
         String username = (String)token.getPrincipal();
         ShiroUser user = memberService.findUserModelByAccNo(username);
         if(user == null) {
@@ -47,9 +49,9 @@ public class UserRealm extends AuthorizingRealm {
         }
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                user.getAccNo(), //用户名
-                user.getPassword(), //密码
-                ByteSource.Util.bytes(""),//salt=username+salt
+                user.getAccNo(),
+                user.getPassword(),
+                ByteSource.Util.bytes(""),//加盐
                 getName()  //realm name
         );
         return authenticationInfo;
