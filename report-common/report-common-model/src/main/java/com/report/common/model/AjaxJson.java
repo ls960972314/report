@@ -1,13 +1,12 @@
 package com.report.common.model;
 
-import com.report.common.dal.admin.constant.Constants.OpStatus;
+import com.report.common.dal.admin.constant.Constants;
 import com.report.common.util.ResponseMsgUtil;
 
 /**
  * $.ajax后需要接受的JSON
- * 
- * @author
- * 
+ * @author lishun
+ * @since 2017年4月7日 上午10:05:39
  */
 public class AjaxJson {
 
@@ -16,7 +15,7 @@ public class AjaxJson {
 	// 提示信息
 	private String errorInfo;
 	// 状态
-	private int status = OpStatus.SUCC;
+	private int status = Constants.SUCCESS;
 
 	public int getErrorNo() {
 		return errorNo;
@@ -25,7 +24,7 @@ public class AjaxJson {
 	public void setErrorNo(int errorNo) {
 		this.errorNo = errorNo;
 		this.errorInfo = ResponseMsgUtil.returnMsg(errorNo);
-		this.status = OpStatus.FAIL;
+		this.status = Constants.FAIL;
 	}
 
 	public String getErrorInfo() {
@@ -34,7 +33,7 @@ public class AjaxJson {
 
 	public void setErrorInfo(String errorInfo) {
 		this.errorInfo = errorInfo;
-		this.status = OpStatus.FAIL;
+		this.status = Constants.FAIL;
 	}
 
 	public int getStatus() {

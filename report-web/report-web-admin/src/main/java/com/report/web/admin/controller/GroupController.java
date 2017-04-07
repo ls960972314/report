@@ -61,7 +61,7 @@ public class GroupController {
         // 判断当前是更新还是新增
         // 更新：判断当前组编码和数据库中的组编码是否一致
         // 新增：判断组编码是否已经存在
-        int status = Constants.OpStatus.FAIL;
+        int status = Constants.FAIL;
         if (groupModel.getId() != null) {
             // 更新操作
             if (!groupService.isSameGroupCode(groupModel.getId(), groupModel.getGroupCode())) {
@@ -70,7 +70,7 @@ public class GroupController {
                 return json;
             }
             status = groupService.updateGroup(groupModel, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
-            if (status == Constants.OpStatus.FAIL) {
+            if (status == Constants.FAIL) {
                 json.setStatus(status);
                 json.setErrorInfo("更新失败！");
                 return json;
@@ -82,7 +82,7 @@ public class GroupController {
                 return json;
             }
             status = groupService.saveGroup(groupModel, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
-            if (status == Constants.OpStatus.FAIL) {
+            if (status == Constants.FAIL) {
                 json.setStatus(status);
                 json.setErrorInfo("保存失败！");
             }

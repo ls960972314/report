@@ -10,12 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.report.common.dal.admin.dao.MemberDao;
 import com.report.common.dal.admin.entity.dto.Member;
-import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
 import com.report.common.dal.admin.entity.vo.MemberModel;
-import com.report.common.dal.admin.util.MybatisUtil;
 import com.report.common.dal.admin.util.PageUtil;
+import com.report.common.model.MemberQueryReq;
 import com.report.common.repository.MemberRepository;
-import com.report.facade.entity.PageHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +32,20 @@ public class MemberRepositoryImpl implements MemberRepository {
 	public Member findMemberByAccNo(String accNo) {
 		return memberDao.findMemberByAccNo(accNo);
 	}
+	
+	@Override
+    public List<MemberModel> findMemberList(MemberQueryReq memberQueryReq, int page, int rows) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("memberQueryReq", memberQueryReq);
+        return memberDao.findMemberList(params, PageUtil.paged(page - 1, rows));
+    }
+    
+    @Override
+    public Long count(MemberQueryReq memberQueryReq) {
+    	Map<String, Object> params = new HashMap<String, Object>();
+        params.put("memberQueryReq", memberQueryReq);
+        return memberDao.count(params);
+    }
 	
     @Override
     public boolean isPasswordRight(Long currentMemberId, String encryptedPassword) {
@@ -66,24 +78,18 @@ public class MemberRepositoryImpl implements MemberRepository {
         return true;
     }
 
-    @Override
-    public Long countByCriteria(MemberCriteriaModel memberCriteriaModel) {
-        return memberDao.countByCriteria(memberCriteriaModel);
-    }
+	@Override
+	public void update(Member member) {
+		memberDao.update(member);
+	}
 
-    private void handleFieldForSorting(PageHelper pageHelper) {
-        if (pageHelper.getSort() != null) {
-            pageHelper.setSort(MybatisUtil.propertyName2ColumnName("member.memberModelResultMap", pageHelper.getSort()));
-        }
-    }
+	@Override
+	public Long insert(Member member) {
+		return memberDao.insert( member);
+	}
 
-    @Override
-    public List<MemberModel> findMemberListByCriteria(MemberCriteriaModel memberCriteriaModel, PageHelper pageHelper) {
-        handleFieldForSorting(pageHelper);
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("pageHelper", pageHelper);
-        params.put("memberCriteriaModel", memberCriteriaModel);
-        return memberDao.findMemberListByCriteria(params, PageUtil.paged(pageHelper.getPage() - 1, pageHelper.getRows()));
-    }
+	@Override
+	public void delete(Long memberId) {
+		memberDao.delete(memberId);
+	}
 }

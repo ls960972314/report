@@ -9,16 +9,8 @@ public class Constants {
 	
 	private Constants() {}
 	
-    public static class OpStatus {
-        public final static int SUCC = 1;
-        public final static int FAIL = 0;
-    }
-
-    public static class ResourceStatus {
-
-        public final static int VALID = 1;
-        public final static int INVALID = 0;
-    }
+	public static final int SUCCESS = 1;
+	public static final int FAIL = 0;
     
     public static class MenuType {
         public static final String REPORT = "omp";

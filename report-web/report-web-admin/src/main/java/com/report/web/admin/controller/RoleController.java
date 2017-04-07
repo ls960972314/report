@@ -58,7 +58,7 @@ public class RoleController {
         // 先判断id是否为空，如果为空的话(即当前操作是保存)，则检查角色编码是否存在；
         // 如果不为空的话(即当前操作为更新)，则拿当前的角色编码和数据库中的角色编码进行比较，如果不一致，则报错
 
-        int result = Constants.OpStatus.FAIL;
+        int result = Constants.FAIL;
 
         if (null != model.getId()) {
 
@@ -73,7 +73,7 @@ public class RoleController {
 
             result = roleService.updateRole(model, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
             j.setStatus(result);
-            if (result == Constants.OpStatus.FAIL) {
+            if (result == Constants.FAIL) {
                 j.setErrorInfo("更新失败！");
             }
         } else {
@@ -88,7 +88,7 @@ public class RoleController {
 
             result = roleService.saveRole(model, SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr());
             j.setStatus(result);
-            if (result == Constants.OpStatus.FAIL) {
+            if (result == Constants.FAIL) {
                 j.setErrorInfo("保存失败！");
             }
         }

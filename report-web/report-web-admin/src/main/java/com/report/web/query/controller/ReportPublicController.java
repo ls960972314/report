@@ -62,7 +62,7 @@ public class ReportPublicController {
         try {
         	reportPublicService.updatePublic(reportpublic);
 		} catch (Exception e) {
-	            json.setStatus(Constants.OpStatus.FAIL);
+	            json.setStatus(Constants.FAIL);
 	            json.setErrorInfo("更新失败！");
 	            return json;
 		}

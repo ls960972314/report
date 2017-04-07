@@ -87,7 +87,7 @@ public class ResourceServiceImpl implements ResourceService {
         resource.setDescription(model.getDescription());
         resource.setIcon(model.getIcon());
         resource.setOrderBy(model.getOrderBy() == null ? resource.getOrderBy() : model.getOrderBy());
-        resource.setStatus(Constants.ResourceStatus.VALID);
+        resource.setStatus(Constants.SUCCESS);
         resource.setResourceCode(model.getResourceCode());
         Date now = new Date();
         resource.setUpdateTime(now);

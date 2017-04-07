@@ -97,7 +97,7 @@ public class ReportCommonConController {
 		try {
 			reportCommonConService.updateReportCondition(reportCommonCon);
 		} catch (Exception e) {
-			json.setStatus(Constants.OpStatus.FAIL);
+			json.setStatus(Constants.FAIL);
 			json.setErrorInfo("更新失败！");
 			return json;
 		}

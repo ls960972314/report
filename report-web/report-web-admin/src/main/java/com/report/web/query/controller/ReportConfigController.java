@@ -87,7 +87,7 @@ public class ReportConfigController {
         try {
         	reportConfigService.saveReportConfig(reportConfig);
         } catch (Exception e) {
-            json.setStatus(Constants.OpStatus.FAIL);
+            json.setStatus(Constants.FAIL);
             json.setErrorInfo("新增失败！");
             System.out.println(e.getCause().toString());
             return json;
@@ -116,7 +116,7 @@ public class ReportConfigController {
         try {
         	reportConfigService.updateReportConfig(reportConfig);
 		} catch (Exception e) {
-	            json.setStatus(Constants.OpStatus.FAIL);
+	            json.setStatus(Constants.FAIL);
 	            json.setErrorInfo("更新失败！");
 	            return json;
 		}
@@ -140,7 +140,7 @@ public class ReportConfigController {
         try {
         	reportConfigService.deleteReportConfig(rptCode);
 		} catch (Exception e) {
-	            json.setStatus(Constants.OpStatus.FAIL);
+	            json.setStatus(Constants.FAIL);
 	            json.setErrorInfo("删除失败！");
 	            return json;
 		}

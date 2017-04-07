@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,7 +79,7 @@ public class GroupServiceImpl implements GroupService {
         // 添加新的组和角色的关联关系
         groupRoleDao.addMapping4GroupAndRole(groupModel, currentMemberId, memberIp);
 
-        return Constants.OpStatus.SUCC;
+        return Constants.SUCCESS;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -103,7 +101,7 @@ public class GroupServiceImpl implements GroupService {
         baseDao.save(group);
 
         groupRoleDao.addMapping4GroupAndRole(groupModel, currentMemberId, memberIp);
-        return Constants.OpStatus.SUCC;
+        return Constants.SUCCESS;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -122,12 +120,12 @@ public class GroupServiceImpl implements GroupService {
 
             if (isAssociatedWithOthers) {
                 // 有关联人员，逻辑删除组
-            	groupDao.deleteGroupLogically(params);
+            	groupDao.deleteGroup(params);
                 ajaxJson.setErrorNo(ResultCodeConstants.RESULT_CHECK_GROUP_IS_IN_USE);
                 ajaxJson.setErrorInfo("无法删除，请检查该组是否仍被使用");
             } else {
                 // 没有关联人员，物理删除组
-            	groupDao.deleteGroupPhysically(params);
+            	groupDao.deleteGroup(params);
             }
 
         }

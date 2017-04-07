@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.report.biz.admin.service.RoleService;
 import com.report.common.dal.admin.constant.Constants;
-import com.report.common.dal.admin.constant.Constants.OpStatus;
 import com.report.common.dal.admin.dao.RoleDao;
 import com.report.common.dal.admin.entity.dto.Resource;
 import com.report.common.dal.admin.entity.dto.Role;
@@ -28,6 +27,9 @@ import com.report.common.repository.RoleRepository;
 import com.report.facade.entity.DataGrid;
 import com.report.facade.entity.PageHelper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service("roleService")
 @Transactional
 public class RoleServiceImpl implements RoleService {
@@ -61,7 +63,7 @@ public class RoleServiceImpl implements RoleService {
         role.setModifierId(currentMemberId);
         baseDao.update(role);
 
-        return Constants.OpStatus.SUCC;
+        return Constants.SUCCESS;
     }
 
     @Override
@@ -81,7 +83,7 @@ public class RoleServiceImpl implements RoleService {
 
         baseDao.save(role);
 
-        return Constants.OpStatus.SUCC;
+        return Constants.SUCCESS;
     }
 
     @Override
@@ -118,10 +120,9 @@ public class RoleServiceImpl implements RoleService {
                 baseDao.saveOrUpdate(role);
             }
         } catch (Exception e) {
-        	e.printStackTrace();
-            return OpStatus.FAIL;
+            return Constants.FAIL;
         }
-        return OpStatus.SUCC;
+        return Constants.SUCCESS;
     }
 
     @Override

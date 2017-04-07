@@ -25,9 +25,7 @@ public interface GroupDao {
 	
 	public void updateGroupCodeByMemberId(Map<String, Object> params);
 	
-	public void deleteGroupLogically(Map<String, Object> params);
-	
-	public void deleteGroupPhysically(Map<String, Object> params);
+	public void deleteGroup(Map<String, Object> params);
 	
 	public Integer countMemberByGroupCode(String groupCode);
 	
@@ -42,4 +40,10 @@ public interface GroupDao {
 	public String getGroupCodeByMemberId(Long memberId);
 	
 	public Integer isSameGroupCode(Map<String, Object> params);
+
+	/**
+	 * 删除用户和组的关系
+	 * @param memberId
+	 */
+	public void deleteAssociateWithMember(Long memberId);
 }

@@ -3,7 +3,7 @@ package com.report.biz.admin.service;
 import java.util.Set;
 
 import com.report.common.dal.admin.entity.dto.Member;
-import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
+import com.report.common.model.MemberQueryReq;
 import com.report.common.model.ShiroUser;
 import com.report.common.model.UserInfo;
 import com.report.facade.entity.DataGrid;
@@ -29,21 +29,22 @@ public interface MemberService {
 	 * @return
 	 */
 	public UserInfo getUserInfo(String accNo);
+	
+	public DataGrid findMemberList(MemberQueryReq memberQueryReq, PageHelper pageHelper);
+	
+	public boolean updateMember(MemberQueryReq memberQueryReq, String groupCode, Long currentMemberId);
 
-    boolean updateMember(Member member, String groupCode, String currentMemberIp, Long currentMemberId);
+	public void saveMember(MemberQueryReq memberQueryReq, String groupCode, Long currentMemberId);
 
-    void saveMember(Member member, String groupCode, String currentMemberIp, Long currentMemberId);
+	public boolean deleteMemberById(Long memberId);
 
-    boolean deleteMemberById(Long Id, String memberIp);
+	public boolean isPasswordRight(Long currentMemberId, String password);
 
-    boolean isPasswordRight(Long currentMemberId, String password);
 
-    boolean resetPassword(Long memberId, String memberIp);
+	public boolean isAccNoExists(String accNo);
 
-    boolean isAccNoExists(String accNo);
+	public boolean changePassword(String trim, Long currentMemberId);
 
-    boolean changePassword(String trim, Long currentMemberId, String memberIp);
 
-    DataGrid findMemberListByCriteria(MemberCriteriaModel memberCriteria, PageHelper pageHelper);
-
+	public boolean resetPassword(Long memberId);
 }

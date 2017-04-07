@@ -15,7 +15,12 @@ public interface GroupRepository {
 
 	public Long count(GroupModel groupModel);
 	
-	public void updateGroupCodeByMemberId(Long memberId, String groupCode, String memberIp);
+	/**
+	 * 更新用户和组的关系
+	 * @param memberId
+	 * @param groupCode
+	 */
+	public void updateGroupCodeByMemberId(Long memberId, String groupCode);
 
 	public List<Group> findAllGroups();
 
@@ -23,7 +28,22 @@ public interface GroupRepository {
 	
 	public boolean isGroupCodeExists(GroupModel groupModel);
 	
+	/**
+	 * 用户是否有关联的组
+	 * @param memberId
+	 * @return
+	 */
 	public boolean isAssociatedWithGroup(Long memberId);
 	
-	public void associatedWithGroup(Long memberId, String groupCode, String memberIp);
+	/**
+	 * 新增用户和组的关系
+	 * @param memberId
+	 * @param groupCode
+	 */
+	public void associatedWithGroup(Long memberId, String groupCode);
+	/**
+	 * 删除人员和组别的关系
+	 * @param memberId
+	 */
+	public void deleteAssociateWithMember(Long memberId);
 }

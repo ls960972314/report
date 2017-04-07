@@ -67,7 +67,7 @@ public class ReportConditionController {
         try {
         	reportConditionService.saveReportCondition(reportCondition);
 		} catch (Exception e) {
-	            json.setStatus(Constants.OpStatus.FAIL);
+	            json.setStatus(Constants.FAIL);
 	            json.setErrorInfo("更新失败！");
 	            return json;
 		}
@@ -93,7 +93,7 @@ public class ReportConditionController {
         try {
         	reportConditionService.updateReportCondition(reportCondition);
 		} catch (Exception e) {
-	            json.setStatus(Constants.OpStatus.FAIL);
+	            json.setStatus(Constants.FAIL);
 	            json.setErrorInfo("更新失败！");
 	            return json;
 		}

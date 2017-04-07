@@ -8,11 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.report.biz.admin.service.MemberService;
 import com.report.common.dal.admin.constant.Constants;
-import com.report.common.dal.admin.entity.dto.Member;
-import com.report.common.dal.admin.entity.vo.MemberCriteriaModel;
 import com.report.common.model.AjaxJson;
+import com.report.common.model.MemberQueryReq;
 import com.report.common.model.ResultCodeConstants;
 import com.report.common.model.SessionUtil;
 import com.report.facade.entity.DataGrid;
@@ -21,6 +21,11 @@ import com.report.facade.entity.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 
 
+/**
+ * 后台管理  用户管理Controller
+ * @author lishun
+ * @since 2017年4月6日 下午5:28:31
+ */
 @Slf4j
 @Controller
 @RequestMapping("/member")
@@ -29,46 +34,69 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    /**
+     * 跳转至用户管理页面
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/member.htm")
     public String findGroupList(HttpServletRequest request) {
         return "member/memberList";
     }
 
-    @RequestMapping(value = "/findMemberListByCriteria.htm")
+    /**
+     * 查询用户列表
+     * @param memberQueryReq
+     * @param pageHelper
+     * @return
+     */
+    @RequestMapping(value = "/findMemberList.htm")
     @ResponseBody
-    public DataGrid findMemberListByCriteria(MemberCriteriaModel memberCriteria, PageHelper pageHelper) {
-        memberCriteria.setMemberId(SessionUtil.getUserInfo().getMember().getId());
-        return memberService.findMemberListByCriteria(memberCriteria, pageHelper);
+    public DataGrid findMemberListByCriteria(MemberQueryReq memberQueryReq, PageHelper pageHelper) {
+    	log.debug("findMemberListByCriteria MemberQueryReq[{}],PageHelper[{}]", JSON.toJSONString(memberQueryReq), JSON.toJSONString(pageHelper));
+        return memberService.findMemberList(memberQueryReq, pageHelper);
     }
 
+    /**
+     * 新增/修改用户
+     * @param member
+     * @param groupCode
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/addOrUpdateMember.htm")
     @ResponseBody
-    public AjaxJson addOrUpdateMember(Member member, String groupCode, HttpServletRequest request) {
+    public AjaxJson addOrUpdateMember(MemberQueryReq memberQueryReq, String groupCode, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
-
-        if (StringUtils.isBlank(member.getName()) || StringUtils.isBlank(member.getAccNo())) {
+        if (StringUtils.isBlank(memberQueryReq.getName()) || StringUtils.isBlank(memberQueryReq.getAccNo())) {
             j.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
             return j;
         }
 
-        if (member.getId() != null) {
-            memberService.updateMember(member, groupCode.trim(), request.getRemoteAddr(), SessionUtil.getUserInfo().getMember().getId());
-
-        } else {
-            if (memberService.isAccNoExists(member.getAccNo())) {
-                j.setErrorNo(ResultCodeConstants.RESULT_USER_ALREADY_EXISTS);
-                return j;
-            }
-
-            if (StringUtils.isBlank(member.getPassword())) {
-                j.setErrorNo(ResultCodeConstants.RESULT_PASSWORD_CAN_NOT_BE_NULL);
-                return j;
-            }
-            memberService.saveMember(member, groupCode.trim(), request.getRemoteAddr(), SessionUtil.getUserInfo().getMember().getId());
+        if (memberQueryReq.getId() != null) {
+            memberService.updateMember(memberQueryReq, groupCode.trim(), SessionUtil.getUserInfo().getMember().getId());
+            return j;
         }
+        
+        if (memberService.isAccNoExists(memberQueryReq.getAccNo())) {
+            j.setErrorNo(ResultCodeConstants.RESULT_USER_ALREADY_EXISTS);
+            return j;
+        }
+
+        if (StringUtils.isBlank(memberQueryReq.getPassword())) {
+            j.setErrorNo(ResultCodeConstants.RESULT_PASSWORD_CAN_NOT_BE_NULL);
+            return j;
+        }
+        memberService.saveMember(memberQueryReq, groupCode.trim(), SessionUtil.getUserInfo().getMember().getId());
         return j;
     }
 
+    /**
+     * 删除用户
+     * @param id
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/deleteMember.htm")
     @ResponseBody
     public AjaxJson deleteMember(Long id, HttpServletRequest request) {
@@ -85,32 +113,43 @@ public class MemberController {
             return json;
         }
 
-        memberService.deleteMemberById(id, request.getRemoteAddr());
+        memberService.deleteMemberById(id);
         return json;
     }
 
+    /**
+     * 用户密码是否正确
+     * @param password
+     * @return
+     */
     @RequestMapping(value = "/isPasswordRight.htm")
     @ResponseBody
     public AjaxJson isPasswordRight(String password) {
         AjaxJson json = new AjaxJson();
         if (StringUtils.isNotBlank(password)) {
             if (memberService.isPasswordRight(SessionUtil.getUserInfo().getMember().getId(), password.trim())) {
-                json.setStatus(Constants.OpStatus.SUCC);
+                json.setStatus(1);
             } else {
-                json.setStatus(Constants.OpStatus.FAIL);
+                json.setStatus(0);
             }
         }
 
         return json;
     }
 
+    /**
+     * 重置密码
+     * @param memberId
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/resetPassword.htm")
     @ResponseBody
     public AjaxJson resetPassword(Long memberId, HttpServletRequest request) {
         AjaxJson json = new AjaxJson();
         boolean flag = false;
         if (memberId != null) {
-            flag = memberService.resetPassword(memberId, request.getRemoteAddr());
+            flag = memberService.resetPassword(memberId);
         }
 
         if (!flag) {
@@ -120,28 +159,40 @@ public class MemberController {
         return json;
     }
 
+    /**
+     * 账号是否存在
+     * @param accNo
+     * @return
+     */
     @RequestMapping(value = "/isAccNoExists.htm")
     @ResponseBody
     public AjaxJson isAccNoExists(String accNo) {
         AjaxJson json = new AjaxJson();
         if (StringUtils.isNotBlank(accNo)) {
             if (memberService.isAccNoExists(accNo.trim())) {
-                json.setStatus(Constants.OpStatus.SUCC);
+                json.setStatus(Constants.SUCCESS);
             } else {
-                json.setStatus(Constants.OpStatus.FAIL);
+                json.setStatus(Constants.FAIL);
             }
         }
         return json;
     }
 
+    /**
+     * 修改密码
+     * @param originPassword
+     * @param newPassword
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/changePassword.htm")
     @ResponseBody
     public AjaxJson changePassword(String originPassword, String newPassword, HttpServletRequest request) {
         AjaxJson json = new AjaxJson();
         if (StringUtils.isNotBlank(originPassword) && StringUtils.isNotBlank(newPassword)) {
             if (memberService.isPasswordRight(SessionUtil.getUserInfo().getMember().getId(), originPassword.trim())) {
-                if (memberService.changePassword(newPassword.trim(), SessionUtil.getUserInfo().getMember().getId(), request.getRemoteAddr())) {
-                    json.setStatus(Constants.OpStatus.SUCC);
+                if (memberService.changePassword(newPassword.trim(), SessionUtil.getUserInfo().getMember().getId())) {
+                    json.setStatus(Constants.SUCCESS);
                 } else {
                     json.setErrorNo(ResultCodeConstants.RESULT_EDIT_PASSWORD_FAIL);
                 }

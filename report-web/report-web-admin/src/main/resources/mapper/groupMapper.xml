@@ -23,7 +23,11 @@
   	<result column="creater_acc_no" property="createrAccNo" jdbcType="VARCHAR" />
   	<result column="modifier_acc_no" property="modifierAccNo" jdbcType="VARCHAR" />
   </resultMap>
-
+	
+  <delete id="deleteAssociateWithMember" parameterType="long">
+  	delete from uc_member_group umg where umg.member_id = #{memberId,jdbcType=INTEGER}
+  </delete>
+  
   <select id="findAllGroups" resultMap="groupResultMap">
   	select * from uc_group
   </select>
@@ -63,16 +67,7 @@
 		uc_group g
 		where 1=1
 		<include refid="group_list_where_clause"/>
-	order by
-		<choose>
-			<when test="sort == null">
-				g.status desc,
-				g.id desc
-			</when>
-			<otherwise>
-			    g.${sort} ${order}
-			</otherwise>
-		</choose>
+	order by g.create_time desc
   </select>
   
    <select id="countForGroupList" resultType="long" parameterType="map">
@@ -109,17 +104,12 @@
   	update
   		uc_member_group 
   	set 
-  		group_code = #{groupCode,jdbcType=VARCHAR},
-  		update_time = #{updateTime,jdbcType=TIMESTAMP} 
+  		group_code = #{groupCode,jdbcType=VARCHAR}
   	where 
   		member_id = #{memberId,jdbcType=INTEGER}
   </update>
   
-  <update id="deleteGroupLogically" parameterType="long">
-  	update uc_group g set g.status = 0 where g.id = #{id,jdbcType=INTEGER}
-  </update>
-  
-  <delete id="deleteGroupPhysically" parameterType="long">
+  <delete id="deleteGroup" parameterType="long">
   	delete from uc_group where id = #{id,jdbcType=INTEGER}
   </delete>
   
@@ -144,8 +134,8 @@
   </select>
   
   <insert id="addMappingGroup2Member" parameterType="map">
-  	insert into uc_member_group(id, member_id, group_code, status, create_time, update_time)
-  	values(seq_member_group.nextval, #{memberId,jdbcType=INTEGER}, #{groupCode,jdbcType=VARCHAR}, 1, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  	insert into uc_member_group(member_id, group_code)
+  	values(#{memberId,jdbcType=INTEGER}, #{groupCode,jdbcType=VARCHAR})
   </insert>
   
   <select id="getGroupCodeByMemberId" parameterType="long" resultType="string">

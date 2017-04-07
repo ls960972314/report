@@ -1,7 +1,6 @@
 package com.report.common.repository.impl;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.report.common.dal.admin.dao.GroupDao;
 import com.report.common.dal.admin.entity.dto.Group;
 import com.report.common.dal.admin.entity.vo.GroupModel;
-import com.report.common.dal.admin.util.MybatisUtil;
 import com.report.common.dal.admin.util.PageUtil;
 import com.report.common.model.SessionUtil;
 import com.report.common.repository.GroupRepository;
@@ -43,8 +41,6 @@ public class GroupRepositoryImpl implements GroupRepository {
 
     @Override
     public List<GroupModel> fingGroupsByPage(PageHelper pageHelper, GroupModel groupModel) {
-        handleFiledForSorting(pageHelper);
-
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sort", pageHelper.getSort());
         params.put("order", pageHelper.getOrder());
@@ -55,20 +51,10 @@ public class GroupRepositoryImpl implements GroupRepository {
         return groupDao.findGroupdByPage4SysAdmin(params, PageUtil.paged(pageHelper.getPage() - 1, pageHelper.getRows()));
     }
 
-    private void handleFiledForSorting(PageHelper pageHelper) {
-        // 将字段名转换为对应的列名
-        if (pageHelper.getSort() != null) {
-            pageHelper.setSort(MybatisUtil.propertyName2ColumnName("group.groupModelResultMap", pageHelper.getSort()));
-        }
-    }
-
     @Override
-    public void updateGroupCodeByMemberId(Long memberId, String groupCode, String memberIp) {
-        Date now = new Date();
-
+    public void updateGroupCodeByMemberId(Long memberId, String groupCode) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("groupCode", groupCode);
-        params.put("updateTime", now);
         params.put("memberId", memberId);
         groupDao.updateGroupCodeByMemberId(params);
     }
@@ -102,14 +88,16 @@ public class GroupRepositoryImpl implements GroupRepository {
     }
 
     @Override
-    public void associatedWithGroup(Long memberId, String groupCode, String memberIp) {
-        Date now = new Date();
+    public void associatedWithGroup(Long memberId, String groupCode) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("memberId", memberId);
         params.put("groupCode", groupCode);
-        params.put("createTime", now);
-        params.put("updateTime", now);
         groupDao.addMappingGroup2Member(params);
 
     }
+
+	@Override
+	public void deleteAssociateWithMember(Long memberId) {
+		groupDao.deleteAssociateWithMember(memberId);
+	}
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.alibaba.fastjson.JSON;
 import com.report.biz.admin.service.MemberService;
 import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.common.utils.VerificationUtil;
@@ -49,7 +50,7 @@ public class UserLoginController {
     public String toLogin() {
     	Subject subject = SecurityUtils.getSubject();
     	if (subject.isAuthenticated()) {
-    		log.debug("已登陆,重定向到首页");
+    		log.debug("用户已登陆,重定向到首页");
     		return "redirect:main.htm";
     	}
         return "login";
@@ -72,10 +73,11 @@ public class UserLoginController {
             return "login";
         }
         Subject subject = SecurityUtils.getSubject();
+        // 登陆操作
         try {
-        	log.debug("username[{}]用户开始登陆");
+        	log.debug("username[{}]用户开始登陆", username);
         	subject.login(new UsernamePasswordToken(username, password));
-        	log.debug("username[{}]用户登陆成功");
+        	log.debug("username[{}]用户登陆成功", username);
         } catch (AuthenticationException e) {
         	log.error("username[{}] doLogin AuthenticationException", username, e);
         	if (e instanceof UnknownAccountException) {
@@ -92,15 +94,18 @@ public class UserLoginController {
         	return "login";
 		}
 		UserInfo userInfo = memberService.getUserInfo(username);
-		log.info("username[{}]登陆成功,查询userInfo结果为[{}]", userInfo);
-        /* 将登录信息存入session中 */
+		log.info("username[{}]登陆成功,查询userInfo结果为[{}]", username, JSON.toJSONString(userInfo));
+        // 将登录信息存入shiro session中
 		subject.getSession().setAttribute(Constants.SESSION_LOGIN_INFO, userInfo);
+		// 管理页面用来展示菜单
 		request.getSession().setAttribute("menuList", SessionUtil.getUserInfo().getAdminMenuList());
+		// 用户名
+		request.getSession().setAttribute("name", SessionUtil.getUserInfo().getMemberName());
         return "redirect:main.htm";
     }
     
     /**
-     * 跳转至报表页面
+     * 跳转至报表展示页面
      * @param request
      * @return
      */
@@ -108,10 +113,10 @@ public class UserLoginController {
     public String main(HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
     	if (!subject.isAuthenticated()) {
+    		log.debug("用户未登陆或者认证失效,跳转至登陆页面重新登陆");
     		request.setAttribute("erroMsg", "请重新登陆");
     		return "login";
     	}
-    	request.setAttribute("name", SessionUtil.getUserInfo().getMemberName());
         return "main";
     }
 
@@ -122,6 +127,7 @@ public class UserLoginController {
      */
     @RequestMapping(value = "/logout")
     public String logout(HttpServletRequest request) {
+    	log.debug("用户退出");
     	SecurityUtils.getSubject().logout();
         return "login";
     }

@@ -21,7 +21,6 @@ import com.report.common.dal.admin.entity.vo.RoleCell;
 import com.report.common.dal.admin.entity.vo.RoleCriteriaModel;
 import com.report.common.dal.admin.entity.vo.RoleListSysModel;
 import com.report.common.dal.admin.entity.vo.RoleModel;
-import com.report.common.dal.admin.util.MybatisUtil;
 import com.report.common.dal.admin.util.PackRoleCell;
 import com.report.common.dal.admin.util.PageUtil;
 import com.report.common.dal.common.BaseDao;
@@ -168,8 +167,6 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public List<RoleModel> findRoleListByCriteria(PageHelper pageHelper, RoleCriteriaModel roleCriteriaModel) {
         if (isPerAdmin()) {
-            handleFieldForOrdering(pageHelper);
-
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("pageHelper", pageHelper);
             params.put("roleCriteriaModel", roleCriteriaModel);
@@ -216,11 +213,5 @@ public class RoleRepositoryImpl implements RoleRepository {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("memberId", memberId);
         return roleDao.findAllRoles(memberId);
-    }
-    
-    private void handleFieldForOrdering(PageHelper pageHelper) {
-        if (pageHelper.getSort() != null) {
-            pageHelper.setSort(MybatisUtil.propertyName2ColumnName("role.roleModelResultMap", pageHelper.getSort()));
-        }
     }
 }
