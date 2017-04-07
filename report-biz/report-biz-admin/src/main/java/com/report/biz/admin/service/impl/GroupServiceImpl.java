@@ -31,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @Description: 组服务实现类
  * @date 2014-10-14 14:10:24
- * @version V1.0
  * 
  */
 @Slf4j

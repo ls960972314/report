@@ -25,6 +25,19 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.report.common.dal.admin.entity.dto.Member">
+     insert into uc_member(id,ACC_NO,PASSWORD,NAME,STATUS)
+     values(#{id,jdbcType=INTEGER},#{accNo,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{status,jdbcType=INTEGER})
+  </insert>
+ 
+  <update id="updateUser" parameterType="com.report.common.dal.admin.entity.dto.Member" >
+     update uc_member set ACC_NO=#{accNo,jdbcType=VARCHAR},NAME=#{name,jdbcType=VARCHAR},STATUS=#{status,jdbcType=INTEGER},UPDATE_TIME=CURRENT_TIMESTAMP
+         where id=#{id,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="delete" parameterType="long">
+  	 delete from uc_member where id=#{memberId,jdbcType=INTEGER}
+  </delete>
   
   <select id="findMemberByAccNo"  parameterType="string" resultMap="memberResultMap">
   	select * from uc_member t where t.acc_no=#{accNo, jdbcType=VARCHAR} and t.status=1
@@ -44,30 +57,19 @@
   	select count(*) from uc_member m where m.acc_no = #{accNo,jdbcType=VARCHAR}
   </select>
   
-  <select id="countByCriteria" parameterType="com.report.common.dal.admin.entity.vo.MemberCriteriaModel" resultType="long">
-  	select count(*) from uc_member m
-  	<if test="groupCodeList != null">
-  		, uc_member_group mg
-  	</if>
-  	<where>
-  		<if test="groupCodeList != null">
-			mg.member_id = m.id
-		    AND mg.group_code in
-		    <foreach item="groupCode" collection="groupCodeList" open="(" separator="," close=")">#{groupCode}</foreach>
+  <select id="count" parameterType="com.report.common.model.MemberQueryReq" resultType="long">
+	 	select count(*) from uc_member m
+	 	<where>
+		<if test="memberQueryReq.accNo!=null ">
+		    AND acc_no like CONCAT('%', #{memberQueryReq.accNo,jdbcType=VARCHAR},'%')
 		</if>
-		<if test="accNo != null ">
-		    AND acc_no like #{accNo,jdbcType=VARCHAR}
+		<if test="memberQueryReq.name!=null">
+		    AND name like CONCAT('%', #{memberQueryReq.name,jdbcType=VARCHAR},'%')
 		</if>
-		<if test="name != null">
-		    AND name like #{name,jdbcType=VARCHAR}
-		</if>
-		<if test="memberId != null">
-		    AND id = #{memberId}
-		</if>
-	</where>
+		</where>
   </select>
   
-  <select id="findMemberListByCriteria" parameterType="map" resultMap="memberModelResultMap">
+  <select id="findMemberList" parameterType="map" resultMap="memberModelResultMap">
   	select
   		m.acc_no,
   		m.name,
@@ -82,26 +84,15 @@
   	from 
   		uc_member m LEFT JOIN uc_member_group mg on mg.member_id = m.id
 		left JOIN uc_group g on g.group_code = mg.group_code
-  		<if test="memberCriteriaModel.memberId != null">
-            AND m.id = #{memberCriteriaModel.memberId}
-        </if>
-  		<if test="memberCriteriaModel.groupCodeList != null || memberCriteriaModel.accNo != null || memberCriteriaModel.name != null">and (</if>
-  		<if test="memberCriteriaModel.groupCodeList != null">
-		    mg.group_code in
-		    <foreach item="groupCode" collection="memberCriteriaModel.groupCodeList" open="(" separator="," close=")">#{groupCode}</foreach>
+		where 1=1 
+		<if test="memberQueryReq.accNo!=null">
+		   AND	m.acc_no like CONCAT('%', #{memberQueryReq.accNo,jdbcType=VARCHAR},'%')
 		</if>
-		<if test="memberCriteriaModel.accNo != null">
-		    <if test="memberCriteriaModel.groupCodeList != null">AND</if> m.acc_no like #{memberCriteriaModel.accNo,jdbcType=VARCHAR}
+		<if test="memberQueryReq.name!=null">
+		    AND m.name like CONCAT('%', #{memberQueryReq.name,jdbcType=VARCHAR},'%')
 		</if>
-		<if test="memberCriteriaModel.name != null">
-		    <if test="memberCriteriaModel.groupCodeList != null || memberCriteriaModel.accNo != null">AND</if> m.name like #{memberCriteriaModel.name,jdbcType=VARCHAR}
-		</if>
-		<if test="memberCriteriaModel.groupCodeList != null || memberCriteriaModel.accNo != null || memberCriteriaModel.name != null">)</if>
-  	order by
-  		<choose>
-  			<when test="pageHelper.sort == null">m.status desc, m.id asc</when>
-  			<otherwise>m.${pageHelper.sort} ${pageHelper.order}</otherwise>
-  		</choose>
+  		order by
+  		m.create_time desc
   </select>
   
   <select id="countAssociationWithGroup" parameterType="long" resultType="int">

@@ -25,7 +25,7 @@
   </resultMap>
 	
   <delete id="deleteAssociateWithMember" parameterType="long">
-  	delete from uc_member_group umg where umg.member_id = #{memberId,jdbcType=INTEGER}
+  	delete from uc_member_group where member_id = #{memberId,jdbcType=INTEGER}
   </delete>
   
   <select id="findAllGroups" resultMap="groupResultMap">

@@ -110,9 +110,9 @@ public class MemberServiceImpl implements MemberService {
     public void saveMember(MemberQueryReq memberQueryReq, String groupCode, Long currentMemberId) {
     	Member member = new Member();
     	BeanUtils.copyProperties(memberQueryReq, member);
-        Long memberId = memberRepository.insert(member);
+        memberRepository.insert(member);
         if (StringUtils.isNotBlank(groupCode)) {
-            groupRepository.associatedWithGroup(memberId, groupCode);
+            groupRepository.associatedWithGroup(member.getId(), groupCode);
         }
     }
 
