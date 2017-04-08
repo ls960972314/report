@@ -15,14 +15,11 @@ import com.report.common.dal.admin.util.PageUtil;
 import com.report.common.model.MemberQueryReq;
 import com.report.common.repository.MemberRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
- * 
+ * MemberRepositoryImpl
  * @author lishun
  * @since 2017年3月24日 下午4:45:52
  */
-@Slf4j
 @Service
 public class MemberRepositoryImpl implements MemberRepository {
 	@Resource

@@ -151,11 +151,11 @@
 		$(function() {
 			$("[data-toggle=dropdown]").click(dropdownToggle);
 			$("#member-search").click(function() {
-					search( function(merchantIds) {
-						$('#memberList').datagrid('getPager').pagination('select', 1);
-					});
+				search( function(merchantIds) {
+					$('#memberList').datagrid('getPager').pagination('select', 1);
 				});
 			});
+		});
 		
 		$('#memberList').datagrid({onLoadSuccess: function() {
 			$('.datagrid-body:eq(1)').css({

@@ -1,5 +1,6 @@
 ﻿var varurl;
-
+//成功标志
+var succResult = 0;
 /**
  * 增加信息
  * 
@@ -103,7 +104,7 @@ function saveObject(formname, dgname, listname, isTree) {
 		},
 		success : function(result) {
 			var result = eval('(' + result + ')');
-			if (result.status == 1) {
+			if (result.status == succResult) {
 				$('#' + dgname).dialog('close'); // close the dialog
 				if (isTree) {
 					$('#' + listname).treegrid('reload');
@@ -135,7 +136,7 @@ function deleteObject(listname, url, isTree) {
 					url: url,
 					data: {	id : row.id	},
 					success: function(result) {
-						if (result.status==1) {
+						if (result.status == succResult) {
 							if (isTree) {
 								$('#' + listname).treegrid('reload');
 							} else {

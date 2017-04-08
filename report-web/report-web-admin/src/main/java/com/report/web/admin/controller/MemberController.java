@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.report.biz.admin.service.MemberService;
 import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.common.utils.VerificationUtil;
 import com.report.common.model.AjaxJson;
 import com.report.common.model.MemberQueryReq;
 import com.report.common.model.ResultCodeConstants;
@@ -67,28 +68,32 @@ public class MemberController {
     @RequestMapping(value = "/addOrUpdateMember.htm")
     @ResponseBody
     public AjaxJson addOrUpdateMember(MemberQueryReq memberQueryReq, String groupCode, HttpServletRequest request) {
-        AjaxJson j = new AjaxJson();
-        if (StringUtils.isBlank(memberQueryReq.getName()) || StringUtils.isBlank(memberQueryReq.getAccNo())) {
-            j.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
-            return j;
-        }
-
-        if (memberQueryReq.getId() != null) {
-            memberService.updateMember(memberQueryReq, groupCode.trim(), SessionUtil.getUserInfo().getMember().getId());
-            return j;
+        AjaxJson result = new AjaxJson();
+        // 参数校验
+        if (VerificationUtil.paramIsNull(memberQueryReq, memberQueryReq.getName(), memberQueryReq.getAccNo())) {
+            result.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
+            return result;
         }
         
-        if (memberService.isAccNoExists(memberQueryReq.getAccNo())) {
-            j.setErrorNo(ResultCodeConstants.RESULT_USER_ALREADY_EXISTS);
-            return j;
+        // 修改用户
+        if (memberQueryReq.getId() != null) {
+            memberService.updateMember(memberQueryReq, groupCode.trim(), SessionUtil.getUserInfo().getMember().getId());
+            return result;
         }
-
+        
+        // 新增用户
+        // 校验用户是否存在
+        if (memberService.isAccNoExists(memberQueryReq.getAccNo())) {
+        	result.setErrorNo(ResultCodeConstants.RESULT_USER_ALREADY_EXISTS);
+        	return result;
+        }
+        // 校验用户密码是否为空
         if (StringUtils.isBlank(memberQueryReq.getPassword())) {
-            j.setErrorNo(ResultCodeConstants.RESULT_PASSWORD_CAN_NOT_BE_NULL);
-            return j;
+            result.setErrorNo(ResultCodeConstants.RESULT_PASSWORD_CAN_NOT_BE_NULL);
+            return result;
         }
         memberService.saveMember(memberQueryReq, groupCode.trim(), SessionUtil.getUserInfo().getMember().getId());
-        return j;
+        return result;
     }
 
     /**
@@ -100,21 +105,20 @@ public class MemberController {
     @RequestMapping(value = "/deleteMember.htm")
     @ResponseBody
     public AjaxJson deleteMember(Long id, HttpServletRequest request) {
-        AjaxJson json = new AjaxJson();
-
-        // 只有权限管理员能够执行
-        if (!SessionUtil.getUserInfo().isAdmin()) {
-            json.setErrorNo(ResultCodeConstants.RESULT_PER_ADMIN_HAS_PRIV);
-            return json;
-        }
-
+        AjaxJson result = new AjaxJson();
+        // 校验参数
         if (id == null) {
-            json.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
-            return json;
+        	log.debug("deleteMember id is null");
+            result.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
+            return result;
         }
-
-        memberService.deleteMemberById(id);
-        return json;
+        try {
+        	memberService.deleteMemberById(id);
+		} catch (Exception e) {
+			log.error("deleteMember Exception", e);
+			result.setErrorNo(ResultCodeConstants.RESULT_FAIL);
+		}
+        return result;
     }
 
     /**
@@ -125,16 +129,25 @@ public class MemberController {
     @RequestMapping(value = "/isPasswordRight.htm")
     @ResponseBody
     public AjaxJson isPasswordRight(String password) {
-        AjaxJson json = new AjaxJson();
-        if (StringUtils.isNotBlank(password)) {
-            if (memberService.isPasswordRight(SessionUtil.getUserInfo().getMember().getId(), password.trim())) {
-                json.setStatus(1);
-            } else {
-                json.setStatus(0);
-            }
+        AjaxJson result = new AjaxJson();
+        // 校验参数
+        if (StringUtils.isBlank(password)) {
+        	log.debug("isPasswordRight password is null");
+            result.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
+            return result;
         }
-
-        return json;
+        try {
+        	if (memberService.isPasswordRight(SessionUtil.getUserInfo().getMember().getId(), password.trim())) {
+                result.setStatus(ResultCodeConstants.RESULT_SUCC);
+            } else {
+            	log.debug("memberId[{}]用户密码不正确", SessionUtil.getUserInfo().getMember().getId());
+                result.setStatus(ResultCodeConstants.RESULT_FAIL);
+            }
+		} catch (Exception e) {
+			log.error("isPasswordRight Exception", e);
+			result.setErrorNo(ResultCodeConstants.RESULT_FAIL);
+		}
+        return result;
     }
 
     /**
@@ -146,17 +159,19 @@ public class MemberController {
     @RequestMapping(value = "/resetPassword.htm")
     @ResponseBody
     public AjaxJson resetPassword(Long memberId, HttpServletRequest request) {
-        AjaxJson json = new AjaxJson();
-        boolean flag = false;
-        if (memberId != null) {
-            flag = memberService.resetPassword(memberId);
+        AjaxJson result = new AjaxJson();
+        if (memberId == null) {
+        	log.debug("resetPassword memberId is null");
+            result.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
+            return result;
         }
-
-        if (!flag) {
-            json.setErrorNo(ResultCodeConstants.RESULT_RESET_PASSWORD_FAIL);
-        }
-
-        return json;
+        try {
+        	memberService.resetPassword(memberId);
+		} catch (Exception e) {
+			log.error("resetPassword Exception", e);
+			result.setErrorNo(ResultCodeConstants.RESULT_RESET_PASSWORD_FAIL);
+		}
+        return result;
     }
 
     /**
@@ -167,15 +182,24 @@ public class MemberController {
     @RequestMapping(value = "/isAccNoExists.htm")
     @ResponseBody
     public AjaxJson isAccNoExists(String accNo) {
-        AjaxJson json = new AjaxJson();
-        if (StringUtils.isNotBlank(accNo)) {
-            if (memberService.isAccNoExists(accNo.trim())) {
-                json.setStatus(Constants.SUCCESS);
-            } else {
-                json.setStatus(Constants.FAIL);
-            }
+        AjaxJson result = new AjaxJson();
+        // 参数校验
+        if (StringUtils.isBlank(accNo)) {
+        	log.debug("isAccNoExists accNo is null");
+        	result.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
+        	return result;
         }
-        return json;
+        // 账号存在返回success
+        try {
+        	if (memberService.isAccNoExists(accNo.trim())) {
+                result.setStatus(Constants.SUCCESS);
+                return result;
+            }
+		} catch (Exception e) {
+			log.error("isAccNoExists Exception", e);
+		}
+        result.setStatus(Constants.FAIL);
+        return result;
     }
 
     /**
@@ -188,18 +212,24 @@ public class MemberController {
     @RequestMapping(value = "/changePassword.htm")
     @ResponseBody
     public AjaxJson changePassword(String originPassword, String newPassword, HttpServletRequest request) {
-        AjaxJson json = new AjaxJson();
-        if (StringUtils.isNotBlank(originPassword) && StringUtils.isNotBlank(newPassword)) {
-            if (memberService.isPasswordRight(SessionUtil.getUserInfo().getMember().getId(), originPassword.trim())) {
-                if (memberService.changePassword(newPassword.trim(), SessionUtil.getUserInfo().getMember().getId())) {
-                    json.setStatus(Constants.SUCCESS);
-                } else {
-                    json.setErrorNo(ResultCodeConstants.RESULT_EDIT_PASSWORD_FAIL);
-                }
-            } else {
-                json.setErrorNo(ResultCodeConstants.RESULT_PASSWORD_UNRIGHT);
-            }
+        AjaxJson result = new AjaxJson();
+        // 参数校验
+        if (VerificationUtil.paramIsNull(originPassword, newPassword)) {
+        	log.debug("changePassword originPassword or newPassword is null");
+        	result.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
+        	return result;
         }
-        return json;
+        // 原始密码是否正确,正确则修改密码为新密码
+        try {
+        	if (memberService.isPasswordRight(SessionUtil.getUserInfo().getMember().getId(), originPassword.trim())
+        			&& memberService.changePassword(newPassword.trim(), SessionUtil.getUserInfo().getMember().getId())) {
+                result.setStatus(Constants.SUCCESS);
+                return result;
+            }
+		} catch (Exception e) {
+			log.error("changePassword Exception", e);
+		}
+        result.setErrorNo(ResultCodeConstants.RESULT_PASSWORD_UNRIGHT);
+        return result;
     }
 }

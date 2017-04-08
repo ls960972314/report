@@ -17,6 +17,8 @@ public class AjaxJson {
 	// 状态
 	private int status = Constants.SUCCESS;
 
+	public AjaxJson() {}
+	
 	public int getErrorNo() {
 		return errorNo;
 	}
