@@ -6,9 +6,6 @@
 <html>
 <head>
     <title>报表</title>
-    
-    <title>report.com</title>
-    
     <link href="${pageContext.request.contextPath}/css/redmond/jquery-ui-1.9.2.custom.min.css"  rel="stylesheet"></link>
     <link href="${pageContext.request.contextPath}/css/ui.jqgrid.css" rel="stylesheet"></link>
     <link href="${pageContext.request.contextPath}/css/ui.multiselect.css" rel="stylesheet"></link>
@@ -31,15 +28,17 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/search/waypoints.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/search/waypoints-sticky.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/search/jquery.hideseek.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/markdown/marked.js"></script>
     
     <link href="${pageContext.request.contextPath}/css/jquery.alerts.css" media="screen" rel="stylesheet" type="text/css" />
 	<script src="${pageContext.request.contextPath}/js/jquery.alerts.js" type="text/javascript"></script>
 	<link href="${pageContext.request.contextPath}/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     
   </head>
   
   
-<body class="report">
+<body>
 <div id="doc">
 	<div class="hd">
 		<div class="userHeader clearfix">
@@ -66,17 +65,17 @@
 						</ul>
 					</div>
 					<div class="app-select js-app-select">
-						<h4 class="select-head custom">
+						<h4 class="select-head custom" style="margin:0;">
 						<div class="selected js-selected">
 						</div>
 						<b class="icon pulldown"></b>
 						</h4>
 					</div>
-					<ul id= "naselect" class="select-list js-select-list" style="display:none">
+					<ul id= "naselect" class="select-list js-select-list" style="padding-left:0px;display:none">
 					</ul>
 				</div>
 				<div class="contentCol">
-					<div class="topNav">
+					<div id="topNav" class="topNav" style="font-family:Arial,helvetica,'Microsoft Yahei',sans-serif;">
 						<div class="navItem" id="hNav">
 							<a href="javascript:" time="时">
 							<span class="icon icons1"></span>
@@ -131,7 +130,7 @@
 		<div id="leftColContainer">
 			<div class="leftCol">
 				<div id="siderNav">
-					<ul class="nav-items">
+					<ul class="nav-items" style="padding-left:0px;">
 					</ul>
 				</div>
 			</div>
@@ -208,7 +207,7 @@ $(".js-selected").click(function(e){
 			  $('.js-selected').html(ldata[i].text);
 			  var lcdata = ldata[i].children;
 			  for (var j=0; j<lcdata.length; j++) {
-				  $('.nav-items').append("<li class=\"nav-item \"><span onclick=\"showFile(1," + lcdata[j].id + ")\"><a><b class=\"icon item-1\"></b>" + lcdata[j].text + "</a></span><ul class = \"sub-list\" id=\"" + lcdata[j].id + "\"></ul></li>");
+				  $('.nav-items').append("<li class=\"nav-item \"><span onclick=\"showFile(1," + lcdata[j].id + ")\"><a><b class=\"icon item-1\"></b>" + lcdata[j].text + "</a></span><ul class = \"sub-list\" id=\"" + lcdata[j].id + "\" style=\"padding-left:0px;\"></ul></li>");
 			  }
 		  }
 	  }
@@ -258,19 +257,22 @@ $(".js-selected").click(function(e){
 	    $(".reportFile").css('color','black');
 	    $(".reportFile").css('background-color','white');
 	    fileId = node;
+        file = fileUrl;
 	    
         if (fileUrl == "tpl/tool/smartReport.jsp") {
         	window.open("${pageContext.request.contextPath }/report/smartReport");
         	return;
         }
-        file = fileUrl;
+        if (fileUrl == "tpl/tool/createReportComment.jsp") {
+        	fileUrl = "${pageContext.request.contextPath }/reportComment/createReportComment";
+        }
         $.ajax({
             url: fileUrl,
             type: "GET",
             cache:false,
             dataType: "html",
             complete : function (req, err) {
-                file = fileUrl;
+            	$("#topNav").show();
                 $("#mainContainer").html(req.responseText);
 				$('#mainContainer').show();
             }
@@ -454,8 +456,8 @@ function topNavInit (hsql,dsql,wsql,msql,qsql,ysql) {
 }
 /* 绑定时间维度的点击事件，点击后查询报表 */
 function topNavAClick () {
-	$('.topNav a').bind('click',function(e) {
-        $('.topNav .navItem').removeClass('currentItem');
+	$('#topNav a').bind('click',function(e) {
+        $('#topNav .navItem').removeClass('currentItem');
         var $this = $(this);
         $this.parent().addClass('currentItem');
         var ids = $('.on').children('span').attr('onclick');
@@ -467,7 +469,7 @@ function topNavAClick () {
         	if (fileId != "") {
         		navgChange();
         	}
-        	showChangeReport(file);            
+        	(file);            
         }
     });
 }

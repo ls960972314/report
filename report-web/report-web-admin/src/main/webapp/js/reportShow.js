@@ -312,7 +312,7 @@ $(function() {
 									if (data.code == 0) {
 										conValue = data.data;
 									} else {
-										jAlert(data.msg, '警告')
+										jAlert(data.msg, '警告');
 									}
 								}
 							});

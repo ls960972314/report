@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.report.common.dal.admin.dao.ReportCommentDao" >
+	
+  <resultMap id="reportCommentResultMap" type="com.report.common.dal.admin.entity.dto.ReportComment" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="toolflag" property="toolFlag" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.report.common.dal.admin.entity.dto.ReportComment">
+     insert into rptcomment(id,toolflag,comment)
+     values(#{id,jdbcType=BIGINT},#{toolFlag,jdbcType=VARCHAR},#{comment,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="update" parameterType="com.report.common.dal.admin.entity.dto.ReportComment" >
+     update rptcomment set comment=#{comment,jdbcType=VARCHAR},toolflag=#{toolFlag,jdbcType=VARCHAR}
+         where toolflag=#{toolFlag,jdbcType=VARCHAR}
+  </update>
+  
+  <delete id="delete" parameterType="long">
+  	 delete from rptcomment where toolflag=#{toolFlag,jdbcType=VARCHAR}
+  </delete>
+  
+  <select id="findReportComment"  parameterType="string" resultMap="reportCommentResultMap">
+  	select * from rptcomment t where t.toolflag=#{toolFlag, jdbcType=VARCHAR}
+  </select>
+  
+  <select id="count" parameterType="String" resultType="long">
+	 	select count(*) from rptcomment m
+	 	<where>
+		<if test="toolflag!=null ">
+		    AND toolflag like CONCAT('%', #{toolFlag,jdbcType=VARCHAR},'%')
+		</if>
+		</where>
+  </select>
+  
+  <select id="findReportCommentList" parameterType="String" resultMap="reportCommentResultMap">
+  	select
+  		*
+  	from 
+  		rptcomment m
+		where 1=1 
+		<if test="toolflag!=null ">
+		    AND toolflag like CONCAT('%', #{toolFlag,jdbcType=VARCHAR},'%')
+		</if>
+  		order by
+  		m.create_time desc
+  </select>
+  
+</mapper>

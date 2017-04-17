@@ -14,14 +14,6 @@ import com.report.common.dal.admin.entity.vo.ResourceModel;
  * 
  */
 public interface ResourceService {
-	/**
-	 * 返回列表
-	 * 
-	 * @param resource
-	 * @param dg
-	 * @return
-	 */
-	List<PackageResourceModel> findResourceList(ResourceModel resource);
 
 	/**
 	 * 更新对象

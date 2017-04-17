@@ -30,28 +30,8 @@ public class ResourceServiceImpl implements ResourceService {
     private ResourceRepository resourceRepository;
     @Autowired
     private BaseDao baseDao;
-//    @Autowired
-//    private ReportChartDao reportChartDao;
-//    @Autowired
-//    private ReportConditionDao reportConditionDao;
-//    @Autowired
-//    private ReportPublicDao reportPublicDao;
     @Autowired
     private ResourceDao resourceDao;
-    /**
-     * 获取资源列表
-     */
-    public List<PackageResourceModel> findResourceList(ResourceModel resource) {
-        List<Resource> resourceList = resourceRepository.findResourceList(resource);
-        List<PackageResourceModel> tempResourceList = new ArrayList<PackageResourceModel>();
-        PackageResourceModel temp = null;
-        for (Resource r : resourceList) {
-            temp = new PackageResourceModel();
-            setResourceListToTemp(r, temp);
-            tempResourceList.add(temp);
-        }
-        return tempResourceList;
-    }
 
     @Override
     public void updateResource(ResourceModel model) {

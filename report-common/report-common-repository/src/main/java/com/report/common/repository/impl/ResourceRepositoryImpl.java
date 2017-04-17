@@ -40,7 +40,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
 
     @Override
     public List findAllResource() {
-        String sql = "select t.id , t.resource_action ,t.resource_code, t.name, t.resource_type,t.p_id,t.description,t.create_time,t.update_time,t.order_by,t.sys_code  from uc_resource t where t.status=1 ";
+        String sql = "select t.id , t.resource_action ,t.resource_code, t.name, t.resource_type,t.p_id,t.description,t.create_time,t.update_time,t.order_by,t.sys_code  from uc_resource t";
         Query query = baseDao.getSqlQuery(sql);
         query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         return query.list();
@@ -49,7 +49,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     @SuppressWarnings("unchecked")
     @Override
     public List<Resource> findResourceList(ResourceModel resource) {
-        String hql = "from Resource r where r.parent is null and r.status = 1 and id in() ";
+        String hql = "from Resource r where r.parent is null and id in() ";
         return baseDao.find(hql);
     }
 

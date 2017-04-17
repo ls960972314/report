@@ -9,8 +9,8 @@ public class Constants {
 	
 	private Constants() {}
 	
-	public static final int SUCCESS = 1;
-	public static final int FAIL = 0;
+	public static final int SUCCESS = 0;
+	public static final int FAIL = 1;
     
     public static class MenuType {
         public static final String REPORT = "omp";

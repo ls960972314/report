@@ -41,7 +41,7 @@ public class MemberController {
      * @return
      */
     @RequestMapping(value = "/member.htm")
-    public String findGroupList(HttpServletRequest request) {
+    public String findMemberList(HttpServletRequest request) {
         return "member/memberList";
     }
 
@@ -53,8 +53,8 @@ public class MemberController {
      */
     @RequestMapping(value = "/findMemberList.htm")
     @ResponseBody
-    public DataGrid findMemberListByCriteria(MemberQueryReq memberQueryReq, PageHelper pageHelper) {
-    	log.debug("findMemberListByCriteria MemberQueryReq[{}],PageHelper[{}]", JSON.toJSONString(memberQueryReq), JSON.toJSONString(pageHelper));
+    public DataGrid findMemberList(MemberQueryReq memberQueryReq, PageHelper pageHelper) {
+    	log.debug("findMemberList MemberQueryReq[{}],PageHelper[{}]", JSON.toJSONString(memberQueryReq), JSON.toJSONString(pageHelper));
         return memberService.findMemberList(memberQueryReq, pageHelper);
     }
 

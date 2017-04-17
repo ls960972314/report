@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.report.biz.admin.service.GroupService;
 import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.vo.GroupModel;
@@ -22,6 +23,11 @@ import com.report.facade.entity.PageHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 组别Controller
+ * @author lishun
+ * @since 2017年4月8日 上午10:50:53
+ */
 @Slf4j
 @Controller
 @RequestMapping("/group")
@@ -37,7 +43,8 @@ public class GroupController {
 
     @RequestMapping(value = "/findGroupList.htm")
     @ResponseBody
-    public DataGrid findGroupList(HttpServletRequest request, PageHelper pageHelper, GroupModel groupModel) {
+    public DataGrid findGroupList(HttpServletRequest request, GroupModel groupModel, PageHelper pageHelper) {
+    	log.debug("findGroupList GroupModel[{}], PageHelper[{}]", JSON.toJSONString(groupModel), JSON.toJSONString(pageHelper));
         groupModel.setCurrentMemberGroupCode(SessionUtil.getUserInfo().getGroupCode());
         return groupService.findGroups(pageHelper, groupModel);
     }
