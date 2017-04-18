@@ -56,9 +56,12 @@ public class ReportCommentServiceImpl implements ReportCommentService {
 	@Override
 	public ReportCommentVO findReportComment(String toolflag) {
 		ReportComment reportComment = reportCommentRepository.findReportComment(toolflag);
-		ReportCommentVO reportCommentVO = new ReportCommentVO();
-		BeanUtils.copyProperties(reportComment, reportCommentVO);
-		return reportCommentVO;
+		if (null != reportComment) {
+			ReportCommentVO reportCommentVO = new ReportCommentVO();
+			BeanUtils.copyProperties(reportComment, reportCommentVO);
+			return reportCommentVO;
+		}
+		return null;
 	}
 
 	@Override

@@ -79,7 +79,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public boolean isResourceExist(ResourceModel resource) {
         Map<String, Object> params = new HashMap<String, Object>();
-        String sql = "select count(*) from uc_resource t where t.status=1 and t.sys_code=:sysCode and t.resource_action=:resourceAction and t.resource_type=:rt ";
+        String sql = "select count(*) from uc_resource t where t.sys_code=:sysCode and t.resource_action=:resourceAction and t.resource_type=:rt ";
         params.put("sysCode", resource.getSysCode());
         params.put("resourceAction", resource.getResourceAction());
         params.put("rt", resource.getResourceType());

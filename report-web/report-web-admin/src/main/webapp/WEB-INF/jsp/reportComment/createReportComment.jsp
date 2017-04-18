@@ -78,7 +78,7 @@
 			dataType : "json",
 			success : function(data) {
 				if (data.code == "0") {
-					$("#text-input").html(data.data);
+					$("#text-input").val(data.data);
 					$("#preview").html(marked(data.data));
 				} else {
 					$("#preview").html("系统有错误,请联系管理员");

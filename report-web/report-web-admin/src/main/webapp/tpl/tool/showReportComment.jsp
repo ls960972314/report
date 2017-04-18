@@ -23,7 +23,7 @@ $(function() {
 		},
 		dataType: "json",
 		success: function(data) {
-			if (data.status == "0") {
+			if (data.code == "0") {
 				$("#showReportComment").html(marked(data.data));
 			} else {
 				$("#showReportComment").html("系统有错误,请联系管理员");

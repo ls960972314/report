@@ -34,9 +34,8 @@ public class SimpleAuthFilter extends AccessControlFilter {
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
 			throws ReportException {
 		try {
-			log.debug("username[{}] mappedValue[{}] SimpleAuthFilter isAccessAllowed ",
-					null == SessionUtil.getUserInfo() ? null : SessionUtil.getUserInfo().getMember().getAccNo(),
-					mappedValue);
+			String accNo = null == SessionUtil.getUserInfo() ? null : SessionUtil.getUserInfo().getMember().getAccNo();
+			log.debug("username[{}] mappedValue[{}] SimpleAuthFilter isAccessAllowed ", accNo, mappedValue);
 			Map<String, String> resultMap = new HashMap<String, String>();
 			if (!SecurityUtils.getSubject().isAuthenticated()) {
 				// 判断是不是Ajax请求
@@ -46,12 +45,10 @@ public class SimpleAuthFilter extends AccessControlFilter {
 					resultMap.put("message", "请重新登录！");
 					out(response, resultMap);
 				}
-				log.debug("username[{}] SimpleAuthFilter isAccessAllowed false",
-						SessionUtil.getUserInfo().getMember().getAccNo());
+				log.debug("username[{}] SimpleAuthFilter isAccessAllowed false", accNo);
 				return Boolean.FALSE;
 			}
-			log.debug("username[{}] SimpleAuthFilter isAccessAllowed true",
-					SessionUtil.getUserInfo().getMember().getAccNo());
+			log.debug("username[{}] SimpleAuthFilter isAccessAllowed true", accNo);
 		} catch (Exception e) {
 			log.error("SimpleAuthFilter isAccessAllowed Exception", e);
 			throw new ReportException(ReportExceptionCodes.SYSTEM_EXCEPTION);
