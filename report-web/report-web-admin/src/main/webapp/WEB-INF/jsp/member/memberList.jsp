@@ -1,7 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@include file="../fragments/htmlHead.jsp"%>
-<title>用户管理</title>
 <jsp:include page="../fragments/script.jsp" />
 </head>
 <body style="overflow-y: hidden">

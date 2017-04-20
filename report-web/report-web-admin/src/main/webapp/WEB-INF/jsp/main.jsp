@@ -5,7 +5,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>报表</title>
+    <link href="${pageContext.request.contextPath}/images/title.ico" rel="icon" type="image/x-icon">
+    <title>自动化配置报表平台</title>
     <link href="${pageContext.request.contextPath}/css/redmond/jquery-ui-1.9.2.custom.min.css"  rel="stylesheet"></link>
     <link href="${pageContext.request.contextPath}/css/ui.jqgrid.css" rel="stylesheet"></link>
     <link href="${pageContext.request.contextPath}/css/ui.multiselect.css" rel="stylesheet"></link>

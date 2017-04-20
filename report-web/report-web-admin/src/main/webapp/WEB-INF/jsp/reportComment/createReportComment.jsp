@@ -1,6 +1,4 @@
 ﻿<%@ page language="java" pageEncoding="utf-8"%>
-<head>
-</head>
 <body>
 	<div>
 		报表标志:

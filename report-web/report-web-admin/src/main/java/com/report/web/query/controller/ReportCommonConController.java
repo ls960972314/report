@@ -4,8 +4,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +18,8 @@ import com.report.facade.entity.dto.ReportCommonCon;
 import com.report.facade.entity.query.ReportCommonConVO;
 import com.report.facade.service.ReportCommonConService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 共用报表差异条件管理
  * 
@@ -30,7 +30,6 @@ import com.report.facade.service.ReportCommonConService;
 @RequestMapping("/commonCondition")
 public class ReportCommonConController {
 
-	private final Log logger = LogFactory.getLog(ReportCommonConController.class);
 
 	@Resource
 	private ReportCommonConService reportCommonConService;

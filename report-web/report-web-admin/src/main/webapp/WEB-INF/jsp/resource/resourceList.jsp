@@ -1,7 +1,5 @@
-<%@ page language="java" pageEncoding="UTF-8"
-	contentType="text/html;charset=UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
 <%@include file="../fragments/htmlHead.jsp"%>
-<title>资源登录</title>
 <jsp:include page="../fragments/script.jsp" />
 <script type="text/javascript">
 	function setResourceType(value) {

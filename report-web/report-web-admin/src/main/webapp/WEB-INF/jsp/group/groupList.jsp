@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
 <%@include file="../fragments/htmlHead.jsp"%>
-<title>组别管理</title>
 <jsp:include page="../fragments/script.jsp" />
 </head>
 <body style="overflow-y: hidden">

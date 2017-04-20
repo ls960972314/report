@@ -14,7 +14,6 @@
 	<title>新建报表</title>
 	
 
-
 	<link href="${pageContext.request.contextPath}/css/main.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="${pageContext.request.contextPath}/css/redmond/jquery-ui-1.9.2.custom.min.css"  rel="stylesheet"></link>
     <link href="${pageContext.request.contextPath}/css/ui.jqgrid.css" rel="stylesheet"></link>

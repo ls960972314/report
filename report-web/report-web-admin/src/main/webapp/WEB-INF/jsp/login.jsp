@@ -8,7 +8,8 @@ response.setDateHeader("Expires", 0);
 %>
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-  <title>用户登录</title>
+  <title>自动化报表平台登录</title>
+  <link href="${pageContext.request.contextPath}/images/title.ico" rel="icon" type="image/x-icon">
   <jsp:include page="fragments/script.jsp" />
   <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src='<%=basePath%>js/login.js'> </script>

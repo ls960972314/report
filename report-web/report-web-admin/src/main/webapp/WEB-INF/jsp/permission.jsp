@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>主界面</title>
+<title>报表平台</title>
 <jsp:include page="fragments/script.jsp" />
 <%@include file="fragments/bodyHeader.jsp"%>
     <table class="container" style="height: 592px;">

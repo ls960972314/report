@@ -11,7 +11,6 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>报表跑批动态配置管理</title>
 <jsp:include page="../fragments/script.jsp" />
 </head>
 <body style="overflow-y: hidden">
