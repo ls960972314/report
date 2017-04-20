@@ -24,7 +24,7 @@ import com.report.common.model.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
+ * 基于自定义注解的aop切入点
  * @author lishun
  * @since 2017年4月19日 下午7:56:59
  */

@@ -8,7 +8,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * 
+ * 拦截service注解
  * @author lishun
  * @since 2017年4月19日 下午6:51:49
  */

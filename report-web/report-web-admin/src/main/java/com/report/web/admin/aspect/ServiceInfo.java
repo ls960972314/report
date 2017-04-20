@@ -3,7 +3,7 @@ package com.report.web.admin.aspect;
 import lombok.Data;
 
 /**
- * 
+ * 操作配置信息
  * @author lishun
  * @since 2017年4月19日 下午7:03:56
  */

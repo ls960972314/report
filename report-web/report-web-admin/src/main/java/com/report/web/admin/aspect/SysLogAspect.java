@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 /**
- * 
+ * 基于系统controller和service注解的aop切入点
  * @author lishun
  * @since 2017年4月19日 下午7:58:42
  */
