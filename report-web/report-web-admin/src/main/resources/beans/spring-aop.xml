@@ -4,18 +4,18 @@
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
-    
-    <aop:aspectj-autoproxy/>
-	<!-- 开启注解的AOP -->
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <!-- <aop:aspectj-autoproxy/>
+	开启注解的AOP
 	<aop:config>  
         <aop:aspect id="logAspect" ref="aspectBean">  
-            <!--配置com.spring.service包下所有类或接口的所有方法-->  
+            配置com.spring.service包下所有类或接口的所有方法  
             <aop:pointcut id="businessService" expression="execution(* com.report.web.admin.controller.*.*(..))" />  
             <aop:around pointcut-ref="businessService" method="doAround"/>
             <aop:after-throwing pointcut-ref="businessService" method="doThrowing" throwing="ex"/>  
         </aop:aspect>  
     </aop:config>
     
-    <bean id="aspectBean" class="com.report.common.model.OperateAop" />
+    <bean id="aspectBean" class="com.report.common.model.OperateAop" /> -->
     
 </beans>

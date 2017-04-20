@@ -33,7 +33,7 @@
     <link href="${pageContext.request.contextPath}/css/jquery.alerts.css" media="screen" rel="stylesheet" type="text/css" />
 	<script src="${pageContext.request.contextPath}/js/jquery.alerts.js" type="text/javascript"></script>
 	<link href="${pageContext.request.contextPath}/css/main.css" media="screen" rel="stylesheet" type="text/css" />
-	<link href="http://cdn.bootcss.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     
   </head>
   

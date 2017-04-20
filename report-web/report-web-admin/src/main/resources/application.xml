@@ -23,6 +23,7 @@
 	</bean>
 
 	<!-- 自动扫描且只扫描@Controller -->
+	<context:component-scan base-package="com.report.web.admin.aspect" />
 	<context:component-scan base-package="com.report.web.**.controller" />
 	<context:component-scan base-package="com.report.biz.admin.service.impl" />
 	<context:component-scan base-package="com.report.common.repository.impl" />
