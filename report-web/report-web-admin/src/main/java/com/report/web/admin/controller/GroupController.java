@@ -16,10 +16,10 @@ import com.report.biz.admin.service.GroupService;
 import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.vo.GroupModel;
 import com.report.common.model.AjaxJson;
+import com.report.common.model.DataGrid;
+import com.report.common.model.PageHelper;
 import com.report.common.model.ResultCodeConstants;
 import com.report.common.model.SessionUtil;
-import com.report.facade.entity.DataGrid;
-import com.report.facade.entity.PageHelper;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -14,8 +14,8 @@ import com.report.common.dal.common.utils.VerificationUtil;
 import com.report.common.model.AjaxJson;
 import com.report.common.model.GlobalResultStatus;
 import com.report.common.model.JsonResult;
+import com.report.common.model.PageHelper;
 import com.report.common.model.ReportCommentVO;
-import com.report.facade.entity.PageHelper;
 
 import lombok.extern.slf4j.Slf4j;
 

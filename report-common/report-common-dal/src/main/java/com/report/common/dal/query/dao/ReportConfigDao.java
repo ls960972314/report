@@ -2,7 +2,7 @@ package com.report.common.dal.query.dao;
 
 import java.util.List;
 
-import com.report.facade.entity.dto.ReportConfig;
+import com.report.common.dal.query.entity.dto.ReportConfig;
 
 /**
  * 

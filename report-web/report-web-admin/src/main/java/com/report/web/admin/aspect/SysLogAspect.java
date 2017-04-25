@@ -20,17 +20,17 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.alibaba.fastjson.JSON;
 import com.report.biz.admin.service.ReportLogService;
 import com.report.common.dal.admin.entity.dto.ReportLog;
+import com.report.common.dal.query.entity.vo.PagerReq;
+import com.report.common.dal.query.entity.vo.ReportElement;
+import com.report.common.dal.query.entity.vo.SpObserver;
 import com.report.common.model.SessionUtil;
-import com.report.facade.entity.query.ChartVO;
-import com.report.facade.entity.query.ConditionVO;
-import com.report.facade.entity.query.PublicVO;
-import com.report.facade.entity.query.ReportCommonConVO;
-import com.report.facade.entity.query.ReportConfigVO;
-import com.report.facade.entity.query.ReportModelVO;
-import com.report.facade.entity.query.ReportSqlVO;
-import com.report.facade.entity.vo.PagerReq;
-import com.report.facade.entity.vo.ReportElement;
-import com.report.facade.entity.vo.SpObserver;
+import com.report.common.model.query.ChartVO;
+import com.report.common.model.query.ConditionVO;
+import com.report.common.model.query.PublicVO;
+import com.report.common.model.query.ReportCommonConVO;
+import com.report.common.model.query.ReportConfigVO;
+import com.report.common.model.query.ReportModelVO;
+import com.report.common.model.query.ReportSqlVO;
 
 import lombok.extern.slf4j.Slf4j;
 

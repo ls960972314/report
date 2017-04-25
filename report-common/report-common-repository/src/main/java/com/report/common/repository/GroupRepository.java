@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.report.common.dal.admin.entity.dto.Group;
 import com.report.common.dal.admin.entity.vo.GroupModel;
-import com.report.facade.entity.PageHelper;
+import com.report.common.model.PageHelper;
 
 public interface GroupRepository {
 

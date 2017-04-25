@@ -10,15 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.report.biz.admin.service.ReportPublicService;
 import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.query.entity.dto.ReportPublic;
 import com.report.common.dal.query.util.BeanUtil;
 import com.report.common.model.AjaxJson;
+import com.report.common.model.DataGrid;
+import com.report.common.model.PageHelper;
 import com.report.common.model.ResultCodeConstants;
-import com.report.facade.entity.DataGrid;
-import com.report.facade.entity.PageHelper;
-import com.report.facade.entity.dto.ReportPublic;
-import com.report.facade.entity.query.PublicVO;
-import com.report.facade.service.ReportPublicService;
+import com.report.common.model.query.PublicVO;
 
 /**
  * 图形管理

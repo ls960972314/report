@@ -8,7 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
-import com.report.facade.entity.vo.PagerReq;
+import com.report.common.dal.query.entity.vo.PagerReq;
 
 public interface BaseDao {
 

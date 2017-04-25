@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.report.common.dal.common.BaseDao;
 import com.report.common.dal.query.dao.ReportConfigDao;
-import com.report.facade.entity.dto.ReportConfig;
+import com.report.common.dal.query.entity.dto.ReportConfig;
 
 @Repository
 public class ReportConfigDaoImpl implements ReportConfigDao {

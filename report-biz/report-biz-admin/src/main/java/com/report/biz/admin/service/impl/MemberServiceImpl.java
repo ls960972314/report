@@ -17,7 +17,9 @@ import com.report.common.dal.admin.constant.Constants;
 import com.report.common.dal.admin.entity.dto.Member;
 import com.report.common.dal.admin.entity.vo.MenuCell;
 import com.report.common.dal.admin.entity.vo.PermissionCell;
+import com.report.common.model.DataGrid;
 import com.report.common.model.MemberQueryReq;
+import com.report.common.model.PageHelper;
 import com.report.common.model.ShiroUser;
 import com.report.common.model.UserInfo;
 import com.report.common.repository.GroupRepository;
@@ -25,8 +27,6 @@ import com.report.common.repository.MemberRepository;
 import com.report.common.repository.ResourceRepository;
 import com.report.common.repository.RoleRepository;
 import com.report.common.util.MD5;
-import com.report.facade.entity.DataGrid;
-import com.report.facade.entity.PageHelper;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -18,14 +18,12 @@ import com.report.common.dal.admin.entity.dto.Group;
 import com.report.common.dal.admin.entity.vo.GroupModel;
 import com.report.common.dal.common.BaseDao;
 import com.report.common.model.AjaxJson;
+import com.report.common.model.DataGrid;
+import com.report.common.model.PageHelper;
 import com.report.common.model.ResultCodeConstants;
 import com.report.common.model.SessionUtil;
 import com.report.common.repository.GroupRepository;
 import com.report.common.repository.RoleRepository;
-import com.report.facade.entity.DataGrid;
-import com.report.facade.entity.PageHelper;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
@@ -33,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2014-10-14 14:10:24
  * 
  */
-@Slf4j
 @Service("groupService")
 public class GroupServiceImpl implements GroupService {
 

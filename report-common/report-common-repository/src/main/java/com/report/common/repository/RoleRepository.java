@@ -9,7 +9,7 @@ import com.report.common.dal.admin.entity.vo.RoleCell;
 import com.report.common.dal.admin.entity.vo.RoleCriteriaModel;
 import com.report.common.dal.admin.entity.vo.RoleListSysModel;
 import com.report.common.dal.admin.entity.vo.RoleModel;
-import com.report.facade.entity.PageHelper;
+import com.report.common.model.PageHelper;
 
 public interface RoleRepository {
 

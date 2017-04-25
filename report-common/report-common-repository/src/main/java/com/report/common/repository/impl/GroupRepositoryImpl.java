@@ -13,9 +13,9 @@ import com.report.common.dal.admin.dao.GroupDao;
 import com.report.common.dal.admin.entity.dto.Group;
 import com.report.common.dal.admin.entity.vo.GroupModel;
 import com.report.common.dal.admin.util.PageUtil;
+import com.report.common.model.PageHelper;
 import com.report.common.model.SessionUtil;
 import com.report.common.repository.GroupRepository;
-import com.report.facade.entity.PageHelper;
 
 @Service
 public class GroupRepositoryImpl implements GroupRepository {

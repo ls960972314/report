@@ -14,14 +14,7 @@
     <dubbo:protocol name="dubbo" port="20880" />
     <!-- 定义全局consumerp配置 -->
     <dubbo:consumer check="false"/>
-    <!-- 声明需要暴露的服务接口 -->
-    <dubbo:reference id="reportChartService" interface="com.report.facade.service.ReportChartService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
-    <dubbo:reference id="reportCommonConService" interface="com.report.facade.service.ReportCommonConService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
-    <dubbo:reference id="reportConditionService" interface="com.report.facade.service.ReportConditionService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
-    <dubbo:reference id="reportModelService" interface="com.report.facade.service.ReportModelService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
-    <dubbo:reference id="reportPublicService" interface="com.report.facade.service.ReportPublicService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
-    <dubbo:reference id="reportService" interface="com.report.facade.service.ReportService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
-    <dubbo:reference id="reportSqlService" interface="com.report.facade.service.ReportSqlService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
-    <dubbo:reference id="reportConfigService" interface="com.report.facade.service.ReportConfigService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>
+    <!-- 声明需要暴露的服务接口 
+    <dubbo:reference id="reportService" interface="com.report.facade.service.ReportService" retries="${dubbo_report_query_retries}" timeout="${dubbo_report_query_time_out}" version="${dubbo_report_query_version}"/>-->
     
 </beans>

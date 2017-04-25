@@ -8,8 +8,8 @@ import com.report.common.dal.admin.entity.vo.RoleCriteriaModel;
 import com.report.common.dal.admin.entity.vo.RoleListSysModel;
 import com.report.common.dal.admin.entity.vo.RoleModel;
 import com.report.common.model.AjaxJson;
-import com.report.facade.entity.DataGrid;
-import com.report.facade.entity.PageHelper;
+import com.report.common.model.DataGrid;
+import com.report.common.model.PageHelper;
 
 public interface RoleService {
 	DataGrid findRoleListByCriteria(PageHelper pageHelper, RoleCriteriaModel roleCriteriaModel);

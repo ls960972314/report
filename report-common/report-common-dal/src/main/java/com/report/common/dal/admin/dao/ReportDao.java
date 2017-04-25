@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-import com.report.facade.entity.vo.PagerReq;
+import com.report.common.dal.query.entity.vo.PagerReq;
 
 
 

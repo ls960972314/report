@@ -25,9 +25,9 @@ import com.report.common.dal.admin.util.PackRoleCell;
 import com.report.common.dal.admin.util.PageUtil;
 import com.report.common.dal.common.BaseDao;
 import com.report.common.dal.query.util.ObjectUtil;
+import com.report.common.model.PageHelper;
 import com.report.common.model.SessionUtil;
 import com.report.common.repository.RoleRepository;
-import com.report.facade.entity.PageHelper;
 
 @Service
 public class RoleRepositoryImpl implements RoleRepository {

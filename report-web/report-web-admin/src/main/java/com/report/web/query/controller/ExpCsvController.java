@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.report.facade.entity.vo.PagerReq;
-import com.report.facade.entity.vo.SpObserver;
-import com.report.facade.service.ReportService;
+import com.report.biz.admin.service.ReportService;
+import com.report.common.dal.query.entity.vo.PagerReq;
+import com.report.common.dal.query.entity.vo.SpObserver;
 
 import lombok.extern.slf4j.Slf4j;
 

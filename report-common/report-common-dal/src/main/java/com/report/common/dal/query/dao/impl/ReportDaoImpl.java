@@ -19,10 +19,10 @@ import org.springframework.stereotype.Repository;
 import com.alibaba.fastjson.JSON;
 import com.report.common.dal.common.BaseDao;
 import com.report.common.dal.query.dao.ReportDao;
-import com.report.facade.entity.dto.ReportSql;
-import com.report.facade.entity.vo.Condition;
-import com.report.facade.entity.vo.PagerReq;
-import com.report.facade.entity.vo.SpObserver;
+import com.report.common.dal.query.entity.dto.ReportSql;
+import com.report.common.dal.query.entity.vo.Condition;
+import com.report.common.dal.query.entity.vo.PagerReq;
+import com.report.common.dal.query.entity.vo.SpObserver;
 
 @Repository
 public class ReportDaoImpl implements ReportDao {

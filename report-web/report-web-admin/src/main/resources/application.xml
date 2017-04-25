@@ -25,9 +25,9 @@
 	<!-- 自动扫描且只扫描@Controller -->
 	<context:component-scan base-package="com.report.web.admin.aspect" />
 	<context:component-scan base-package="com.report.web.**.controller" />
-	<context:component-scan base-package="com.report.biz.admin.service.impl" />
+	<context:component-scan base-package="com.report.biz.**.service.impl" />
 	<context:component-scan base-package="com.report.common.repository.impl" />
-	<context:component-scan base-package="com.report.common.dal.common.dao.impl,com.report.common.dal.admin.dao.impl" />
+	<context:component-scan base-package="com.report.common.dal.common.dao.impl,com.report.common.dal.**.dao.impl" />
 	
 	<bean id="contextHelper" class="com.report.common.dal.common.ContextHelper"/>
 	

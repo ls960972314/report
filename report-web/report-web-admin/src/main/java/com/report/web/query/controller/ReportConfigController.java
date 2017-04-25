@@ -13,15 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.report.biz.admin.service.ReportConfigService;
 import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.query.entity.dto.ReportConfig;
 import com.report.common.dal.query.util.BeanUtil;
 import com.report.common.model.AjaxJson;
+import com.report.common.model.DataGrid;
+import com.report.common.model.PageHelper;
 import com.report.common.model.ResultCodeConstants;
-import com.report.facade.entity.DataGrid;
-import com.report.facade.entity.PageHelper;
-import com.report.facade.entity.dto.ReportConfig;
-import com.report.facade.entity.query.ReportConfigVO;
-import com.report.facade.service.ReportConfigService;
+import com.report.common.model.query.ReportConfigVO;
 
 /**
  * 报表跑批动态配置管理
