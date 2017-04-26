@@ -39,7 +39,7 @@ public class ResourceController {
      * @return
      */
     @RequestMapping(value = "/resource.htm")
-    public String resource() {
+    public String index() {
         return "resource/resourceList";
     }
 

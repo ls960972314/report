@@ -1,99 +1,40 @@
 package com.report.common.model.query;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import lombok.Data;
+
+/**
+ * 
+ * @author lishun
+ * @since 2017年4月26日 上午9:38:31
+ */
+@Data
 public class ChartVO implements Serializable {
 
 	private static final long serialVersionUID = -1141034211714835970L;
 
+	/** 主键 */
 	private Integer id;
-	
+	/** 报表标志 */
 	private String toolFlag;
-	
-	private String dataVsX;
-	
-	private String dataVsLe;
-	
-	private String chartOption;
-	
-	private Integer chartOrder;
-	
+	/** 图形名称 */
 	private String chartName;
-	
+	/** 图形类型 */
 	private String chartType;
-	
+	/** legend数据列 */
+	private String dataVsLe;
+	/** x轴数据列 */
+	private String dataVsX;
+	/** 图形option */
+	private String chartOption;
+	/** 展示数据数量 */
 	private Integer showRowNum;
-	
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getToolFlag() {
-		return toolFlag;
-	}
-
-	public void setToolFlag(String toolFlag) {
-		this.toolFlag = toolFlag;
-	}
-
-	public String getDataVsX() {
-		return dataVsX;
-	}
-
-	public void setDataVsX(String dataVsX) {
-		this.dataVsX = dataVsX;
-	}
-
-	public String getDataVsLe() {
-		return dataVsLe;
-	}
-
-	public void setDataVsLe(String dataVsLe) {
-		this.dataVsLe = dataVsLe;
-	}
-
-	public String getChartOption() {
-		return chartOption;
-	}
-
-	public void setChartOption(String chartOption) {
-		this.chartOption = chartOption;
-	}
-
-	public Integer getChartOrder() {
-		return chartOrder;
-	}
-
-	public void setChartOrder(Integer chartOrder) {
-		this.chartOrder = chartOrder;
-	}
-
-	public String getChartName() {
-		return chartName;
-	}
-
-	public void setChartName(String chartName) {
-		this.chartName = chartName;
-	}
-
-	public String getChartType() {
-		return chartType;
-	}
-
-	public void setChartType(String chartType) {
-		this.chartType = chartType;
-	}
-
-	public Integer getShowRowNum() {
-		return showRowNum;
-	}
-
-	public void setShowRowNum(Integer showRowNum) {
-		this.showRowNum = showRowNum;
-	}
-	
+	/** 图形排序 */
+	private Integer chartOrder;
+	/** 创建时间 */
+	private Date createTime;
+	/** 更新时间 */
+	private Date updateTime;
 }

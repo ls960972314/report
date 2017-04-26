@@ -214,7 +214,7 @@ public class ReportModelServiceImpl implements ReportModelService {
     			// 组装ReportPublic
     			modelElements.setReportPublic(reportPublicService.queryReportPublic(reportFlag));
     			// 组装ReportChart
-    			reportChartList = reportChartService.queryReportChart(reportFlag);
+    			reportChartList = reportChartService.findChartList(reportFlag);
     			if (reportChartList != null && reportChartList.size() >= 1) {
     				// 0815展示选择的图形
     				for (int k = 0; k < reportChartList.size(); k++) {

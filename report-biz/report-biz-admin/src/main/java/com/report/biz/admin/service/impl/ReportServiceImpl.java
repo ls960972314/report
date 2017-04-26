@@ -41,14 +41,10 @@ public class ReportServiceImpl implements ReportService {
 
 	protected final Log log = LogFactory.getLog(getClass());
 
+	@Autowired
 	private ReportDao reportDao;
 	@Autowired
 	private BaseDao baseDao;
-
-	@Autowired
-	public void ReportServiceImpl(ReportDao reportDao) {
-		this.reportDao = reportDao;
-	}
 
 	/**
 	 * 导出报表

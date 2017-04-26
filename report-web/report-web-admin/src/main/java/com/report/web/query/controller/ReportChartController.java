@@ -6,35 +6,35 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.report.biz.admin.service.ReportChartService;
 import com.report.common.dal.admin.constant.Constants;
+import com.report.common.dal.common.utils.VerificationUtil;
 import com.report.common.dal.query.entity.dto.ReportChart;
-import com.report.common.dal.query.util.BeanUtil;
 import com.report.common.model.AjaxJson;
-import com.report.common.model.DataGrid;
 import com.report.common.model.GlobalResultStatus;
 import com.report.common.model.JsonResult;
 import com.report.common.model.PageHelper;
 import com.report.common.model.ResultCodeConstants;
 import com.report.common.model.query.ChartVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 图形管理
  * @author lishun
- *
+ * @since 2017年4月26日 下午2:10:29
  */
+@Slf4j
 @Controller
 @RequestMapping("/chart")
 public class ReportChartController {
 
-	 private final Log logger = LogFactory.getLog(ReportChartController.class);
-	 
 	 @Resource
 	 private ReportChartService reportChartService;
 	 /**
@@ -43,14 +43,20 @@ public class ReportChartController {
      * @return
      */
     @RequestMapping(value = "/chart.htm")
-    public String resource() {
+    public String index() {
         return "chart/chartList";
     }
     
+    /**
+     * 查找图形列表
+     * @param chart
+     * @param pageHelper
+     * @return
+     */
     @RequestMapping(value = "/findchartList.htm")
     @ResponseBody
-    public DataGrid findchartList(ChartVO chart, PageHelper pageHelper) {
-    	return reportChartService.findChartList(chart, pageHelper);
+    public Object findchartList(ChartVO chartVO, PageHelper pageHelper) {
+    	return reportChartService.findChartList(chartVO, pageHelper);
     }
     
     /**
@@ -64,33 +70,37 @@ public class ReportChartController {
     	if (StringUtils.isBlank(reportFlag)) {
     		return JsonResult.fail(GlobalResultStatus.PARAM_ERROR);
     	}
-    	
-    	List<ReportChart> list = null;
+    	List<ReportChart> list = Lists.newArrayList();
     	try {
-    		list = reportChartService.queryReportChart(reportFlag);
+    		list = reportChartService.findChartList(reportFlag);
 		} catch (Exception e) {
-			logger.error("findChartNameList Exception", e);
+			log.error("findChartNameList Exception", e);
 			return JsonResult.fail(GlobalResultStatus.ERROR);
 		}
     	return JsonResult.success(list);
     }
     
+    /**
+     * 更新图形
+     * @param chart
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/updateChart.htm")
     @ResponseBody
-    public AjaxJson updateChart(ChartVO chart, HttpServletRequest request) {
+    public Object updateChart(ChartVO chartVO, HttpServletRequest request) {
+    	log.debug("updateChart ChartVO[{}]", JSON.toJSONString(chartVO));
         AjaxJson json = new AjaxJson();
-        if (chart.getId() == null || StringUtils.isBlank(chart.getToolFlag()) || StringUtils.isEmpty(chart.getChartName())) {
+        if (VerificationUtil.paramIsNull(chartVO, chartVO.getId(), chartVO.getToolFlag(), chartVO.getChartName())) {
         	json.setErrorNo(ResultCodeConstants.RESULT_INCOMPLETE);
             return json;
         }
-        ReportChart reportChart = new ReportChart();
-        BeanUtil.copyProperties(chart, reportChart);
         try {
-        	reportChartService.updateChart(reportChart);
+        	reportChartService.updateReportChart(chartVO);
 		} catch (Exception e) {
-	            json.setStatus(Constants.FAIL);
-	            json.setErrorInfo("更新失败！");
-	            return json;
+			log.error("updateChart Exception", e);
+            json.setStatus(Constants.FAIL);
+            json.setErrorInfo("更新图形失败！");
 		}
         return json;
     }

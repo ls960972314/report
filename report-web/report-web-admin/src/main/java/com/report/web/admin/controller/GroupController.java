@@ -37,7 +37,7 @@ public class GroupController {
     private GroupService groupService;
 
     @RequestMapping(value = "/group.htm")
-    public String findGroupList(HttpServletRequest request) {
+    public String index(HttpServletRequest request) {
         return "group/groupList";
     }
 

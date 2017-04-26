@@ -36,7 +36,7 @@ public class RoleController {
     private RoleService roleService;
 
     @RequestMapping(value = "/role.htm")
-    public String role(HttpServletRequest request) {
+    public String index(HttpServletRequest request) {
         return "role/roleList";
     }
 

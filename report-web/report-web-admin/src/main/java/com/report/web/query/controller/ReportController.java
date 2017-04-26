@@ -187,7 +187,7 @@ public class ReportController {
 				returnConList.add(returnCon);
 			}
     		ReportPublic reportPublic = reportPublicService.queryReportPublic(reportFlag);
-            List<ReportChart> reportChartList = reportChartService.queryReportChart(reportFlag);
+            List<ReportChart> reportChartList = reportChartService.findChartList(reportFlag);
             
             map.put("reportPublic", reportPublic);
             map.put("reportChartList", reportChartList);

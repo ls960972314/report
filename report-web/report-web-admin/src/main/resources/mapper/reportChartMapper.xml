@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.report.common.dal.admin.dao.ReportChartDao">
+
+	<resultMap type="com.report.common.dal.query.entity.dto.ReportChart" id="reportChartResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="toolflag" property="toolFlag" jdbcType="VARCHAR" />
+		<result column="chart_name" property="chartName" jdbcType="VARCHAR" />
+		<result column="chart_type" property="chartType" jdbcType="VARCHAR" />
+		<result column="datavsle" property="dataVsLe" jdbcType="VARCHAR" />
+		<result column="datavsx" property="dataVsX" jdbcType="VARCHAR" />
+		<result column="chart_option" property="chartOption" jdbcType="VARCHAR" />
+		<result column="chart_order" property="chartOrder" jdbcType="INTEGER" />
+		<result column="show_rownum" property="showRowNum" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.report.common.dal.query.entity.dto.ReportChart">
+		insert into rptchart(id, toolflag, chart_name, chart_type, datavsle, datavsx, chart_option, show_rownum, chart_order)
+			values(#{id,jdbcType=INTEGER},
+					#{toolFlag,jdbcType=VARCHAR},
+					#{chartName,jdbcType=VARCHAR},
+					#{chartType,jdbcType=VARCHAR},
+					#{dataVsLe,jdbcType=VARCHAR},
+					#{dataVsX,jdbcType=VARCHAR},
+					#{chartOption,jdbcType=VARCHAR},
+					#{showRowNum,jdbcType=INTEGER},
+					#{chartOrder,jdbcType=INTEGER}
+			)
+	</insert>
+
+	<update id="update" parameterType="com.report.common.dal.query.entity.dto.ReportChart">
+		update rptchart set
+			toolflag=#{toolFlag,jdbcType=VARCHAR},
+			chart_name= #{chartName,jdbcType=VARCHAR},
+			chart_type=#{chartType,jdbcType=VARCHAR},
+			datavsle=#{dataVsLe,jdbcType=VARCHAR},
+			datavsx=#{dataVsX,jdbcType=VARCHAR},
+			chart_option=#{chartOption,jdbcType=VARCHAR},
+			show_rownum=#{showRowNum,jdbcType=INTEGER},
+			chart_order=#{chartOrder,jdbcType=INTEGER}
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteByReportFlag" parameterType="string">
+	  	delete from rptchart where toolflag = #{toolFlag,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="findChartListByToolFlag"  parameterType="string" resultMap="reportChartResultMap">
+  	    select * from rptchart t where t.toolflag=#{toolFlag, jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findChartList"  parameterType="map" resultMap="reportChartResultMap">
+  	    select * from rptchart t where 1=1
+  	    <if test="toolFlag != null and toolFlag !=''">
+	  	    and t.toolflag=#{toolFlag, jdbcType=VARCHAR}
+	  	</if>	
+  	    <if test="chartName != null and chartName !=''">
+	  	    and t.chart_name like CONCAT('%', #{chartName,jdbcType=VARCHAR}, '%')
+	  	</if>
+    </select>
+    
+    <select id="findChartCount"  parameterType="map" resultType="long">
+  	    select count(1) from rptchart t where 1=1
+  	    <if test="toolFlag != null and toolFlag !=''">
+	  	    and t.toolflag=#{toolFlag, jdbcType=VARCHAR}
+	  	</if>
+  	    <if test="chartName != null and chartName !=''">
+	  	    and t.chart_name like CONCAT('%', #{chartName,jdbcType=VARCHAR}, '%')
+	  	</if>
+    </select>
+</mapper>

@@ -9,10 +9,9 @@ import com.report.common.model.query.ChartVO;
 
 
 /**
- * 
+ * ReportChartService
  * @author lishun
- *
- * @2015年5月5日
+ * @since 2017年4月26日 下午1:57:45
  */
 public interface ReportChartService {
     /**
@@ -20,19 +19,18 @@ public interface ReportChartService {
      * @param reportChart
      * @return
      */
-    public int saveReportChart(ReportChart reportChart);
+    public void saveReportChart(ChartVO reportChart);
     
     /**
-     *修改报表图形 
+     * 更新报表图形 
      */
-    public int updateReportChart(ReportChart reportChart);
-    
+    public void updateReportChart(ChartVO reportChart);
     /**
      * 根据reportFlag查询ReportChart
      * @param reportFlag
      * @return
      */
-    public List<ReportChart> queryReportChart(String reportFlag);
+    public List<ReportChart> findChartList(String reportFlag);
 
     /**
      * 查找图列表
@@ -41,9 +39,4 @@ public interface ReportChartService {
      * @return
      */
 	public DataGrid findChartList(ChartVO chart, PageHelper pageHelper);
-	/**
-	 * 更新图
-	 * @param chart
-	 */
-	public void updateChart(ReportChart chart);
 }

@@ -41,7 +41,7 @@ public class MemberController {
      * @return
      */
     @RequestMapping(value = "/member.htm")
-    public String findMemberList(HttpServletRequest request) {
+    public String index(HttpServletRequest request) {
         return "member/memberList";
     }
 
