@@ -161,7 +161,7 @@ public class ReportModelController {
 			for (ReportPublishVO rptPublish: reportPublishList) {
 				String toolFlag = rptPublish.getToolFlag();
 				/* 组装reportConId */
-				List<ReportCondition> conList = reportConditionService.queryReportCondition(toolFlag);
+				List<ReportCondition> conList = reportConditionService.findReportCondition(toolFlag);
 				String rptConIdBegin = "";
 				String rptConIdEnd = "";
 				String rptConNameBegin = "";

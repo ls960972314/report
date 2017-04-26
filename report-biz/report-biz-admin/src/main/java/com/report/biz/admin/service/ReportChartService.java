@@ -5,7 +5,7 @@ import java.util.List;
 import com.report.common.dal.query.entity.dto.ReportChart;
 import com.report.common.model.DataGrid;
 import com.report.common.model.PageHelper;
-import com.report.common.model.query.ChartVO;
+import com.report.common.model.query.ReportChartVO;
 
 
 /**
@@ -19,12 +19,12 @@ public interface ReportChartService {
      * @param reportChart
      * @return
      */
-    public void saveReportChart(ChartVO reportChart);
+    public void saveReportChart(ReportChartVO reportChart);
     
     /**
      * 更新报表图形 
      */
-    public void updateReportChart(ChartVO reportChart);
+    public void updateReportChart(ReportChartVO reportChart);
     /**
      * 根据reportFlag查询ReportChart
      * @param reportFlag
@@ -38,5 +38,5 @@ public interface ReportChartService {
      * @param pageHelper
      * @return
      */
-	public DataGrid findChartList(ChartVO chart, PageHelper pageHelper);
+	public DataGrid findChartList(ReportChartVO chart, PageHelper pageHelper);
 }

@@ -167,7 +167,7 @@ public class ReportModelServiceImpl implements ReportModelService {
     			}
     			
     			// 组装ReportCondition
-    			List<ReportCondition> reportConditionList = reportConditionService.queryReportCondition(reportFlag);
+    			List<ReportCondition> reportConditionList = reportConditionService.findReportCondition(reportFlag);
     			List<ReportCondition> sfList = new ArrayList<ReportCondition>();
     			List<ReportCondition> pubList = new ArrayList<ReportCondition>();
     			

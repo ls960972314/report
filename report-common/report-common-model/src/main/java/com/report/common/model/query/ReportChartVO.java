@@ -11,7 +11,7 @@ import lombok.Data;
  * @since 2017年4月26日 上午9:38:31
  */
 @Data
-public class ChartVO implements Serializable {
+public class ReportChartVO implements Serializable {
 
 	private static final long serialVersionUID = -1141034211714835970L;
 

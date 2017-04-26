@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.report.common.dal.admin.dao.ReportCommentDao;
 import com.report.common.dal.admin.entity.dto.ReportComment;
@@ -15,7 +15,7 @@ import com.report.common.repository.ReportCommentRepository;
  * @author lishun
  * @since 2017年4月15日 下午5:36:41
  */
-@Service
+@Repository
 public class ReportCommentRepositoryImpl implements ReportCommentRepository {
 
 	@Resource

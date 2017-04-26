@@ -42,14 +42,14 @@
 						<thead>
 							<tr>
 								<th field="id" data-options="hidden:'true'"></th>
-									<th field="toolFlag" width="30">报表标志</th>
-									<th field="chartName" width="30">图形名称</th>
-									<th field="chartType" width="10">图形类型</th>
-									<th field="dataVsLe" width="30" >数据库列名与X轴对应关系</th>
-									<th field="dataVsX" width="50" >数据库列名与legend对应关系</th>
-									<th field="chartOption" width="70">图形Option</th>
-									<th field="showRowNum" width="10">图表展示行数</th>
-									<th field="chartOrder" width="10">排序</th>
+								<th field="toolFlag" width="30">报表标志</th>
+								<th field="chartName" width="30">图形名称</th>
+								<th field="chartType" width="10">图形类型</th>
+								<th field="dataVsLe" width="30" >数据库列名与X轴对应关系</th>
+								<th field="dataVsX" width="50" >数据库列名与legend对应关系</th>
+								<th field="chartOption" width="70">图形Option</th>
+								<th field="showRowNum" width="10">图表展示行数</th>
+								<th field="chartOrder" width="10">排序</th>
 							</tr>
 						</thead>
 					</table>

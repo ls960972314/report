@@ -21,7 +21,7 @@ import com.report.common.model.GlobalResultStatus;
 import com.report.common.model.JsonResult;
 import com.report.common.model.PageHelper;
 import com.report.common.model.ResultCodeConstants;
-import com.report.common.model.query.ChartVO;
+import com.report.common.model.query.ReportChartVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,7 +55,7 @@ public class ReportChartController {
      */
     @RequestMapping(value = "/findchartList.htm")
     @ResponseBody
-    public Object findchartList(ChartVO chartVO, PageHelper pageHelper) {
+    public Object findchartList(ReportChartVO chartVO, PageHelper pageHelper) {
     	return reportChartService.findChartList(chartVO, pageHelper);
     }
     
@@ -88,7 +88,7 @@ public class ReportChartController {
      */
     @RequestMapping(value = "/updateChart.htm")
     @ResponseBody
-    public Object updateChart(ChartVO chartVO, HttpServletRequest request) {
+    public Object updateChart(ReportChartVO chartVO, HttpServletRequest request) {
     	log.debug("updateChart ChartVO[{}]", JSON.toJSONString(chartVO));
         AjaxJson json = new AjaxJson();
         if (VerificationUtil.paramIsNull(chartVO, chartVO.getId(), chartVO.getToolFlag(), chartVO.getChartName())) {

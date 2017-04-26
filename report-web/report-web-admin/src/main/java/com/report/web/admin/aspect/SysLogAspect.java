@@ -24,8 +24,8 @@ import com.report.common.dal.query.entity.vo.PagerReq;
 import com.report.common.dal.query.entity.vo.ReportElement;
 import com.report.common.dal.query.entity.vo.SpObserver;
 import com.report.common.model.SessionUtil;
-import com.report.common.model.query.ChartVO;
-import com.report.common.model.query.ConditionVO;
+import com.report.common.model.query.ReportChartVO;
+import com.report.common.model.query.ReportConditionVO;
 import com.report.common.model.query.PublicVO;
 import com.report.common.model.query.ReportCommonConVO;
 import com.report.common.model.query.ReportConfigVO;
@@ -199,13 +199,13 @@ public class SysLogAspect {
 				}
 			} else if (operate.equals("updateChart")) {
 				if (args[0] != null) {
-					ChartVO chartVO = (ChartVO)args[0];
+					ReportChartVO chartVO = (ReportChartVO)args[0];
 					operateId = chartVO.getToolFlag();
 					rptLog.setOpeId(operateId);
 				}
 			} else if (operate.equals("updateCondition")) {
 				if (args[0] != null) {
-					ConditionVO conditionVO = (ConditionVO)args[0];
+					ReportConditionVO conditionVO = (ReportConditionVO)args[0];
 					operateId = conditionVO.getToolFlag();
 					rptLog.setOpeId(operateId);
 				}

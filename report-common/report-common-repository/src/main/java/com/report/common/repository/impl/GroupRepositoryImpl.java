@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.report.common.dal.admin.dao.GroupDao;
 import com.report.common.dal.admin.entity.dto.Group;
@@ -17,7 +17,7 @@ import com.report.common.model.PageHelper;
 import com.report.common.model.SessionUtil;
 import com.report.common.repository.GroupRepository;
 
-@Service
+@Repository
 public class GroupRepositoryImpl implements GroupRepository {
 	@Resource
     private GroupDao groupDao;

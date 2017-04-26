@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Sets;
 import com.report.common.dal.admin.constant.Constants.MenuType;
@@ -29,7 +29,12 @@ import com.report.common.model.PageHelper;
 import com.report.common.model.SessionUtil;
 import com.report.common.repository.RoleRepository;
 
-@Service
+/**
+ * RoleRepositoryImpl
+ * @author lishun
+ * @since 2017年4月26日 下午5:33:11
+ */
+@Repository
 public class RoleRepositoryImpl implements RoleRepository {
 	
 	@Resource

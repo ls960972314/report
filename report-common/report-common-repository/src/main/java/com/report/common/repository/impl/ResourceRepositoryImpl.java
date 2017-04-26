@@ -11,7 +11,7 @@ import java.util.Set;
 import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -23,7 +23,12 @@ import com.report.common.dal.common.BaseDao;
 import com.report.common.model.SessionUtil;
 import com.report.common.repository.ResourceRepository;
 
-@Service
+/**
+ * ResourceRepositoryImpl
+ * @author lishun
+ * @since 2017年4月26日 下午5:33:03
+ */
+@Repository
 public class ResourceRepositoryImpl implements ResourceRepository {
 
 	@Autowired

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.report.common.dal.admin.dao.MemberDao;
 import com.report.common.dal.admin.entity.dto.Member;
@@ -20,7 +20,7 @@ import com.report.common.repository.MemberRepository;
  * @author lishun
  * @since 2017年3月24日 下午4:45:52
  */
-@Service
+@Repository
 public class MemberRepositoryImpl implements MemberRepository {
 	@Resource
     private MemberDao memberDao;

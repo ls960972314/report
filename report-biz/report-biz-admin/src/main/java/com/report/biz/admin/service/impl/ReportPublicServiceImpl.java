@@ -26,7 +26,7 @@ import com.report.common.dal.query.entity.vo.Condition;
 import com.report.common.dal.query.entity.vo.ReportElement;
 import com.report.common.model.DataGrid;
 import com.report.common.model.PageHelper;
-import com.report.common.model.query.ChartVO;
+import com.report.common.model.query.ReportChartVO;
 import com.report.common.model.query.PublicVO;
 
 /**
@@ -121,9 +121,9 @@ public class ReportPublicServiceImpl implements ReportPublicService {
 	        }
 	        
 	        /* 存图 */
-	        List<ChartVO> chartList = JSON.parseArray(reportElement.getSaveReportChart(), ChartVO.class);
+	        List<ReportChartVO> chartList = JSON.parseArray(reportElement.getSaveReportChart(), ReportChartVO.class);
 	        if (reportElement.getSaveChartFlag()) {
-	        	for (ChartVO chart : chartList) {
+	        	for (ReportChartVO chart : chartList) {
 	        		ReportChart reportChart = new ReportChart();
 	                reportChart.setChartName(chart.getChartName());
 	                reportChart.setChartOption(chart.getChartOption());

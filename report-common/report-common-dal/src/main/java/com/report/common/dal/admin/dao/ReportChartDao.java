@@ -40,7 +40,8 @@ public interface ReportChartDao {
 	
 	/**
 	 * 查找图列表
-	 * @param param
+	 * @param params
+	 * @param rowBounds
 	 * @return
 	 */
 	public List<ReportChart> findChartList(Map<String, Object> params, RowBounds rowBounds);

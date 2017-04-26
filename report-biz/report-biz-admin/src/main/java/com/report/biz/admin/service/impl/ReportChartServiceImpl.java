@@ -15,7 +15,7 @@ import com.report.common.dal.query.entity.dto.ReportChart;
 import com.report.common.dal.query.util.BeanUtil;
 import com.report.common.model.DataGrid;
 import com.report.common.model.PageHelper;
-import com.report.common.model.query.ChartVO;
+import com.report.common.model.query.ReportChartVO;
 import com.report.common.repository.ReportChartRepository;
 
 /**
@@ -31,7 +31,7 @@ public class ReportChartServiceImpl implements ReportChartService {
 
     @Transactional(rollbackFor=Exception.class)
     @Override
-    public void saveReportChart(ChartVO chartVO) {
+    public void saveReportChart(ReportChartVO chartVO) {
 		ReportChart reportChart = new ReportChart();
 	    BeanUtil.copyProperties(chartVO, reportChart);
     	reportChartRepository.saveReportChart(reportChart);
@@ -39,7 +39,7 @@ public class ReportChartServiceImpl implements ReportChartService {
 
     @Transactional(rollbackFor=Exception.class)
     @Override
-    public void updateReportChart(ChartVO chartVO) {
+    public void updateReportChart(ReportChartVO chartVO) {
     	ReportChart reportChart = new ReportChart();
 	    BeanUtil.copyProperties(chartVO, reportChart);
     	reportChartRepository.updateChart(reportChart);
@@ -51,7 +51,7 @@ public class ReportChartServiceImpl implements ReportChartService {
     }
 
 	@Override
-	public DataGrid findChartList(ChartVO chart, PageHelper pageHelper) {
+	public DataGrid findChartList(ReportChartVO chart, PageHelper pageHelper) {
 		DataGrid dataGrid = new DataGrid();
 		Map<String, Object> params = new HashMap<String, Object>();
         if (StringUtils.isNotBlank(chart.getToolFlag())) {

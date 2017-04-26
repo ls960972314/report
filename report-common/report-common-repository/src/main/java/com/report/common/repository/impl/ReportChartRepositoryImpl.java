@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.report.common.dal.admin.dao.ReportChartDao;
 import com.report.common.dal.admin.util.PageUtil;
@@ -17,7 +17,7 @@ import com.report.common.repository.ReportChartRepository;
  * @author lishun
  * @since 2017年4月26日 上午11:21:12
  */
-@Service
+@Repository
 public class ReportChartRepositoryImpl implements ReportChartRepository {
 
 	@Resource

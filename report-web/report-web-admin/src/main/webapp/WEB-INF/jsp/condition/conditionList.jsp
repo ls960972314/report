@@ -38,14 +38,14 @@
 						data-options="rownumbers:true,cls:'tableSty',singleSelect:true,fit:true,fitColumns:'false',pagination:'true',loadMsg:'数据加载中...'">
 						<thead>
 							<tr>
-								<th field="Id" data-options="hidden:'true'"></th>
+								<th field="id" data-options="hidden:'true'"></th>
 								<th field="toolFlag" width="30">报表标志</th>
-								<th field="conName" width="30">条件名</th>
+								<th field="conName" width="30">控件名</th>
 								<th field="conMuti" width="30">多选或者单选时的值(可为sql)</th>
 								<th field="conType" width="10">多媒体类型</th>
-								<th field="conWhere" width="30" >匹配sql条件</th>
+								<th field="conWhere" width="30" >匹配sql控件</th>
 								<th field="conDefaultValue" width="70">默认值</th>
-								<th field="conOption" width="10">条件类型</th>
+								<th field="conOption" width="10">控件类型</th>
 								<th field="dataBaseSource" width="10">数据源</th>
 								<th field="orderNum" width="10">排序</th>
 								<th field="rowNum" width="10">行数</th>
@@ -67,13 +67,13 @@
                     onclick="editCondition()">编辑</a>
 		</div>
 	</div>
-<!-- 新建条件 -->
-	<div id="conditionAddDialog" class="easyui-dialog"
-	    data-options="width : 480, closable : true, modal : true, closed : true, shadow : false"
+	
+	<!-- 新建控件 -->
+	<div id="conditionAddDialog" class="easyui-dialog" data-options="width : 480, closable : true, modal : true, closed : true, shadow : false"
 	        buttons="#conditionAdd-buttons">
         <form id="conditionForm" class="form-horizontal" method="post" novalidate>
             <div class="form-group">
-                <label>条件名:</label>
+                <label>控件名:</label>
                 <input type="text" name="conName" class="easyui-validatebox form-control" style="width: 240px;height: 24px;background: gainsboro;" data-options="required:true">
             </div>
             <div class="form-group">
@@ -89,11 +89,11 @@
                 <input type="text" name="conType" class="easyui-validatebox form-control" style="width: 240px;height: 24px;background: gainsboro;" data-options="required:true">
             </div>
             <div class="form-group">
-                <label>条件类型:</label>
+                <label>控件类型:</label>
                 <input type="text" name="conOption" class="easyui-validatebox form-control" style="width: 240px;height: 24px;background: gainsboro;" data-options="required:true">
             </div>
             <div class="form-group">
-                <label>匹配sql条件:</label>
+                <label>匹配sql控件:</label>
                 <input type="text" name="conWhere" class="easyui-validatebox form-control" style="width: 240px;height: 24px;background: gainsboro;" data-options="required:true">
             </div>
             <div class="form-group">
@@ -125,9 +125,9 @@
     data-options="width : 480, closable : true, modal : true, closed : true, shadow : false"
         buttons="#condition-buttons-update">
         <form id="conditionForm2" class="form-horizontal" method="post" novalidate>
-            <input name="Id" type="hidden" id="id">
+            <input name="id" type="hidden" id="id">
             <div class="form-group">
-                <label>条件名:</label>
+                <label>控件名:</label>
                 <input type="text" name="conName" class="easyui-validatebox form-control" style="width: 240px;height: 24px;background: gainsboro;" data-options="required:true">
             </div>
             <div class="form-group">
@@ -143,11 +143,11 @@
                 <input type="text" name="conType" class="easyui-validatebox form-control" style="width: 240px;height: 24px;background: gainsboro;" data-options="required:true">
             </div>
             <div class="form-group">
-                <label>条件类型:</label>
+                <label>控件类型:</label>
                 <input type="text" name="conOption" class="easyui-validatebox form-control" style="width: 240px;height: 24px;background: gainsboro;" data-options="required:true">
             </div>
             <div class="form-group">
-                <label>匹配sql条件:</label>
+                <label>匹配sql控件:</label>
                 <input type="text" name="conWhere" class="easyui-validatebox form-control" style="width: 240px;height: 24px;background: gainsboro;" data-options="required:true">
             </div>
             <div class="form-group">
@@ -185,7 +185,7 @@
 		
 		function editCondition(){
             var row = $('#conditionList').datagrid('getSelected');
-            updateObject('编辑条件','${pageContext.request.contextPath}/condition/updateCondition.htm','conditionList','conditionUpdateDialog', 'conditionForm2');
+            updateObject('编辑控件','${pageContext.request.contextPath}/condition/updateCondition.htm','conditionList','conditionUpdateDialog', 'conditionForm2');
         };
 	</script>
 

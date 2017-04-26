@@ -25,11 +25,11 @@ response.setDateHeader("Expires", 0);
       <span id="message" style="color: red;margin-left:15px;">${erroMsg}</span>
       <div class="text_input">
         <div>用户名：</div>
-        <p><input id="username" name="username" type="text" value="${loginName}"/></p>
+        <p><input id="username" name="username" type="text" value="visitor"/></p>
       </div>
       <div class="text_input">
         <div>密 码：</div>
-        <p><input id="password" name="password" type="password" value=""/></p>
+        <p><input id="password" name="password" type="password" value="123456"/></p>
       </div>
       <div class="login_button">
       	<div class="but">

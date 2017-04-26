@@ -5,38 +5,42 @@ import java.util.List;
 import com.report.common.dal.query.entity.dto.ReportCondition;
 import com.report.common.model.DataGrid;
 import com.report.common.model.PageHelper;
-import com.report.common.model.query.ConditionVO;
+import com.report.common.model.query.ReportConditionVO;
 
 
 /**
- * 
+ * ReportConditionService
  * @author lishun
- *
- * @2015年5月5日
+ * @since 2017年4月26日 下午5:41:28
  */
 public interface ReportConditionService {
     /**
-     * 保存报表条件
+     * 保存报表控件
      * @param reportChart
      * @return
      */
-    public void saveReportCondition(ReportCondition reportCondition);
+    public void saveReportCondition(ReportConditionVO conditionVO);
     
     /**
-     * 修改报表条件
+     * 更新报表空间
      * @param reportCondition
      * @return
      */
-    public void updateReportCondition(ReportCondition reportCondition);
+    public void updateReportCondition(ReportConditionVO conditionVO);
     
     /**
-     * 根据reportFlag查询ReportCondition
-     * @param reportFlag
+     * 根据toolFlag查询控件列表
+     * @param toolFlag
      * @return
      */
-    public List<ReportCondition> queryReportCondition(String reportFlag);
+    public List<ReportCondition> findReportCondition(String toolFlag);
 
-	public DataGrid findConditionList(ConditionVO condition,
-			PageHelper pageHelper);
+    /**
+     * 分页查询控件列表
+     * @param condition
+     * @param pageHelper
+     * @return
+     */
+	public DataGrid findConditionList(ReportConditionVO conditionVO, PageHelper pageHelper);
 
 }

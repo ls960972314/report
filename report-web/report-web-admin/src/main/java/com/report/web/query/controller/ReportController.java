@@ -168,7 +168,7 @@ public class ReportController {
     	Map<String, Object> map = new HashMap<String, Object>();
     	try {
     		List<ReturnCondition> returnConList = new ArrayList<ReturnCondition>();
-    		List<ReportCondition> reportConditionList = reportConditionService.queryReportCondition(reportFlag);
+    		List<ReportCondition> reportConditionList = reportConditionService.findReportCondition(reportFlag);
 			List<ReportCommonCon> commonConList = reportCommonConService.findReportCommonConList(reportFlag, conFlag);
 			for (int i=0;i<reportConditionList.size();i++) {
 				ReportCondition rptCondition = reportConditionList.get(i);
