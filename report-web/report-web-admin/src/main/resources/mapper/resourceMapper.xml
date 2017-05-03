@@ -59,8 +59,8 @@
 		       ttt1.RESOURCE_TYPE,
 		       ttt1.P_ID,
 		       ttt1.ICON,
-		       ttt1.NAME || if(rp.toolccolumn = null, null, '(') || rp.toolccolumn ||
-		       if(rp.toolccolumn = null, null, ')') DESCRIPTION,
+		       ttt1.NAME || if(rp.tool_ccolumn = null, null, '(') || rp.tool_ccolumn ||
+		       if(rp.tool_ccolumn = null, null, ')') DESCRIPTION,
 		       ttt1.CREATE_TIME,
 		       ttt1.UPDATE_TIME,
 		       ttt1.ORDER_BY,
