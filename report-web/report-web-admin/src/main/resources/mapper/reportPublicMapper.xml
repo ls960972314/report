@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.report.common.dal.admin.dao.ReportPublicDao">
+
+	<resultMap type="com.report.common.dal.query.entity.dto.ReportPublic" id="reportPublicResultMap">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="toolflag" property="toolFlag" jdbcType="VARCHAR" />
+		<result column="tool_title" property="toolTitle" jdbcType="VARCHAR" />
+		<result column="tool_ccolumn" property="toolCColumn" jdbcType="VARCHAR" />
+		<result column="tool_ecolumn" property="toolEColumn" jdbcType="VARCHAR" />
+		<result column="tool_gather" property="toolGather" jdbcType="VARCHAR" />
+		<result column="tool_format" property="toolFormat" jdbcType="VARCHAR" />
+		<result column="tool_hsqlid" property="toolHSqlId" jdbcType="VARCHAR" />
+		<result column="tool_dsqlid" property="toolDSqlId" jdbcType="VARCHAR" />
+		<result column="tool_wsqlid" property="toolWSqlId" jdbcType="VARCHAR" />
+		<result column="tool_msqlid" property="toolMSqlId" jdbcType="VARCHAR" />
+		<result column="tool_qsqlid" property="toolQSqlId" jdbcType="VARCHAR" />
+		<result column="tool_ysqlid" property="toolYSqlId" jdbcType="VARCHAR" />
+		<result column="static_rownum" property="staticRowNum" jdbcType="INTEGER" />
+		<result column="static_sql" property="staticSql" jdbcType="INTEGER" />
+		<result column="static_ccolumn" property="staticCcolumn" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.report.common.dal.query.entity.dto.ReportPublic">
+		insert into rptpub(
+					id,
+					toolflag,
+					tool_ccolumn,
+					tool_ecolumn,
+					tool_format,
+					tool_gather,
+					tool_title,
+					tool_hsqlid,
+					tool_dsqlid,
+					tool_wsqlid,
+					tool_msqlid,
+					tool_qsqlid,
+					tool_ysqlid,
+					static_rownum,
+					static_ccolumn,
+					static_sql
+				) values(
+					#{id,jdbcType=INTEGER},
+					#{toolFlag,jdbcType=VARCHAR},
+					#{toolCColumn,jdbcType=VARCHAR},
+					#{toolEColumn,jdbcType=VARCHAR},
+					#{toolFormat,jdbcType=VARCHAR},
+					#{toolGather,jdbcType=VARCHAR},
+					#{toolTitle,jdbcType=VARCHAR},
+					#{toolHSqlId,jdbcType=VARCHAR},
+					#{toolDSqlId,jdbcType=VARCHAR},
+					#{toolWSqlId,jdbcType=VARCHAR},
+					#{toolMSqlId,jdbcType=VARCHAR},
+					#{toolQSqlId,jdbcType=VARCHAR},
+					#{toolYSqlId,jdbcType=INTEGER},
+					#{staticRowNum,jdbcType=INTEGER},
+					#{staticSql,jdbcType=INTEGER},
+					#{staticCcolumn,jdbcType=VARCHAR}
+			)
+	</insert>
+
+	<update id="update" parameterType="com.report.common.dal.query.entity.dto.ReportPublic">
+		update rptpub set
+					toolflag=#{toolFlag,jdbcType=VARCHAR},
+					tool_ccolumn=#{toolCColumn,jdbcType=VARCHAR},
+					tool_ecolumn=#{toolEColumn,jdbcType=VARCHAR},
+					tool_format=#{toolFormat,jdbcType=VARCHAR},
+					tool_gather=#{toolGather,jdbcType=VARCHAR},
+					tool_title=#{toolTitle,jdbcType=VARCHAR},
+					tool_hsqlid=#{toolHSqlId,jdbcType=VARCHAR},
+					tool_dsqlid=#{toolDSqlId,jdbcType=VARCHAR},
+					tool_wsqlid=#{toolWSqlId,jdbcType=VARCHAR},
+					tool_msqlid=#{toolMSqlId,jdbcType=VARCHAR},
+					tool_qsqlid=#{toolQSqlId,jdbcType=VARCHAR},
+					tool_ysqlid=#{toolYSqlId,jdbcType=INTEGER},
+					static_rownum=#{staticRowNum,jdbcType=INTEGER},
+					static_sql=#{staticSql,jdbcType=INTEGER},
+					static_ccolumn=#{staticCcolumn,jdbcType=VARCHAR}
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteByReportFlag" parameterType="string">
+	  	delete from rptpub where toolflag = #{toolFlag,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="findPubListByToolFlag"  parameterType="string" resultMap="reportPublicResultMap">
+  	    select * from rptpub t where t.toolflag=#{toolFlag, jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findPubList"  parameterType="map" resultMap="reportPublicResultMap">
+  	    select * from rptpub t where 1=1
+  	    <if test="toolFlag != null and toolFlag !=''">
+	  	    and t.toolflag=#{toolFlag, jdbcType=VARCHAR}
+	  	</if>	
+  	    <if test="toolTitle != null and toolTitle !=''">
+	  	    and t.tool_title like CONCAT('%', #{toolTitle,jdbcType=VARCHAR}, '%')
+	  	</if>
+    </select>
+    
+    <select id="findPubCount"  parameterType="map" resultType="long">
+  	    select count(1) from rptpub t where 1=1
+  	    <if test="toolFlag != null and toolFlag !=''">
+	  	    and t.toolflag=#{toolFlag, jdbcType=VARCHAR}
+	  	</if>
+  	    <if test="toolTitle != null and toolTitle !=''">
+	  	    and t.tool_title like CONCAT('%', #{toolTitle,jdbcType=VARCHAR}, '%')
+	  	</if>
+    </select>
+</mapper>

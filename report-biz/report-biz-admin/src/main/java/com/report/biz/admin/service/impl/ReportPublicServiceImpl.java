@@ -6,72 +6,77 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.report.biz.admin.service.ReportPublicService;
 import com.report.biz.admin.service.ReportSqlService;
-import com.report.common.dal.common.BaseDao;
 import com.report.common.dal.query.entity.dto.ReportChart;
 import com.report.common.dal.query.entity.dto.ReportCondition;
 import com.report.common.dal.query.entity.dto.ReportPublic;
 import com.report.common.dal.query.entity.vo.Condition;
 import com.report.common.dal.query.entity.vo.ReportElement;
+import com.report.common.dal.query.util.BeanUtil;
 import com.report.common.model.DataGrid;
 import com.report.common.model.PageHelper;
+import com.report.common.model.query.ReportPublicVO;
 import com.report.common.model.query.ReportChartVO;
-import com.report.common.model.query.PublicVO;
+import com.report.common.repository.ReportChartRepository;
+import com.report.common.repository.ReportConditionRepository;
+import com.report.common.repository.ReportPublicRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
+ * ReportPublicServiceImpl
  * @author lishun
- *
- * @2015年5月7日
+ * @since 2017年5月3日 下午8:13:22
  */
-@Service(value="reportPublicService")
-@Transactional
+@Slf4j
+@Service
 public class ReportPublicServiceImpl implements ReportPublicService {
 
-    protected final Log log = LogFactory.getLog(ReportPublicServiceImpl.class);
+    @Resource
+    private ReportPublicRepository reportPublicRepository;
     
-    @Autowired
-    private BaseDao baseDao;
+    @Resource
+    private ReportConditionRepository reportConditionRepository;
     
-    @Autowired
+    @Resource
+    private ReportChartRepository reportChartRepository;
+    
+    @Resource
     private ReportSqlService reportSqlService;
 
     
     @Override
-    public void saveReportPublic(ReportPublic reportPublic) {
-        baseDao.save(reportPublic);
+    @Transactional(rollbackFor=Exception.class)
+    public void saveReportPublic(ReportPublicVO reportPublicVO) {
+    	ReportPublic reportPublic = new ReportPublic();
+	    BeanUtil.copyProperties(reportPublicVO, reportPublic);
+    	reportPublicRepository.saveReportPublic(reportPublic);
     }
 
     @Override
-    public void updateReportPublic(ReportPublic reportPublic) {
-        baseDao.update(reportPublic);
+    @Transactional(rollbackFor=Exception.class)
+    public void updateReportPublic(ReportPublicVO reportPublicVO) {
+    	ReportPublic reportPublic = new ReportPublic();
+	    BeanUtil.copyProperties(reportPublicVO, reportPublic);
+    	reportPublicRepository.updateReportPublic(reportPublic);
     }
 
     @Override
-    public ReportPublic queryReportPublic(String reportFlag) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("toolFlag", reportFlag);
-        return (ReportPublic) baseDao.get("from ReportPublic where toolFlag = :toolFlag", params);
+    public ReportPublic queryReportPublic(String toolFlag) {
+        return reportPublicRepository.queryReportPublic(toolFlag);
     }
 
-    /**
-     * 保存报表公共信息，条件，图等
-     * @param reportElement
-     */
 	@Override
 	@Transactional(rollbackFor=Exception.class)
-	public void saveReport(ReportElement reportElement) throws Exception {
+	public void saveReport(ReportElement reportElement) {
 		try {
 			/* 公共信息 */
 	        ReportPublic reportPublic = new ReportPublic();
@@ -101,7 +106,7 @@ public class ReportPublicServiceImpl implements ReportPublicService {
 			}
 	        
 	        reportPublic = updateSql(reportPublic, reportElement.getSaveReportSqlId());//{"时":"2000","日":"2001","周":"2001","月":"2001"}
-	        baseDao.save(reportPublic);
+	        reportPublicRepository.saveReportPublic(reportPublic);
 	        /* 存条件 */
 	        List<Condition> conList = JSON.parseArray(reportElement.getSaveReportCondition(), Condition.class);
 	        for (Condition con : conList) {
@@ -116,8 +121,7 @@ public class ReportPublicServiceImpl implements ReportPublicService {
 	            reportCondition.setRowNum(con.getRowNum());
 	            reportCondition.setConDefaultValue(con.getConDefaultValue());
 	            reportCondition.setDataBaseSource(con.getDataBaseSource());
-	            //reportCondition.setChartId("");
-	            baseDao.save(reportCondition);
+	            reportConditionRepository.saveReportCondition(reportCondition);
 	        }
 	        
 	        /* 存图 */
@@ -133,12 +137,11 @@ public class ReportPublicServiceImpl implements ReportPublicService {
 	                reportChart.setDataVsX(chart.getDataVsX());
 	                reportChart.setShowRowNum(chart.getShowRowNum());
 	                reportChart.setToolFlag(reportElement.getSaveReportFlag());
-	                baseDao.save(reportChart);
+	                reportChartRepository.saveReportChart(reportChart);
 	        	}
 	        }
 		} catch (Exception e) {
 			log.error("saveReport Exception", e);
-			throw e;
 		}
 	}
 	
@@ -175,65 +178,19 @@ public class ReportPublicServiceImpl implements ReportPublicService {
         return reportPublic;
     }
 
-	/**
-	 * 查找公共信息列表
-	 */
 	@Override
-	public DataGrid findPublicList(PublicVO publicVo, PageHelper pageHelper) {
+	public DataGrid findPublicList(ReportPublicVO publicVo, PageHelper pageHelper) {
 		DataGrid dataGrid = new DataGrid();
-		String sql = "select id \"id\", toolccolumn \"toolCColumn\", tooldsqlid \"toolDSqlId\", toolecolumn \"toolEColumn\", toolflag \"toolFlag\", toolhsqlid \"toolHSqlId\", toolmsqlid \"toolMSqlId\", tooltitle \"toolTitle\", toolwsqlid \"toolWSqlId\" , toolqsqlid \"toolQSqlId\", toolysqlid \"toolYSqlId\", gather_column \"toolGather\", format \"toolFormat\" , static_rownum \"staticRowNum\", static_ccolumn \"staticCcolumn\",static_sql \"staticSql\" from rptpub where 1=1 "+ constructSqlWhere(publicVo)
-				+ " order by 1 desc" ;
-		Query query = baseDao.getSqlQuery(sql).setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).setFirstResult((pageHelper.getPage() - 1) * pageHelper.getRows()).setMaxResults(pageHelper.getRows());;
 		Map<String, Object> params = new HashMap<String, Object>();
         
         if (StringUtils.isNotBlank(publicVo.getToolFlag())) {
-        	query.setParameter("toolflag", publicVo.getToolFlag());
-        	params.put("toolflag", publicVo.getToolFlag());
-        }
-        if (publicVo.getId() != null) {
-        	query.setParameter("id", publicVo.getId());
-        	params.put("id", publicVo.getId());
+        	params.put("toolFlag", publicVo.getToolFlag());
         }
         if (StringUtils.isNotBlank(publicVo.getToolTitle())) {
-        	query.setParameter("tooltitle", "%" + publicVo.getToolTitle() + "%");
-        	params.put("tooltitle", "%" + publicVo.getToolTitle() + "%");
+        	params.put("toolTitle", publicVo.getToolTitle());
         }
-		
-		List<ReportPublic> list = (List<ReportPublic>)query.list();
-		dataGrid.setRows(list);
-		String countSql = "select count(1) from rptpub t where 1=1" + constructSqlWhere(publicVo);
-		dataGrid.setTotal((long)baseDao.countBySql(countSql, params));
+		dataGrid.setRows(reportPublicRepository.findPubList(params, pageHelper.getPage(), pageHelper.getRows()));
+		dataGrid.setTotal(reportPublicRepository.findPubCount(params));
 		return dataGrid;
-	}
-
-	/**
-	 * 组装条件
-	 * @param publicVo
-	 * @return
-	 */
-	private String constructSqlWhere(PublicVO publicVo) {
-		String str = "";
-		if (StringUtils.isNotBlank(publicVo.getToolFlag())) {
-			str = str + " and toolflag = :toolflag";
-		}
-		if (publicVo.getId() != null) {
-			str = str + " and id = :id";
-		}
-		if (StringUtils.isNotBlank(publicVo.getToolTitle())) {
-			str = str + " and tooltitle like :tooltitle";
-		}
-		return str;
-	}
-	/**
-	 * 更新公共信息
-	 */
-	@Override
-	public void updatePublic(ReportPublic reportpublic) {
-		try {
-			baseDao.update(reportpublic);
-		} catch (Exception e) {
-			log.error("updatePublic Exception", e);
-		}
-		
 	}
 }

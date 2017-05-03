@@ -26,7 +26,7 @@ import com.report.common.dal.query.entity.vo.SpObserver;
 import com.report.common.model.SessionUtil;
 import com.report.common.model.query.ReportChartVO;
 import com.report.common.model.query.ReportConditionVO;
-import com.report.common.model.query.PublicVO;
+import com.report.common.model.query.ReportPublicVO;
 import com.report.common.model.query.ReportCommonConVO;
 import com.report.common.model.query.ReportConfigVO;
 import com.report.common.model.query.ReportModelVO;
@@ -211,7 +211,7 @@ public class SysLogAspect {
 				}
 			} else if (operate.equals("updatePublic")) {
 				if (args[0] != null) {
-					PublicVO publicVO = (PublicVO)args[0];
+					ReportPublicVO publicVO = (ReportPublicVO)args[0];
 					operateId = publicVO.getToolFlag();
 					rptLog.setOpeId(operateId);
 				}

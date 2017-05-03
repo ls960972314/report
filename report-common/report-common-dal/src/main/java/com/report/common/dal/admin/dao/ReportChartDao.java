@@ -26,10 +26,10 @@ public interface ReportChartDao {
 	public void update(ReportChart reportChart);
 	/**
 	 * 根据toolFlag删除图表
-	 * @param reportFlag
+	 * @param toolFlag
 	 * @return
 	 */
-	public void deleteByReportFlag(String reportFlag);
+	public void deleteByReportFlag(String toolFlag);
 	
 	/**
 	 * 根据toolFlag查找ReportChart

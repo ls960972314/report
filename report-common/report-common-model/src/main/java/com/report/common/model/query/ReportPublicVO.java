@@ -1,4 +1,4 @@
-package com.report.common.dal.query.entity.dto;
+package com.report.common.model.query;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,14 +6,14 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 报表公共信息
+ * ReportPublicVO
  * @author lishun
- * @since 2017年5月3日 下午7:37:02
+ * @since 2017年5月3日 下午8:22:22
  */
 @Data
-public class ReportPublic implements Serializable {
+public class ReportPublicVO implements Serializable {
 
-	private static final long serialVersionUID = 727016893684040578L;
+	private static final long serialVersionUID = 1106029269074628231L;
 	
 	/** 主键 */
 	private Integer id;
@@ -51,4 +51,5 @@ public class ReportPublic implements Serializable {
     private Date createTime;
 	/** 更新时间 */
     private Date updateTime;
+	
 }

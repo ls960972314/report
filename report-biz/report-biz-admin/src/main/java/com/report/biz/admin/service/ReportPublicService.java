@@ -4,43 +4,42 @@ import com.report.common.dal.query.entity.dto.ReportPublic;
 import com.report.common.dal.query.entity.vo.ReportElement;
 import com.report.common.model.DataGrid;
 import com.report.common.model.PageHelper;
-import com.report.common.model.query.PublicVO;
+import com.report.common.model.query.ReportPublicVO;
 
 
 /**
- * 
+ * saveReportPublic
  * @author lishun
- *
- * @2015年5月5日
+ * @since 2017年5月3日 下午8:19:59
  */
 public interface ReportPublicService {
     
     /**
      * 保存报表公共信息
-     * @param reportChart
+     * @param reportPublic
      * @return
      */
-    public void saveReportPublic(ReportPublic reportPublic);
+    public void saveReportPublic(ReportPublicVO reportPublicVO);
     
     /**
      * 修改报表公共信息
      * @param reportPublic
      * @return
      */
-    public void updateReportPublic(ReportPublic reportPublic);
+    public void updateReportPublic(ReportPublicVO reportPublicVO);
     
     /**
      * 查询报表公共信息
-     * @param reportFlag
+     * @param toolFlag
      * @return
      */
-    public ReportPublic queryReportPublic(String reportFlag);
+    public ReportPublic queryReportPublic(String toolFlag);
 
     /**
-     * 保存报表公共信息，条件，图等
+     * 保存报表公共信息,条件,图等
      * @param reportElement
      */
-	public void saveReport(ReportElement reportElement)  throws Exception;
+	public void saveReport(ReportElement reportElement);
 
 	/**
 	 * 查找报表公共信息
@@ -48,12 +47,5 @@ public interface ReportPublicService {
 	 * @param pageHelper
 	 * @return
 	 */
-	public DataGrid findPublicList(PublicVO publicVo, PageHelper pageHelper);
-
-	/**
-	 * 更新报表公共信息
-	 * @param reportpublic
-	 */
-	public void updatePublic(ReportPublic reportpublic);
-    
+	public DataGrid findPublicList(ReportPublicVO publicVo, PageHelper pageHelper);
 }
