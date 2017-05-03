@@ -1,9 +1,5 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<style>
-body{
-font:12px/20px Microsoft YaHei, verdana;}
-</style>
 <body>
 	<div id='model_panel' style="width:100%;">
 	</div>

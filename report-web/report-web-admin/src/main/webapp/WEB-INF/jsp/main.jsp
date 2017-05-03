@@ -123,7 +123,14 @@
 				</div>
 			</div>
 			<!-- user feedback icon -->
-			
+			<div class="feedback_help" style="display:none">
+			    <div class="relative">
+			        <div class="feed">
+				        <a href="#divToc" style="padding-left:2px;">返回顶部
+				        </a>
+			        </div>
+			    </div>
+		   </div>
 			<!-- feedback icon end -->
 		</div>
 	</div>
@@ -136,8 +143,8 @@
 				</div>
 			</div>
 		</div>
+		<a name='divToc'></a>
 		<div id="mainContainer">
-			<div id="menuChart" style="height: 770px; width: 578px; display:none;" ></div>
 		</div>
 	</div>
 </div>
@@ -168,6 +175,17 @@ function navgChange () {
 function changPasswd () {
 	$('#mainContainer').show();
 }
+
+$(window).scroll(function () {
+    var scrollValue = $(window).scrollTop();
+    if (scrollValue > 100) {
+    	$('div[class=feedback_help]').css("display", "block");
+    	$('div[class=feedback_help]').fadeIn();
+    } else {
+    	$('div[class=feedback_help]').fadeOut();
+    }
+});
+
 $('.navigation').click(function(e) {
     $.ajax({
         url: $(this).attr("fileName"),
@@ -367,6 +385,7 @@ $(".js-selected").click(function(e){
   
  /* 初始化 */
  $(function() {
+	 $("#topNav").hide();
 	 $('#search-highlight').hideseek({
          highlight: true
      });

@@ -419,7 +419,7 @@ a:hover .icon-undo {
   display: block;
   position: fixed;
   right: 0;
-  top:40%;
+  top:60%;
   z-index:300;
   font-size: 12px;
   padding:0;
@@ -433,7 +433,7 @@ a:hover .icon-undo {
 }
 .feedback_help .feed, .feedback_help .dev{
   line-height: 44px;
-  width: 60px;
+  width: 90px;
   border-radius: 4px;
   vertical-align: middle;
   background: #565656;
