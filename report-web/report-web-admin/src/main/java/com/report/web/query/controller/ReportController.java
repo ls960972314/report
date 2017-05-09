@@ -348,8 +348,12 @@ public class ReportController {
     }
     
     @RequestMapping(value = "/smartReport", method = RequestMethod.GET)
-    public String main(HttpServletRequest request) {
+    public String smartReport(HttpServletRequest request) {
         return "reportPage/smartReport";
+    }
+    @RequestMapping(value = "/createReport", method = RequestMethod.GET)
+    public String createReport(HttpServletRequest request) {
+        return "reportPage/createReport";
     }
     
     /**

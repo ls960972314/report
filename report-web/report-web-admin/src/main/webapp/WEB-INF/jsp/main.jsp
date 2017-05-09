@@ -282,9 +282,14 @@ $(".js-selected").click(function(e){
         	window.open("${pageContext.request.contextPath }/report/smartReport");
         	return;
         }
+        if (fileUrl == "createReport") {
+        	window.open("${pageContext.request.contextPath }/report/createReport");
+        	return;
+        }
         if (fileUrl == "tpl/tool/createReportComment.jsp") {
         	fileUrl = "${pageContext.request.contextPath }/reportComment/createReportComment";
         }
+        
         $.ajax({
             url: fileUrl,
             type: "GET",

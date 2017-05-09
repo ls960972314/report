@@ -11,7 +11,6 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>新建报表</title>
-	
 
 	<link href="${pageContext.request.contextPath}/css/main.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="${pageContext.request.contextPath}/css/redmond/jquery-ui-1.9.2.custom.min.css"  rel="stylesheet"></link>
