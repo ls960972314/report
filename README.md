@@ -11,7 +11,7 @@ web自动化配置报表平台(只需配置对应的oracle或者mysql语句,不�
 
  
 ## 项目结构
-<img src="http://123.207.227.237/report/images/dispute-project.png" width="95%" />
+<img src="http://123.207.227.237/report/images/report.png" />
 
 <pre>
 report-common-dal    数据层
