@@ -1,7 +1,7 @@
-
+欢迎star
 # 代码结构说明
 ## 说明
-使用 spring mvc,mysql,echarts,mybaits,hibernate,jQuery,jqGrid,easyui,redis等
+使用 spring mvc,mysql,echarts,mybaits,hibernate,jQuery,jqGrid,easyui等
 
 web自动化配置报表平台(只需配置对应的oracle或者mysql语句,不需要写代码)
 
