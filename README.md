@@ -1,4 +1,5 @@
 欢迎star
+有问题请点击上面的pull request
 # 代码结构说明
 ## 说明
 使用 spring mvc,mysql,echarts,mybaits,hibernate,jQuery,jqGrid,easyui等
