@@ -16,6 +16,7 @@ web自动化配置报表平台(只需配置对应的oracle或者mysql语句,不�
 <img src="http://123.207.227.237/report/images/report.png" />
 
 <pre>
+database  数据库初始化脚本
 report-common-dal    数据层
 report-common-util   工具类层
 report-common-model  数据模型层
