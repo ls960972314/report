@@ -1,4 +1,6 @@
 /*
+
+ 乱码问题后面有空修改下
  Navicat Premium Data Transfer
 
  Source Server         : 腾讯云平台
@@ -16,43 +18,6 @@
 
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
---  Table structure for `java_command`
--- ----------------------------
-DROP TABLE IF EXISTS `java_command`;
-CREATE TABLE `java_command` (
-  `id` bigint(19) DEFAULT NULL,
-  `command_name` varchar(500) DEFAULT NULL,
-  `command_txt` varchar(2000) DEFAULT NULL,
-  `remark` varchar(2000) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `java_command`
--- ----------------------------
-BEGIN;
-INSERT INTO `java_command` VALUES ('1', '-XX:BiasedLockingStartupDelay=0', '偏向锁延时加载', ''), ('2', '-XX:-UseBiasedLocking=false', '偏向锁关闭', null);
-COMMIT;
-
--- ----------------------------
---  Table structure for `linux_command`
--- ----------------------------
-DROP TABLE IF EXISTS `linux_command`;
-CREATE TABLE `linux_command` (
-  `id` bigint(19) NOT NULL,
-  `command_name` varchar(500) NOT NULL,
-  `command_txt` varchar(2048) NOT NULL,
-  `remark` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `linux_command`
--- ----------------------------
-BEGIN;
-INSERT INTO `linux_command` VALUES ('1', '文件句柄数', 'lsof -n |awk \'{print $2}\'|sort|uniq -c |sort -nr|more', null), ('2', 'war打包和解压', 'jar -cvfM0 xxx.war ./xxx    ;    jar -xvf xxx.war', '安装dk'), ('3', '测量上下文切换次数', 'vmstat 1', 'Lmbench3可以测量上下文切换的时长');
-COMMIT;
 
 -- ----------------------------
 --  Table structure for `rp_report_sql`
